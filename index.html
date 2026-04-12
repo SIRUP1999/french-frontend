@@ -28,7 +28,6 @@
 }
 body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; min-height: 100vh; }
 
-/* ── HEADER ── */
 .header { background: linear-gradient(135deg, #0f172a 0%, #1e2d45 100%); border-bottom: 1px solid var(--border); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
 .header-left { display: flex; align-items: center; gap: 12px; }
 .header-flag { font-size: 26px; }
@@ -36,7 +35,6 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .header-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
 .header-badge { background: var(--highlight); border: 1px solid var(--accent); border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 700; color: var(--accent-light); }
 
-/* ── HERO ── */
 .hero { background: linear-gradient(160deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%); padding: 40px 20px 32px; text-align: center; }
 .hero h1 { font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 10px; line-height: 1.3; }
 .hero h1 span { color: var(--accent-light); }
@@ -45,13 +43,17 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .feature-pill { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); border-radius: 20px; padding: 5px 12px; font-size: 12px; color: var(--accent-light); font-weight: 600; }
 .hero-free { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; padding: 10px 16px; display: inline-block; font-size: 13px; color: var(--green); font-weight: 700; }
 
-/* ── AD SLOT ── */
 .ad-slot { background: var(--card); border: 1px dashed var(--border); border-radius: 10px; padding: 12px; text-align: center; color: var(--muted); font-size: 11px; margin: 0 16px 16px; min-height: 70px; display: flex; align-items: center; justify-content: center; }
 
-/* ── MAIN ── */
 .main { padding: 16px; max-width: 700px; margin: 0 auto; }
 
-/* ── USAGE BAR ── */
+/* Wake-up banner */
+.wakeup-card { background: #1c1a08; border: 1px solid var(--gold); border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; display: none; }
+.wakeup-card p { color: #fcd34d; font-size: 13px; line-height: 1.6; }
+.wakeup-bar-bg { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; margin-top: 8px; }
+.wakeup-bar { height: 100%; background: linear-gradient(90deg, var(--gold), var(--green)); border-radius: 3px; animation: wakeup 25s linear forwards; }
+@keyframes wakeup { from { width: 5%; } to { width: 100%; } }
+
 .usage-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .usage-info { flex: 1; }
 .usage-title { font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
@@ -59,7 +61,6 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .usage-bar { height: 100%; background: linear-gradient(90deg, var(--green), var(--accent)); border-radius: 3px; transition: width 0.5s; }
 .usage-count { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
-/* ── UPLOAD ── */
 .upload-zone { background: var(--card); border: 2px dashed var(--border); border-radius: 14px; padding: 28px 20px; text-align: center; margin-bottom: 16px; position: relative; overflow: hidden; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
 .upload-zone.drag-over { border-color: var(--accent); background: var(--highlight); }
 .upload-icon { font-size: 36px; margin-bottom: 8px; }
@@ -68,7 +69,6 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .upload-btn { display: inline-block; background: var(--accent); color: #fff; border-radius: 8px; padding: 9px 22px; font-size: 14px; font-weight: 700; pointer-events: none; }
 .upload-zone input[type=file] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; font-size: 16px; }
 
-/* ── FILE LIST ── */
 .file-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
 .file-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .file-icon { font-size: 18px; flex-shrink: 0; }
@@ -80,38 +80,31 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .badge-error { background: #450a0a; color: var(--red); }
 .btn-view { background: var(--highlight); color: var(--accent-light); border: 1px solid var(--accent); border-radius: 6px; padding: 5px 12px; font-size: 12px; font-weight: 700; cursor: pointer; }
 
-/* ── PROGRESS ── */
 .progress-wrap { margin-bottom: 12px; }
 .progress-info { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 5px; }
 .progress-bg { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
 .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); border-radius: 3px; transition: width 0.5s; }
 
-/* ── PROCESS BTN ── */
 .process-btn { width: 100%; background: #78350f; color: var(--gold); border: 1px solid var(--gold); border-radius: 10px; padding: 13px; font-size: 15px; font-weight: 700; cursor: pointer; margin-bottom: 18px; }
 .process-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-/* ── LIMIT WARNING ── */
 .limit-card { background: #1c1408; border: 1px solid var(--gold); border-radius: 12px; padding: 16px; margin-bottom: 16px; text-align: center; }
 .limit-card h3 { color: var(--gold); font-size: 15px; margin-bottom: 6px; }
 .limit-card p { color: #fcd34d; font-size: 13px; line-height: 1.6; }
 
-/* ── TABS ── */
 .tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 14px; }
 .tabs::-webkit-scrollbar { display: none; }
 .tab { padding: 7px 14px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 700; border: 1px solid var(--border); background: transparent; color: var(--muted); white-space: nowrap; flex-shrink: 0; transition: all 0.15s; }
 .tab.active { background: var(--highlight); color: var(--accent-light); border-color: var(--accent); }
 
-/* ── STUDY ── */
 .study-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 14px; }
 .study-card-title { font-size: 15px; font-weight: 700; color: var(--accent-light); margin-bottom: 12px; }
 .text-box { background: #0f172a; border-radius: 10px; padding: 14px; font-size: 14px; line-height: 1.8; color: var(--text); white-space: pre-wrap; border: 1px solid var(--border); }
 .sec-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); margin: 16px 0 8px; }
 
-/* ── SPINNER ── */
 .spin { display: inline-block; width: 12px; height: 12px; border: 2px solid var(--border); border-top-color: var(--accent-light); border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 4px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── HOW TO ── */
 .howto { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 14px; }
 .howto-title { font-size: 14px; font-weight: 700; color: var(--gold); margin-bottom: 14px; }
 .step { background: #0f172a; border-radius: 10px; padding: 13px; border-left: 3px solid var(--accent); margin-bottom: 10px; }
@@ -120,18 +113,15 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .step.green { border-left-color: var(--green); }
 .step.green .step-title { color: var(--green); }
 
-/* ── FOOTER ── */
 .footer { text-align: center; padding: 24px 20px 40px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 20px; }
 .footer a { color: var(--accent-light); text-decoration: none; }
 
-/* ── EMPTY ── */
 .empty { text-align: center; color: var(--muted); padding: 32px 0; font-size: 14px; }
 .empty-icon { font-size: 44px; margin-bottom: 10px; }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-left">
     <span class="header-flag">🇫🇷</span>
@@ -143,7 +133,6 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
   <span class="header-badge">✨ Free</span>
 </div>
 
-<!-- HERO -->
 <div class="hero">
   <h1>Master Your <span>French Oral</span> Exam with AI</h1>
   <p>Upload your audio files and instantly get transcriptions, vocabulary, grammar notes, and study guides — all for free.</p>
@@ -154,12 +143,11 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     <span class="feature-pill">❓ Sample Q&A</span>
     <span class="feature-pill">🏆 Exam Tips</span>
   </div>
-  <div class="hero-free">✅ No account needed &nbsp;·&nbsp; 3 free audios per day &nbsp;·&nbsp; No credit card</div>
+  <!-- FIX 1: corrected free limit from 3 → 7 -->
+  <div class="hero-free">✅ No account needed &nbsp;·&nbsp; 7 free audios per day &nbsp;·&nbsp; No credit card</div>
 </div>
 
-<!-- AD SLOT TOP -->
 <div class="ad-slot" style="margin-top:16px;">
-  <!-- Google AdSense Banner -->
   <ins class="adsbygoogle" style="display:block;width:100%;min-height:60px;"
     data-ad-client="ca-pub-7076616078598631"
     data-ad-slot="1924514855"
@@ -170,7 +158,6 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 
 <div class="main">
 
-  <!-- USAGE -->
   <div class="usage-card" id="usageCard">
     <div class="usage-info">
       <div class="usage-title">📊 Today's Free Usage</div>
@@ -179,7 +166,12 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     </div>
   </div>
 
-  <!-- UPLOAD -->
+  <!-- FIX 2: Wake-up banner shown while server is starting -->
+  <div class="wakeup-card" id="wakeupCard">
+    <p>⏳ <strong>Waking up the server…</strong> This takes up to 30 seconds on first use. Please wait — do not close the app!</p>
+    <div class="wakeup-bar-bg"><div class="wakeup-bar" id="wakeupBar"></div></div>
+  </div>
+
   <div class="upload-zone" id="uploadZone">
     <div class="upload-icon">🎧</div>
     <div class="upload-title">Tap to upload your French audio files</div>
@@ -188,27 +180,22 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     <input type="file" id="fileInput" multiple accept="audio/*" onchange="addFiles(this.files)"/>
   </div>
 
-  <!-- FILE LIST -->
   <div class="file-list" id="fileList"></div>
 
-  <!-- PROGRESS -->
   <div class="progress-wrap" id="progressWrap" style="display:none">
     <div class="progress-info"><span>Processing your audios…</span><span id="progressTxt">0/0</span></div>
     <div class="progress-bg"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
   </div>
 
-  <!-- LIMIT WARNING -->
   <div class="limit-card" id="limitCard" style="display:none">
     <h3>🎯 Daily Limit Reached</h3>
-    <p>You've used your 3 free transcriptions for today.<br/>Come back tomorrow for 3 more — completely free! ☀️</p>
+    <p>You've used your 7 free transcriptions for today.<br/>Come back tomorrow for 7 more — completely free! ☀️</p>
   </div>
 
-  <!-- PROCESS BTN -->
   <button class="process-btn" id="processBtn" style="display:none" onclick="processAll()">
     🚀 Transcribe &amp; Study All Files
   </button>
 
-  <!-- AD SLOT MID -->
   <div id="midAdSlot" style="display:none; margin-bottom:16px;">
     <ins class="adsbygoogle" style="display:block;width:100%;min-height:60px;"
       data-ad-client="ca-pub-7076616078598631"
@@ -218,19 +205,14 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
-  <!-- TABS -->
   <div class="tabs" id="tabs" style="display:none"></div>
-
-  <!-- STUDY AREA -->
   <div id="studyArea"></div>
 
-  <!-- EMPTY STATE -->
   <div class="empty" id="emptyState">
     <div class="empty-icon">🎓</div>
     Upload your French oral audio files above<br/>to get your instant study guide.
   </div>
 
-  <!-- HOW TO USE -->
   <div class="howto">
     <div class="howto-title">📖 How to Upload Your Audio Files</div>
     <div class="step"><div class="step-title">Step 1 — Tap the upload box</div><div class="step-body">Tap anywhere on the 🎧 upload area. Your phone's file picker will open.</div></div>
@@ -242,7 +224,6 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 
 </div>
 
-<!-- AD SLOT BOTTOM -->
 <div class="ad-slot" style="margin: 0 16px 16px;">
   <ins class="adsbygoogle" style="display:block;width:100%;min-height:60px;"
     data-ad-client="ca-pub-7076616078598631"
@@ -255,23 +236,31 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 <div class="footer">
   French Oral Master &copy; 2026 &nbsp;·&nbsp; Free AI-powered French exam prep<br/>
   <small style="color:#334155;">Powered by Groq Whisper &amp; Llama AI</small><br/>
- <small style="color:#334155;" > made with Nana</small></br>
+  <small style="color:#334155;">made with ❤️ by Nana</small><br/>
   <a href="privacy-policy.html" style="color:#60a5fa; font-size:12px;">Privacy Policy</a>
 </div>
 
 <script>
-// ── CONFIG — replace with your deployed backend URL ──────────────────────────
-const API_BASE = "https://french-backend-9bz8.onrender.com"; // ← CHANGE THIS after deploying backend
+const API_BASE = "https://french-backend-9bz8.onrender.com";
 
 const files = [];
 const results = {};
 let activeTab = null;
 let busy = false;
 
-// ── Load usage on start ───────────────────────────────────────────────────────
+// ── FIX 3: Wake up server on page load so it's ready when user hits Transcribe ──
+async function wakeServer() {
+  try {
+    await fetch(`${API_BASE}/`, { signal: AbortSignal.timeout(35000) });
+  } catch(e) {
+    // silent — server might still wake up
+  }
+}
+wakeServer();
+
 async function loadUsage() {
   try {
-    const res = await fetch(`${API_BASE}/usage`);
+    const res = await fetch(`${API_BASE}/usage`, { signal: AbortSignal.timeout(35000) });
     const data = await res.json();
     updateUsageUI(data.used, data.limit);
   } catch(e) {
@@ -290,7 +279,6 @@ function updateUsageUI(used, limit) {
   }
 }
 
-// ── Drag & drop ───────────────────────────────────────────────────────────────
 const zone = document.getElementById('uploadZone');
 zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
 zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
@@ -300,7 +288,7 @@ function addFiles(list) {
   const arr = Array.from(list).filter(f => {
     const hasAudioExt = /\.(mp3|m4a|ogg|wav|aac|webm|m4b|opus)$/i.test(f.name);
     const hasAudioMime = f.type.startsWith('audio');
-    const isWhatsApp = /whatsapp/i.test(f.name);
+    const isWhatsApp = /whatsapp/i.test(f.name) || /AUD-/i.test(f.name);
     return hasAudioExt || hasAudioMime || isWhatsApp;
   });
   if (!arr.length) return alert('Please select audio files (MP3, M4A, OGG, WAV, WhatsApp Audio, etc)');
@@ -313,7 +301,6 @@ function addFiles(list) {
   renderAll();
 }
 
-// ── Render ────────────────────────────────────────────────────────────────────
 function renderAll() { renderFileList(); renderTabs(); renderStudy(); }
 
 function renderFileList() {
@@ -329,7 +316,9 @@ function renderFileList() {
     }
     const spin = (r?.status === 'transcribing' || r?.status === 'studying') ? '<span class="spin"></span>' : '';
     const viewBtn = r?.status === 'done' ? `<button class="btn-view" onclick="setTab('${esc(f.name)}')">Study →</button>` : '';
-    return `<div class="file-card"><span class="file-icon">🎵</span><span class="file-name">${esc(f.name)}</span><span class="badge ${cls}"${errorTip}>${spin}${lbl}</span>${viewBtn}</div>`;
+    // FIX 4: show error message under the file card so user can read it
+    const errMsg = r?.status === 'error' ? `<div style="width:100%;font-size:11px;color:#f87171;margin-top:4px;">⚠️ ${esc(r.error||'Unknown error')}</div>` : '';
+    return `<div class="file-card"><span class="file-icon">🎵</span><span class="file-name">${esc(f.name)}</span><span class="badge ${cls}"${errorTip}>${spin}${lbl}</span>${viewBtn}${errMsg}</div>`;
   }).join('');
 }
 
@@ -361,12 +350,28 @@ function renderStudy() {
   area.innerHTML = html;
 }
 
-// ── Process ───────────────────────────────────────────────────────────────────
+// ── FIX 5: fetchWithWakeup — retries once after 30s if server is sleeping ──
+async function fetchWithWakeup(url, options = {}) {
+  const TIMEOUT = 60000; // 60 seconds to allow for cold start
+  try {
+    const res = await fetch(url, { ...options, signal: AbortSignal.timeout(TIMEOUT) });
+    return res;
+  } catch(e) {
+    throw new Error('Server took too long to respond. Please tap Transcribe again — it should work now.');
+  }
+}
+
 async function processAll() {
   if (busy) return;
   busy = true;
   document.getElementById('processBtn').disabled = true;
   document.getElementById('progressWrap').style.display = 'block';
+
+  // Show wake-up banner for first batch
+  const wakeup = document.getElementById('wakeupCard');
+  wakeup.style.display = 'block';
+  // Remove the banner after 35 seconds (server should be awake by then)
+  setTimeout(() => { wakeup.style.display = 'none'; }, 35000);
 
   const todo = files.filter(f => !results[f.name]?.transcript);
 
@@ -376,13 +381,11 @@ async function processAll() {
     renderAll();
 
     try {
-      // Transcribe
       const form = new FormData();
       form.append('file', file, file.name);
-      console.log('📤 Uploading to:', `${API_BASE}/transcribe`);
-      const tRes = await fetch(`${API_BASE}/transcribe`, { method: 'POST', body: form });
+
+      const tRes = await fetchWithWakeup(`${API_BASE}/transcribe`, { method: 'POST', body: form });
       const tData = await tRes.json();
-      console.log('📥 Transcribe response:', tRes.status, tData);
 
       if (tRes.status === 429 && tData.error === 'daily_limit') {
         results[file.name] = { status: 'error', error: tData.message };
@@ -390,30 +393,29 @@ async function processAll() {
         renderAll();
         break;
       }
-      if (!tRes.ok) throw new Error(`Backend error: ${tData.error || tData.message || 'Transcription failed'}`);
+      if (!tRes.ok) throw new Error(tData.error || tData.message || 'Transcription failed');
 
       const transcript = tData.transcript;
       updateUsageUI(tData.usage.used, tData.usage.limit);
 
-      // Study guide
       results[file.name] = { status: 'studying', transcript };
       renderAll();
 
-      console.log('📚 Requesting study guide from:', `${API_BASE}/study-guide`);
-      const gRes = await fetch(`${API_BASE}/study-guide`, {
+      const gRes = await fetchWithWakeup(`${API_BASE}/study-guide`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ transcript })
       });
       const gData = await gRes.json();
-      console.log('📖 Study guide response:', gRes.status, gData);
-      if (!gRes.ok) throw new Error(`Study guide error: ${gData.error || gData.message || 'Study guide failed'}`);
+      if (!gRes.ok) throw new Error(gData.error || gData.message || 'Study guide failed');
 
       results[file.name] = { status: 'done', transcript, parsed: parseGuide(gData.guide) };
       if (!activeTab || results[activeTab]?.status !== 'done') activeTab = file.name;
 
+      // Hide wake-up banner once first file succeeds
+      wakeup.style.display = 'none';
+
     } catch(e) {
-      console.error('❌ Error:', e);
       results[file.name] = { status: 'error', error: e.message };
     }
 
@@ -425,11 +427,11 @@ async function processAll() {
 
   busy = false;
   document.getElementById('processBtn').disabled = false;
+  document.getElementById('wakeupCard').style.display = 'none';
   const left = files.filter(f => !results[f.name]?.transcript).length;
   document.getElementById('processBtn').textContent = left ? `🚀 Transcribe Remaining (${left})` : '✓ All Done!';
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
 function parseGuide(text) {
   const names = ['SUMMARY','KEY VOCABULARY','GRAMMAR POINTS','SAMPLE QUESTIONS & MODEL ANSWERS','TIPS TO ACE THIS TOPIC'];
   return names.map((name, i) => {
