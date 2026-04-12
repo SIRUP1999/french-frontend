@@ -11,7 +11,7 @@ const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 25 
 // ── Environment ──────────────────────────────────────────────────────────────
 const GROQ_KEY = process.env.GROQ_API_KEY;
 const PORT = process.env.PORT || 3000;
-const FREE_DAILY_LIMIT = 10; // free transcriptions per IP per day
+const FREE_DAILY_LIMIT = 5; // free transcriptions per IP per day
 
 if (!GROQ_KEY) {
   console.error("ERROR: GROQ_API_KEY environment variable is not set.");
