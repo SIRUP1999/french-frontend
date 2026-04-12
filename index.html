@@ -346,6 +346,8 @@ function renderStudy() {
     html += `<div class="study-card"><div class="study-card-title">📖 Study Guide</div>`;
     r.parsed.forEach(s => { html += `<div class="sec-label">${icons[s.label]||'•'} ${s.label}</div><div class="text-box">${esc(s.content)}</div>`; });
     html += `</div>`;
+  } else if (r.guideError) {
+    html += `<div class="study-card"><div class="study-card-title">⚠️ Study Guide Unavailable</div><div class="text-box" style="color:#f87171;">Transcription worked ✅ but the study guide failed: ${esc(r.guideError)}.\n\nYou can still read and study from the transcription above.</div></div>`;
   }
   area.innerHTML = html;
 }
@@ -398,24 +400,32 @@ async function processAll() {
       const transcript = tData.transcript;
       updateUsageUI(tData.usage.used, tData.usage.limit);
 
+      // ✅ Save transcript immediately — user can see it even if study guide fails
       results[file.name] = { status: 'studying', transcript };
+      if (!activeTab || results[activeTab]?.status !== 'done') activeTab = file.name;
       renderAll();
 
-      const gRes = await fetchWithWakeup(`${API_BASE}/study-guide`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ transcript })
-      });
-      const gData = await gRes.json();
-      if (!gRes.ok) throw new Error(gData.error || gData.message || 'Study guide failed');
+      // Study guide — failure here does NOT erase the transcript
+      try {
+        const gRes = await fetchWithWakeup(`${API_BASE}/study-guide`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transcript })
+        });
+        const gData = await gRes.json();
+        if (!gRes.ok) throw new Error(gData.error || gData.message || 'Study guide failed');
 
-      results[file.name] = { status: 'done', transcript, parsed: parseGuide(gData.guide) };
+        results[file.name] = { status: 'done', transcript, parsed: parseGuide(gData.guide) };
+      } catch(guideErr) {
+        // Transcription worked — mark as done with just the transcript, note guide failed
+        results[file.name] = { status: 'done', transcript, parsed: [], guideError: guideErr.message };
+      }
+
       if (!activeTab || results[activeTab]?.status !== 'done') activeTab = file.name;
-
-      // Hide wake-up banner once first file succeeds
       wakeup.style.display = 'none';
 
     } catch(e) {
+      // Only reaches here if transcription itself failed
       results[file.name] = { status: 'error', error: e.message };
     }
 
