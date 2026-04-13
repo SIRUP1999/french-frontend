@@ -420,12 +420,13 @@ zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('
 
 function addFiles(list) {
   const arr = Array.from(list).filter(f => {
-    const hasAudioExt = /\.(mp3|m4a|ogg|wav|aac|webm|m4b|opus)$/i.test(f.name);
+    // Accept if extension matches audio, OR mime type is audio, OR no extension info (dragged file)
+    const hasAudioExt = /\.(mp3|m4a|ogg|wav|aac|webm|m4b|opus|mpeg|mpga)$/i.test(f.name);
     const hasAudioMime = f.type.startsWith('audio');
-    const isWhatsApp = /whatsapp/i.test(f.name) || /AUD-/i.test(f.name);
-    return hasAudioExt || hasAudioMime || isWhatsApp;
+    const noTypeInfo = !f.type; // dragged files sometimes have no type
+    return hasAudioExt || hasAudioMime || noTypeInfo;
   });
-  if (!arr.length) return alert('Please select audio files (MP3, M4A, OGG, WAV, WhatsApp Audio, etc)');
+  if (!arr.length) return alert('Please select audio files (MP3, M4A, OGG, WAV, etc)');
   const existing = new Set(files.map(f => f.name));
   arr.forEach(f => { if (!existing.has(f.name)) files.push(f); });
   if (!activeTab && files.length) activeTab = files[0].name;
