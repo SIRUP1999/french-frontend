@@ -486,12 +486,24 @@ function renderStudy() {
   area.innerHTML = html;
 }
 
-async function fetchWithWakeup(url, options = {}) {
+async function fetchWithWakeup(url, options = {}, attempt = 1) {
+  const MAX_ATTEMPTS = 3;
+  const TIMEOUT = 90000; // 90 seconds to allow full cold start
   try {
-    const res = await fetch(url, { ...options, signal: AbortSignal.timeout(60000) });
+    const res = await fetch(url, { ...options, signal: AbortSignal.timeout(TIMEOUT) });
     return res;
   } catch(e) {
-    throw new Error('Server took too long to respond. Please tap Transcribe again — it should work now.');
+    if (attempt < MAX_ATTEMPTS) {
+      console.log(`Attempt ${attempt} failed, retrying... (${attempt}/${MAX_ATTEMPTS})`);
+      // Show retry message to user
+      document.getElementById('wakeupCard').style.display = 'block';
+      document.getElementById('wakeupCard').querySelector('p').innerHTML =
+        `⏳ <strong>Server is waking up… (Attempt ${attempt + 1} of ${MAX_ATTEMPTS})</strong><br/>Please wait — retrying automatically, do not close the app!`;
+      // Wait 5 seconds then retry
+      await new Promise(r => setTimeout(r, 5000));
+      return fetchWithWakeup(url, options, attempt + 1);
+    }
+    throw new Error('Server is still waking up. Please wait 30 seconds and tap Transcribe again.');
   }
 }
 
