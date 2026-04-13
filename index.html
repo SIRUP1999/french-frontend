@@ -404,8 +404,6 @@ async function loadUsage() {
 loadUsage();
 
 function updateUsageUI(used, limit) {
-  used = used ?? 0;
-  limit = limit ?? 7;
   const pct = Math.min((used / limit) * 100, 100);
   document.getElementById('usageBar').style.width = pct + '%';
   document.getElementById('usageCount').textContent = `${used} of ${limit} free transcriptions used today`;
@@ -425,7 +423,8 @@ function addFiles(list) {
     // Accept if extension matches audio, OR mime type is audio, OR no extension info (dragged file)
     const hasAudioExt = /\.(mp3|m4a|ogg|wav|aac|webm|m4b|opus|mpeg|mpga)$/i.test(f.name);
     const hasAudioMime = f.type.startsWith('audio');
-    return hasAudioExt || hasAudioMime;
+    const noTypeInfo = !f.type; // dragged files sometimes have no type
+    return hasAudioExt || hasAudioMime || noTypeInfo;
   });
   if (!arr.length) return alert('Please select audio files (MP3, M4A, OGG, WAV, etc)');
   const existing = new Set(files.map(f => f.name));
@@ -451,7 +450,7 @@ function renderFileList() {
       else if (r.status === 'error')     { cls = 'badge-error';   lbl = '✗ Error'; errorTip = ` title="${esc(r.error || 'Unknown error')}"` }
     }
     const spin = (r?.status === 'transcribing' || r?.status === 'studying') ? '<span class="spin"></span>' : '';
-    const viewBtn = r?.status === 'done' ? `<button class="btn-view" data-name="${esc(f.name)}" onclick="setTab(this.dataset.name)">Study →</button>` : '';
+    const viewBtn = r?.status === 'done' ? `<button class="btn-view" onclick="setTab('${esc(f.name)}')">Study →</button>` : '';
     const errMsg = r?.status === 'error' ? `<div style="width:100%;font-size:11px;color:#f87171;margin-top:4px;">⚠️ ${esc(r.error||'Unknown error')}</div>` : '';
     return `<div class="file-card"><span class="file-icon">🎵</span><span class="file-name">${esc(f.name)}</span><span class="badge ${cls}"${errorTip}>${spin}${lbl}</span>${viewBtn}${errMsg}</div>`;
   }).join('');
@@ -465,7 +464,7 @@ function renderTabs() {
   el.innerHTML = done.map(f => {
     const short = f.name.replace(/AUD-\d+-WA\d+/i, '').replace(/\.\w+$/, '') || f.name.replace(/\.\w+$/, '');
     const label = short || f.name.replace(/\.\w+$/, '');
-    return `<button class="tab${activeTab === f.name ? ' active' : ''}" data-name="${esc(f.name)}" onclick="setTab(this.dataset.name)">🎙 ${esc(label)}</button>`;
+    return `<button class="tab${activeTab === f.name ? ' active' : ''}" onclick="setTab('${esc(f.name)}')">🎙 ${esc(label)}</button>`;
   }).join('');
 }
 
@@ -491,20 +490,16 @@ async function fetchWithWakeup(url, options = {}, attempt = 1) {
   const MAX_ATTEMPTS = 3;
   const TIMEOUT = 90000; // 90 seconds to allow full cold start
   try {
-      const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), TIMEOUT);
-    try {
-      const res = await fetch(url, { ...options, signal: controller.signal });
-      clearTimeout(timer);
-      return res;
-    } finally {
-      clearTimeout(timer);
-    }
+    const res = await fetch(url, { ...options, signal: AbortSignal.timeout(TIMEOUT) });
+    return res;
   } catch(e) {
     if (attempt < MAX_ATTEMPTS) {
+      console.log(`Attempt ${attempt} failed, retrying... (${attempt}/${MAX_ATTEMPTS})`);
+      // Show retry message to user
       document.getElementById('wakeupCard').style.display = 'block';
       document.getElementById('wakeupCard').querySelector('p').innerHTML =
         `⏳ <strong>Server is waking up… (Attempt ${attempt + 1} of ${MAX_ATTEMPTS})</strong><br/>Please wait — retrying automatically, do not close the app!`;
+      // Wait 5 seconds then retry
       await new Promise(r => setTimeout(r, 5000));
       return fetchWithWakeup(url, options, attempt + 1);
     }
