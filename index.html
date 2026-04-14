@@ -385,23 +385,36 @@ const results = {};
 let activeTab = null;
 let busy = false;
 
-async function wakeServer() {
-  try {
-    await fetch(`${API_BASE}/`, { signal: AbortSignal.timeout(35000) });
-  } catch(e) {}
-}
-wakeServer();
+// ── Session token — tracks usage per browser, not just IP ──────────────────
+let SESSION_TOKEN = null;
 
-async function loadUsage() {
+async function initSession() {
   try {
-    const res = await fetch(`${API_BASE}/usage`, { signal: AbortSignal.timeout(35000) });
+    let token = localStorage.getItem('fom_session_token');
+    const tokenDate = localStorage.getItem('fom_session_date');
+    const today = new Date().toISOString().slice(0, 10);
+    if (tokenDate !== today) { token = null; localStorage.removeItem('fom_session_token'); }
+    const headers = {};
+    if (token) headers['x-session-token'] = token;
+    const res = await fetch(`${API_BASE}/session`, { headers, signal: AbortSignal.timeout(35000) });
     const data = await res.json();
+    SESSION_TOKEN = data.token;
+    localStorage.setItem('fom_session_token', SESSION_TOKEN);
+    localStorage.setItem('fom_session_date', today);
     updateUsageUI(data.used, data.limit);
+    console.log(`[SESSION] ${SESSION_TOKEN.slice(0,8)}... used:${data.used}/${data.limit}`);
   } catch(e) {
-    document.getElementById('usageCount').textContent = 'Could not load usage info.';
+    console.log('[SESSION] fallback to IP:', e.message);
+    try {
+      const res = await fetch(`${API_BASE}/usage`, { signal: AbortSignal.timeout(35000) });
+      const data = await res.json();
+      updateUsageUI(data.used, data.limit);
+    } catch(e2) {
+      document.getElementById('usageCount').textContent = 'Could not load usage info.';
+    }
   }
 }
-loadUsage();
+initSession();
 
 function updateUsageUI(used, limit) {
   const pct = Math.min((used / limit) * 100, 100);
@@ -528,7 +541,9 @@ async function processAll() {
       const form = new FormData();
       form.append('file', file, file.name);
 
-      const tRes = await fetchWithWakeup(`${API_BASE}/transcribe`, { method: 'POST', body: form });
+      const tHeaders = {};
+      if (SESSION_TOKEN) tHeaders['x-session-token'] = SESSION_TOKEN;
+      const tRes = await fetchWithWakeup(`${API_BASE}/transcribe`, { method: 'POST', body: form, headers: tHeaders });
       const tData = await tRes.json();
 
       if (tRes.status === 429 && tData.error === 'daily_limit') {
@@ -540,7 +555,7 @@ async function processAll() {
       if (!tRes.ok) throw new Error(tData.error || tData.message || 'Transcription failed');
 
       const transcript = tData.transcript;
-      updateUsageUI(tData.usage.used, tData.usage.limit);
+      if (tData.usage) updateUsageUI(tData.usage.used, tData.usage.limit);
 
       results[file.name] = { status: 'studying', transcript };
       if (!activeTab || results[activeTab]?.status !== 'done') activeTab = file.name;
