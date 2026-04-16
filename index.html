@@ -211,7 +211,6 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
       data-ad-slot="1924514855"
       data-ad-format="auto"
       data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
   <div class="tabs" id="tabs" style="display:none"></div>
@@ -416,7 +415,11 @@ function addFiles(list) {
   if (!activeTab && files.length) activeTab = files[0].name;
   document.getElementById('emptyState').style.display = 'none';
   document.getElementById('processBtn').style.display = 'block';
-  document.getElementById('midAdSlot').style.display = 'block';
+  const midAd = document.getElementById('midAdSlot');
+  if (midAd.style.display === 'none') {
+    midAd.style.display = 'block';
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  }
   renderAll();
 }
 
