@@ -70,9 +70,9 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .package-popular { position: absolute; top: -6px; right: 4px; background: var(--green); color: white; font-size: 9px; padding: 2px 6px; border-radius: 10px; }
 .package-best { position: absolute; top: -6px; right: 4px; background: var(--gold); color: black; font-size: 9px; padding: 2px 6px; border-radius: 10px; }
 .payment-form { margin-top: 12px; }
-.payment-form input { width: 100%; background: #0f172a; border: 1px solid var(--border); border-radius: 6px; padding: 10px; color: var(--text); margin-bottom: 8px; }
+.payment-form input { width: 100%; background: #0f172a; border: 1px solid var(--border); border-radius: 6px; padding: 10px; color: var(--text); margin-bottom: 8px; font-size: 14px; }
 .pay-btn { width: 100%; background: var(--gold); color: black; border: none; border-radius: 8px; padding: 12px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-.pay-btn:disabled { background: var(--muted); cursor: not-allowed; }
+.pay-btn:disabled { background: var(--muted); cursor: not-allowed; color: #fff; }
 
 .upload-zone { background: var(--card); border: 2px dashed var(--border); border-radius: 14px; padding: 28px 20px; text-align: center; margin-bottom: 16px; position: relative; overflow: hidden; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
 .upload-zone.drag-over { border-color: var(--accent); background: var(--highlight); }
@@ -201,20 +201,20 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     <h3>🚀 Get More Transcriptions</h3>
     <p>Choose a package to continue transcribing beyond your daily limit:</p>
     <div class="payment-packages">
-      <div class="package" data-package="small">
+      <div class="package" data-pkg="small">
         <div class="package-name">Small Pack</div>
         <div class="package-price">GHS 5</div>
         <div class="package-desc">10 extra transcriptions</div>
         <div class="package-validity">Valid for 30 days</div>
       </div>
-      <div class="package" data-package="medium">
+      <div class="package" data-pkg="medium">
         <div class="package-name">Medium Pack</div>
         <div class="package-price">GHS 12</div>
         <div class="package-desc">20 extra transcriptions</div>
         <div class="package-validity">Valid for 30 days</div>
         <div class="package-popular">Most Popular</div>
       </div>
-      <div class="package" data-package="large">
+      <div class="package" data-pkg="large">
         <div class="package-name">Large Pack</div>
         <div class="package-price">GHS 20</div>
         <div class="package-desc">30 extra transcriptions</div>
@@ -223,7 +223,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
       </div>
     </div>
     <div class="payment-form" id="paymentForm">
-      <input type="email" id="paymentEmail" placeholder="Enter your email for receipt" required>
+      <input type="email" id="paymentEmail" placeholder="Enter your email for receipt" autocomplete="email">
       <button id="payButton" class="pay-btn" disabled>Select a package first</button>
     </div>
   </div>
@@ -381,21 +381,22 @@ let activeTab = null;
 let busy = false;
 let SESSION_TOKEN = null;
 
-// ── Session init — longer timeout to survive cold Render start ───────────────
+// ── Track whether daily limit is reached ─────────────────────────────────────
+let dailyLimitReached = false;
+
+// ── Session init ──────────────────────────────────────────────────────────────
 async function initSession() {
   try {
     const today = new Date().toISOString().slice(0, 10);
     let stored = localStorage.getItem('fom_session_token');
     const storedDate = localStorage.getItem('fom_session_date');
 
-    // Only clear token if it's from a previous day
     if (stored && storedDate && storedDate !== today) {
       localStorage.removeItem('fom_session_token');
       localStorage.removeItem('fom_session_date');
       stored = null;
     }
 
-    // Save date immediately so a failed fetch doesn't wipe the token next refresh
     localStorage.setItem('fom_session_date', today);
 
     const headers = {};
@@ -415,7 +416,6 @@ async function initSession() {
 
   } catch (e) {
     console.warn('[SESSION] Could not reach backend on load:', e.message);
-    // Try /usage as fallback (shorter path, same cold start issue but worth trying)
     try {
       const r = await fetch(`${API_BASE}/usage`, { signal: AbortSignal.timeout(60000) });
       const d = await r.json();
@@ -427,6 +427,20 @@ async function initSession() {
 }
 initSession();
 
+// ── Check for payment callback on page load ──────────────────────────────────
+// FIX: moved to after SESSION_TOKEN is available via initSession
+window.addEventListener('load', async () => {
+  if (window.location.search.includes('reference=')) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const reference = urlParams.get('reference');
+    if (reference) {
+      // Wait briefly for session to initialise
+      await new Promise(r => setTimeout(r, 1500));
+      verifyPayment(reference);
+    }
+  }
+});
+
 let selectedPackage = null;
 
 function updateUsageUI(used, limit, extra = 0) {
@@ -434,12 +448,12 @@ function updateUsageUI(used, limit, extra = 0) {
   const bar = document.getElementById('usageBar');
   bar.style.width = pct + '%';
   bar.className = 'usage-bar' + (used >= limit ? ' full' : used >= limit - 2 ? ' warn' : '');
-  
+
   document.getElementById('usageCount').textContent =
     used >= limit
       ? `⛔ All ${limit} transcriptions used today — come back tomorrow!`
       : `${used} of ${limit} free transcriptions used today`;
-      
+
   const extraEl = document.getElementById('extraCount');
   const extraNum = document.getElementById('extraNumber');
   if (extra > 0) {
@@ -448,25 +462,24 @@ function updateUsageUI(used, limit, extra = 0) {
   } else {
     extraEl.style.display = 'none';
   }
-  
-  // Show payment card if limit reached and no extras
+
   const paymentCard = document.getElementById('paymentCard');
-  if (used >= limit && extra === 0) {
+  dailyLimitReached = (used >= limit && extra === 0);
+
+  if (dailyLimitReached) {
     paymentCard.style.display = 'block';
     document.getElementById('processBtn').style.display = 'none';
+    document.getElementById('limitCard').style.display = 'block';
   } else {
     paymentCard.style.display = 'none';
-    if (used < limit || extra > 0) {
+    // Only show processBtn if files are already added
+    if (files.length > 0) {
       document.getElementById('processBtn').style.display = 'block';
     }
   }
-  
-  if (used >= limit) {
-    document.getElementById('limitCard').style.display = 'block';
-  }
 }
 
-// ── Drag & drop ──────────────────────────────────────────────────────────────
+// ── Drag & drop ───────────────────────────────────────────────────────────────
 const zone = document.getElementById('uploadZone');
 zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
 zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
@@ -484,7 +497,12 @@ function addFiles(list) {
   arr.forEach(f => { if (!existing.has(f.name)) files.push(f); });
   if (!activeTab && files.length) activeTab = files[0].name;
   document.getElementById('emptyState').style.display = 'none';
-  document.getElementById('processBtn').style.display = 'block';
+
+  // FIX: Only show the process button if daily limit has NOT been reached
+  if (!dailyLimitReached) {
+    document.getElementById('processBtn').style.display = 'block';
+  }
+
   const midAd = document.getElementById('midAdSlot');
   if (!midAd.dataset.adLoaded) {
     midAd.dataset.adLoaded = '1';
@@ -495,7 +513,7 @@ function addFiles(list) {
   renderAll();
 }
 
-// ── Render helpers ───────────────────────────────────────────────────────────
+// ── Render helpers ────────────────────────────────────────────────────────────
 function renderAll() { renderFileList(); renderTabs(); renderStudy(); }
 
 function renderFileList() {
@@ -521,8 +539,6 @@ function renderFileList() {
 }
 
 function tabLabel(filename) {
-  // Try to extract a short readable label from the filename
-  // e.g. "AUD-20260411-WA0019.mp3" → "Audio 19"
   const waMatch = filename.match(/WA(\d+)/i);
   if (waMatch) return 'Audio ' + parseInt(waMatch[1], 10);
   return filename.replace(/\.\w+$/, '').slice(0, 12);
@@ -544,7 +560,13 @@ function renderStudy() {
   const area = document.getElementById('studyArea');
   const r = results[activeTab];
   if (!r || r.status !== 'done') { area.innerHTML = ''; return; }
-  const icons = { 'WORD-FOR-WORD TRANSLATION':'🔄','KEY VOCABULARY':'📚','GRAMMAR POINTS':'🔤','SAMPLE QUESTIONS & MODEL ANSWERS':'❓','TIPS TO ACE THIS TOPIC':'🏆' };
+  const icons = {
+    'WORD-FOR-WORD TRANSLATION':'🔄',
+    'KEY VOCABULARY':'📚',
+    'GRAMMAR POINTS':'🔤',
+    'SAMPLE QUESTIONS & MODEL ANSWERS':'❓',
+    'TIPS TO ACE THIS TOPIC':'🏆'
+  };
   let html = `<div class="study-card"><div class="study-card-title">🎤 Transcription — ${esc(tabLabel(activeTab))}</div><div class="text-box">${esc(r.transcript)}</div></div>`;
   if (r.parsed?.length) {
     html += `<div class="study-card"><div class="study-card-title">📖 Study Guide</div>`;
@@ -558,7 +580,7 @@ function renderStudy() {
   area.innerHTML = html;
 }
 
-// ── Fetch with auto-retry (handles cold Render start) ────────────────────────
+// ── Fetch with auto-retry ─────────────────────────────────────────────────────
 async function fetchWithRetry(url, options = {}, attempt = 1) {
   const MAX = 3;
   try {
@@ -576,7 +598,7 @@ async function fetchWithRetry(url, options = {}, attempt = 1) {
   }
 }
 
-// ── Main process ─────────────────────────────────────────────────────────────
+// ── Main process ──────────────────────────────────────────────────────────────
 async function processAll() {
   if (busy) return;
   busy = true;
@@ -585,7 +607,6 @@ async function processAll() {
 
   const wakeup = document.getElementById('wakeupCard');
   wakeup.style.display = 'block';
-  // Auto-hide wakeup card after 35s if still showing
   const wakeupTimer = setTimeout(() => { wakeup.style.display = 'none'; }, 35000);
 
   const todo = files.filter(f => !results[f.name]?.transcript);
@@ -596,7 +617,6 @@ async function processAll() {
     renderAll();
 
     try {
-      // ── Transcribe ─────────────────────────────────────────────────────────
       const form = new FormData();
       form.append('file', file, file.name);
 
@@ -608,11 +628,12 @@ async function processAll() {
       });
       const tData = await tRes.json();
 
-      // Daily limit hit
       if (tRes.status === 429 && tData.error === 'daily_limit') {
         results[file.name] = { status: 'error', error: tData.message };
         document.getElementById('limitCard').style.display = 'block';
+        document.getElementById('paymentCard').style.display = 'block';
         document.getElementById('processBtn').style.display = 'none';
+        dailyLimitReached = true;
         renderAll();
         break;
       }
@@ -621,10 +642,8 @@ async function processAll() {
 
       const transcript = tData.transcript;
 
-      // Update usage bar from server response
       if (tData.usage) updateUsageUI(tData.usage.used, tData.usage.limit, tData.usage.extra_transcriptions || 0);
 
-      // ── Study guide ────────────────────────────────────────────────────────
       results[file.name] = { status: 'studying', transcript };
       if (!activeTab || results[activeTab]?.status !== 'done') activeTab = file.name;
       renderAll();
@@ -664,22 +683,60 @@ async function processAll() {
   document.getElementById('processBtn').textContent = left ? `🚀 Transcribe Remaining (${left})` : '✓ All Done!';
 }
 
-// ── Guide parser ──────────────────────────────────────────────────────────────
+// ── Guide parser — FIXED: handles **NAME**, ## NAME, and plain NAME formats ──
 function parseGuide(text) {
-  const names = ['WORD-FOR-WORD TRANSLATION','KEY VOCABULARY','GRAMMAR POINTS','SAMPLE QUESTIONS & MODEL ANSWERS','TIPS TO ACE THIS TOPIC'];
-  console.log('[PARSE] Full guide text:', text.slice(0, 500)); // Debug: show first 500 chars
-  
-  const parsed = names.map((name, i) => {
-    const start = text.indexOf(`**${name}**`);
-    console.log(`[PARSE] Looking for **${name}** at position:`, start); // Debug each section
-    if (start === -1) return null;
-    const next = names[i+1] ? text.indexOf(`**${names[i+1]}**`) : text.length;
-    const content = text.slice(start + name.length + 4, next !== -1 ? next : text.length).trim();
-    console.log(`[PARSE] ${name} content:`, content.slice(0, 100)); // Debug content
-    return { label: name, content };
-  }).filter(Boolean);
-  
-  console.log('[PARSE] Final parsed sections:', parsed.map(p => p.label)); // Debug final result
+  const names = [
+    'WORD-FOR-WORD TRANSLATION',
+    'KEY VOCABULARY',
+    'GRAMMAR POINTS',
+    'SAMPLE QUESTIONS & MODEL ANSWERS',
+    'TIPS TO ACE THIS TOPIC'
+  ];
+
+  // Find a section header in the text, trying multiple formats
+  function findHeader(t, name) {
+    const escaped = name.replace(/[.*+?^${}()|[\]\\&]/g, '\\$&');
+    const patterns = [
+      // **SECTION NAME** (original format)
+      new RegExp(`\\*\\*${escaped}\\*\\*`, 'i'),
+      // ## SECTION NAME or ### SECTION NAME
+      new RegExp(`#{1,4}\\s*${escaped}`, 'i'),
+      // Plain uppercase on its own line
+      new RegExp(`(?:^|\\n)\\s*${escaped}\\s*(?:\\n|$)`, 'i'),
+    ];
+    for (const pattern of patterns) {
+      const m = t.match(pattern);
+      if (m && m.index !== undefined) {
+        return { index: m.index, end: m.index + m[0].length };
+      }
+    }
+    return null;
+  }
+
+  const parsed = [];
+  for (let i = 0; i < names.length; i++) {
+    const found = findHeader(text, names[i]);
+    if (!found) {
+      console.log(`[PARSE] Section not found: ${names[i]}`);
+      continue;
+    }
+
+    // Find where the next section starts
+    let nextIdx = text.length;
+    for (let j = i + 1; j < names.length; j++) {
+      const nextFound = findHeader(text, names[j]);
+      if (nextFound && nextFound.index > found.index) {
+        nextIdx = Math.min(nextIdx, nextFound.index);
+        break;
+      }
+    }
+
+    const content = text.slice(found.end, nextIdx).trim();
+    console.log(`[PARSE] ${names[i]}: found at ${found.index}, content length=${content.length}`);
+    if (content) parsed.push({ label: names[i], content });
+  }
+
+  console.log(`[PARSE] Total sections parsed: ${parsed.length} — ${parsed.map(p => p.label).join(', ')}`);
   return parsed;
 }
 
@@ -687,28 +744,21 @@ function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// Payment system - use event delegation for better reliability
+// ── Payment system ────────────────────────────────────────────────────────────
+// FIX: changed data-package → data-pkg to avoid confusion; using data-pkg in JS too
 document.addEventListener('click', (e) => {
-  // Handle package selection
   if (e.target.closest('.package')) {
     const packageEl = e.target.closest('.package');
-    
-    // Remove selection from all packages
     document.querySelectorAll('.package').forEach(p => p.classList.remove('selected'));
-    
-    // Select clicked package
     packageEl.classList.add('selected');
-    selectedPackage = packageEl.dataset.package;
-    
-    // Enable pay button
+    selectedPackage = packageEl.dataset.pkg;  // FIX: use data-pkg not data-package
+
     const payBtn = document.getElementById('payButton');
     payBtn.disabled = false;
-    payBtn.textContent = 'Pay with Mobile Money / Card';
-    
+    payBtn.textContent = '💳 Pay with Mobile Money / Card';
     console.log('Package selected:', selectedPackage);
   }
-  
-  // Handle pay button click
+
   if (e.target.id === 'payButton' && !e.target.disabled) {
     handlePayment();
   }
@@ -719,59 +769,55 @@ async function handlePayment() {
     alert('Please select a package first');
     return;
   }
-  
+
   const email = document.getElementById('paymentEmail').value.trim();
   if (!email) {
-    alert('Please enter your email');
+    alert('Please enter your email address');
     document.getElementById('paymentEmail').focus();
     return;
   }
-  
-  if (!email.includes('@')) {
+  if (!email.includes('@') || !email.includes('.')) {
     alert('Please enter a valid email address');
     document.getElementById('paymentEmail').focus();
     return;
   }
-  
+
   const payBtn = document.getElementById('payButton');
   payBtn.disabled = true;
-  payBtn.textContent = 'Creating payment...';
-  
+  payBtn.textContent = '⏳ Creating payment…';
+
   try {
+    // FIX: send callback_url so Paystack redirects back here after payment
+    const callbackUrl = window.location.origin + window.location.pathname;
+
     const res = await fetch(`${API_BASE}/create-payment`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'x-session-token': SESSION_TOKEN
       },
-      body: JSON.stringify({ email, package: selectedPackage })
+      body: JSON.stringify({
+        email,
+        pkg: selectedPackage,          // FIX: renamed from 'package' (reserved word)
+        callback_url: callbackUrl
+      })
     });
-    
+
     const data = await res.json();
-    
+
     if (data.status) {
       console.log('Payment created, redirecting to:', data.payment_url);
-      // Redirect to Paystack payment page
       window.location.href = data.payment_url;
     } else {
       alert('Payment creation failed: ' + (data.error || 'Unknown error'));
+      payBtn.disabled = false;
+      payBtn.textContent = '💳 Pay with Mobile Money / Card';
     }
   } catch (e) {
     console.error('Payment error:', e);
     alert('Error creating payment. Please check your internet and try again.');
-  } finally {
     payBtn.disabled = false;
-    payBtn.textContent = 'Pay with Mobile Money / Card';
-  }
-}
-
-// Check for payment verification on page load
-if (window.location.search.includes('reference=')) {
-  const urlParams = new URLSearchParams(window.location.search);
-  const reference = urlParams.get('reference');
-  
-  if (reference) {
-    verifyPayment(reference);
+    payBtn.textContent = '💳 Pay with Mobile Money / Card';
   }
 }
 
@@ -779,18 +825,22 @@ async function verifyPayment(reference) {
   try {
     const res = await fetch(`${API_BASE}/verify-payment`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-session-token': SESSION_TOKEN || ''
+      },
       body: JSON.stringify({ reference })
     });
-    
+
     const data = await res.json();
-    
+
     if (data.status) {
-      alert(`Payment successful! You now have ${data.extra_transcriptions} extra transcriptions.`);
-      // Refresh the page to update UI
-      window.location.href = window.location.pathname;
+      alert(`✅ Payment successful! You now have ${data.extra_transcriptions} extra transcriptions.`);
+      // Clean URL and refresh UI
+      window.history.replaceState({}, document.title, window.location.pathname);
+      await initSession();
     } else {
-      alert('Payment verification failed.');
+      alert('Payment verification failed. If you were charged, please contact support.');
     }
   } catch (e) {
     console.error('Payment verification error:', e);
