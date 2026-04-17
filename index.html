@@ -205,13 +205,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     🚀 Transcribe &amp; Study All Files
   </button>
 
-  <div id="midAdSlot" style="display:none; margin-bottom:16px;">
-    <ins class="adsbygoogle" style="display:block;width:100%;min-height:60px;"
-      data-ad-client="ca-pub-7076616078598631"
-      data-ad-slot="1924514855"
-      data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
-  </div>
+  <div id="midAdSlot" style="display:none; margin-bottom:16px;"></div>
 
   <div class="tabs" id="tabs" style="display:none"></div>
   <div id="studyArea"></div>
@@ -338,21 +332,23 @@ let SESSION_TOKEN = null;
 // ── Session init — longer timeout to survive cold Render start ───────────────
 async function initSession() {
   try {
+    const today = new Date().toISOString().slice(0, 10);
     let stored = localStorage.getItem('fom_session_token');
     const storedDate = localStorage.getItem('fom_session_date');
-    const today = new Date().toISOString().slice(0, 10);
 
-    // Clear token if it's from a previous day (usage resets daily)
-    if (storedDate !== today) {
-      stored = null;
+    // Only clear token if it's from a previous day
+    if (stored && storedDate && storedDate !== today) {
       localStorage.removeItem('fom_session_token');
       localStorage.removeItem('fom_session_date');
+      stored = null;
     }
+
+    // Save date immediately so a failed fetch doesn't wipe the token next refresh
+    localStorage.setItem('fom_session_date', today);
 
     const headers = {};
     if (stored) headers['x-session-token'] = stored;
 
-    // 60s timeout — long enough for cold Render start
     const res = await fetch(`${API_BASE}/session`, {
       headers,
       signal: AbortSignal.timeout(60000)
@@ -361,7 +357,6 @@ async function initSession() {
 
     SESSION_TOKEN = data.token;
     localStorage.setItem('fom_session_token', SESSION_TOKEN);
-    localStorage.setItem('fom_session_date', today);
 
     updateUsageUI(data.used, data.limit);
     console.log(`[SESSION] token=${SESSION_TOKEN.slice(0,8)}... used=${data.used}/${data.limit}`);
@@ -416,10 +411,12 @@ function addFiles(list) {
   document.getElementById('emptyState').style.display = 'none';
   document.getElementById('processBtn').style.display = 'block';
   const midAd = document.getElementById('midAdSlot');
-  if (midAd.style.display === 'none') {
-    midAd.style.display = 'block';
-    (adsbygoogle = window.adsbygoogle || []).push({});
+  if (!midAd.dataset.adLoaded) {
+    midAd.dataset.adLoaded = '1';
+    midAd.innerHTML = '<ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-7076616078598631" data-ad-slot="1924514855" data-ad-format="auto" data-full-width-responsive="true"></ins>';
+    try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
   }
+  midAd.style.display = 'block';
   renderAll();
 }
 
