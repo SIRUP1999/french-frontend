@@ -55,24 +55,29 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .usage-count { font-size: 12px; color: var(--muted); margin-top: 5px; }
 .extra-count { font-size: 11px; color: var(--green); margin-top: 3px; font-weight: 600; }
 
-.payment-card { background: var(--card); border: 1px solid var(--gold); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+/* ── PAYMENT CARD — always visible structure, toggled by JS ── */
+.payment-card { background: var(--card); border: 1px solid var(--gold); border-radius: 12px; padding: 16px; margin-bottom: 16px; display: none; }
 .payment-card h3 { color: var(--gold); font-size: 15px; margin-bottom: 8px; }
 .payment-card p { color: var(--muted); font-size: 13px; margin-bottom: 12px; }
 .payment-packages { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-@media (max-width: 600px) { .payment-packages { grid-template-columns: 1fr; } }
-.package { background: #0f172a; border: 1px solid var(--border); border-radius: 8px; padding: 10px; text-align: center; cursor: pointer; position: relative; transition: all 0.2s; }
-.package:hover { border-color: var(--accent); }
-.package.selected { border-color: var(--gold); background: var(--highlight); }
+@media (max-width: 500px) { .payment-packages { grid-template-columns: 1fr; } }
+.package { background: #0f172a; border: 2px solid var(--border); border-radius: 8px; padding: 12px; text-align: center; cursor: pointer; position: relative; transition: all 0.2s; }
+.package:hover { border-color: var(--accent); transform: translateY(-1px); }
+.package.selected { border-color: var(--gold) !important; background: var(--highlight); box-shadow: 0 0 0 1px var(--gold); }
 .package-name { font-size: 12px; font-weight: 700; color: var(--accent-light); margin-bottom: 4px; }
-.package-price { font-size: 16px; font-weight: 800; color: var(--gold); margin-bottom: 2px; }
+.package-price { font-size: 18px; font-weight: 800; color: var(--gold); margin-bottom: 2px; }
 .package-desc { font-size: 11px; color: var(--muted); margin-bottom: 2px; }
 .package-validity { font-size: 10px; color: var(--muted); }
-.package-popular { position: absolute; top: -6px; right: 4px; background: var(--green); color: white; font-size: 9px; padding: 2px 6px; border-radius: 10px; }
-.package-best { position: absolute; top: -6px; right: 4px; background: var(--gold); color: black; font-size: 9px; padding: 2px 6px; border-radius: 10px; }
+.package-popular { position: absolute; top: -8px; right: 6px; background: var(--green); color: white; font-size: 9px; padding: 2px 6px; border-radius: 10px; font-weight: 700; }
+.package-best { position: absolute; top: -8px; right: 6px; background: var(--gold); color: black; font-size: 9px; padding: 2px 6px; border-radius: 10px; font-weight: 700; }
 .payment-form { margin-top: 12px; }
 .payment-form input { width: 100%; background: #0f172a; border: 1px solid var(--border); border-radius: 6px; padding: 10px; color: var(--text); margin-bottom: 8px; font-size: 14px; }
-.pay-btn { width: 100%; background: var(--gold); color: black; border: none; border-radius: 8px; padding: 12px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-.pay-btn:disabled { background: var(--muted); cursor: not-allowed; color: #fff; }
+.payment-form input:focus { outline: none; border-color: var(--accent); }
+.pay-btn { width: 100%; background: var(--gold); color: #000; border: none; border-radius: 8px; padding: 13px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.pay-btn:hover:not(:disabled) { background: #fbbf24; transform: translateY(-1px); }
+.pay-btn:disabled { background: var(--muted); cursor: not-allowed; color: #fff; transform: none; }
+.pay-btn.selected-ready { background: linear-gradient(135deg, var(--gold), #f97316); animation: pulse-gold 2s infinite; }
+@keyframes pulse-gold { 0%,100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.4); } 50% { box-shadow: 0 0 0 8px rgba(245,158,11,0); } }
 
 .upload-zone { background: var(--card); border: 2px dashed var(--border); border-radius: 14px; padding: 28px 20px; text-align: center; margin-bottom: 16px; position: relative; overflow: hidden; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
 .upload-zone.drag-over { border-color: var(--accent); background: var(--highlight); }
@@ -101,7 +106,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .process-btn { width: 100%; background: #78350f; color: var(--gold); border: 1px solid var(--gold); border-radius: 10px; padding: 13px; font-size: 15px; font-weight: 700; cursor: pointer; margin-bottom: 18px; }
 .process-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-.limit-card { background: #1c1408; border: 1px solid var(--gold); border-radius: 12px; padding: 16px; margin-bottom: 16px; text-align: center; }
+.limit-card { background: #1c1408; border: 1px solid var(--gold); border-radius: 12px; padding: 16px; margin-bottom: 16px; text-align: center; display: none; }
 .limit-card h3 { color: var(--gold); font-size: 15px; margin-bottom: 6px; }
 .limit-card p { color: #fcd34d; font-size: 13px; line-height: 1.6; }
 
@@ -110,9 +115,23 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .tab { padding: 7px 14px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 700; border: 1px solid var(--border); background: transparent; color: var(--muted); white-space: nowrap; flex-shrink: 0; transition: all 0.15s; }
 .tab.active { background: var(--highlight); color: var(--accent-light); border-color: var(--accent); }
 
-.study-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 14px; }
+/* ── STUDY CARDS — key fix: text-box renders correctly on desktop ── */
+.study-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 14px; width: 100%; }
 .study-card-title { font-size: 15px; font-weight: 700; color: var(--accent-light); margin-bottom: 12px; }
-.text-box { background: #0f172a; border-radius: 10px; padding: 14px; font-size: 14px; line-height: 1.8; color: var(--text); white-space: pre-wrap; border: 1px solid var(--border); }
+.text-box {
+  background: #0f172a;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  border: 1px solid var(--border);
+  max-width: 100%;
+  overflow-x: hidden;
+}
 .sec-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); margin: 16px 0 8px; }
 
 .spin { display: inline-block; width: 12px; height: 12px; border: 2px solid var(--border); border-top-color: var(--accent-light); border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 4px; }
@@ -151,6 +170,14 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 
 .empty { text-align: center; color: var(--muted); padding: 32px 0; font-size: 14px; }
 .empty-icon { font-size: 44px; margin-bottom: 10px; }
+
+/* Desktop layout improvements */
+@media (min-width: 640px) {
+  .main { padding: 24px; }
+  .hero h1 { font-size: 32px; }
+  .payment-packages { grid-template-columns: 1fr 1fr 1fr; }
+  #studyArea { width: 100%; }
+}
 </style>
 </head>
 <body>
@@ -194,38 +221,44 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     <div class="usage-title">📊 Today's Free Usage</div>
     <div class="usage-bar-bg"><div class="usage-bar" id="usageBar" style="width:0%"></div></div>
     <div class="usage-count" id="usageCount">Loading...</div>
-    <div class="extra-count" id="extraCount" style="display:none;">💎 Plus <span id="extraNumber">0</span> extra transcriptions</div>
+    <div class="extra-count" id="extraCount" style="display:none;">💎 Plus <span id="extraNumber">0</span> extra transcriptions available</div>
   </div>
 
-  <div class="payment-card" id="paymentCard" style="display:none;">
+  <!-- PAYMENT CARD — shown when daily limit hit -->
+  <div class="payment-card" id="paymentCard">
     <h3>🚀 Get More Transcriptions</h3>
-    <p>Choose a package to continue transcribing beyond your daily limit:</p>
+    <p>You've used your 7 free transcriptions for today. Choose a package to keep going:</p>
     <div class="payment-packages">
       <div class="package" data-pkg="small">
         <div class="package-name">Small Pack</div>
         <div class="package-price">GHS 5</div>
-        <div class="package-desc">10 extra transcriptions</div>
-        <div class="package-validity">Valid for 30 days</div>
+        <div class="package-desc">10 transcriptions</div>
+        <div class="package-validity">Valid 30 days</div>
       </div>
       <div class="package" data-pkg="medium">
         <div class="package-name">Medium Pack</div>
         <div class="package-price">GHS 12</div>
-        <div class="package-desc">20 extra transcriptions</div>
-        <div class="package-validity">Valid for 30 days</div>
-        <div class="package-popular">Most Popular</div>
+        <div class="package-desc">20 transcriptions</div>
+        <div class="package-validity">Valid 30 days</div>
+        <div class="package-popular">⭐ Popular</div>
       </div>
       <div class="package" data-pkg="large">
         <div class="package-name">Large Pack</div>
         <div class="package-price">GHS 20</div>
-        <div class="package-desc">30 extra transcriptions</div>
-        <div class="package-validity">Valid for 30 days</div>
-        <div class="package-best">Best Value</div>
+        <div class="package-desc">30 transcriptions</div>
+        <div class="package-validity">Valid 30 days</div>
+        <div class="package-best">💎 Best Value</div>
       </div>
     </div>
-    <div class="payment-form" id="paymentForm">
-      <input type="email" id="paymentEmail" placeholder="Enter your email for receipt" autocomplete="email">
-      <button id="payButton" class="pay-btn" disabled>Select a package first</button>
+    <div class="payment-form">
+      <input type="email" id="paymentEmail" placeholder="Enter your email for receipt" autocomplete="email"/>
+      <button id="payButton" class="pay-btn" disabled onclick="handlePayment()">
+        👆 Select a package above first
+      </button>
     </div>
+    <p style="font-size:11px; color:var(--muted); margin-top:8px; text-align:center;">
+      🔒 Secured by Paystack · Mobile Money &amp; Card accepted
+    </p>
   </div>
 
   <div class="wakeup-card" id="wakeupCard">
@@ -248,9 +281,9 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     <div class="progress-bg"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
   </div>
 
-  <div class="limit-card" id="limitCard" style="display:none">
+  <div class="limit-card" id="limitCard">
     <h3>🎯 Daily Limit Reached</h3>
-    <p>You've used your 7 free transcriptions for today.<br/>Come back tomorrow for 7 more — completely free! ☀️</p>
+    <p>You've used your 7 free transcriptions for today.<br/>Buy a pack below to continue, or come back tomorrow ☀️</p>
   </div>
 
   <button class="process-btn" id="processBtn" style="display:none" onclick="processAll()">
@@ -380,9 +413,8 @@ const results = {};
 let activeTab = null;
 let busy = false;
 let SESSION_TOKEN = null;
-
-// ── Track whether daily limit is reached ─────────────────────────────────────
 let dailyLimitReached = false;
+let selectedPackage = null;
 
 // ── Session init ──────────────────────────────────────────────────────────────
 async function initSession() {
@@ -414,35 +446,38 @@ async function initSession() {
     updateUsageUI(data.used, data.limit, data.extra_transcriptions || 0);
     console.log(`[SESSION] token=${SESSION_TOKEN.slice(0,8)}... used=${data.used}/${data.limit} extra=${data.extra_transcriptions || 0}`);
 
+    // Check for Paystack redirect after session is ready
+    checkPaymentCallback();
+
   } catch (e) {
     console.warn('[SESSION] Could not reach backend on load:', e.message);
     try {
       const r = await fetch(`${API_BASE}/usage`, { signal: AbortSignal.timeout(60000) });
       const d = await r.json();
-      updateUsageUI(d.used, d.limit);
+      updateUsageUI(d.used, d.limit, 0);
     } catch (e2) {
       document.getElementById('usageCount').textContent = 'Tap Transcribe to begin — server will wake up automatically.';
     }
   }
 }
-initSession();
 
-// ── Check for payment callback on page load ──────────────────────────────────
-// FIX: moved to after SESSION_TOKEN is available via initSession
-window.addEventListener('load', async () => {
-  if (window.location.search.includes('reference=')) {
+// ── Check for Paystack payment callback ──────────────────────────────────────
+// FIXED: called AFTER session is initialised so SESSION_TOKEN is available
+function checkPaymentCallback() {
+  if (window.location.search.includes('reference=') || window.location.search.includes('trxref=')) {
     const urlParams = new URLSearchParams(window.location.search);
-    const reference = urlParams.get('reference');
+    const reference = urlParams.get('reference') || urlParams.get('trxref');
     if (reference) {
-      // Wait briefly for session to initialise
-      await new Promise(r => setTimeout(r, 1500));
+      console.log('[PAYMENT] Detected reference in URL:', reference);
       verifyPayment(reference);
     }
   }
-});
+}
 
-let selectedPackage = null;
+// Start session immediately
+initSession();
 
+// ── Usage UI ──────────────────────────────────────────────────────────────────
 function updateUsageUI(used, limit, extra = 0) {
   const pct = Math.min((used / limit) * 100, 100);
   const bar = document.getElementById('usageBar');
@@ -451,30 +486,35 @@ function updateUsageUI(used, limit, extra = 0) {
 
   document.getElementById('usageCount').textContent =
     used >= limit
-      ? `⛔ All ${limit} transcriptions used today — come back tomorrow!`
+      ? `⛔ All ${limit} free transcriptions used today`
       : `${used} of ${limit} free transcriptions used today`;
 
   const extraEl = document.getElementById('extraCount');
-  const extraNum = document.getElementById('extraNumber');
   if (extra > 0) {
-    extraNum.textContent = extra;
+    document.getElementById('extraNumber').textContent = extra;
     extraEl.style.display = 'block';
   } else {
     extraEl.style.display = 'none';
   }
 
-  const paymentCard = document.getElementById('paymentCard');
+  // FIXED: daily limit is reached only if daily quota exceeded AND no extra credits
   dailyLimitReached = (used >= limit && extra === 0);
+
+  const paymentCard = document.getElementById('paymentCard');
+  const limitCard = document.getElementById('limitCard');
+  const processBtn = document.getElementById('processBtn');
 
   if (dailyLimitReached) {
     paymentCard.style.display = 'block';
-    document.getElementById('processBtn').style.display = 'none';
-    document.getElementById('limitCard').style.display = 'block';
+    limitCard.style.display = 'block';
+    // Only hide process button if files haven't started processing yet
+    if (!busy) processBtn.style.display = 'none';
   } else {
     paymentCard.style.display = 'none';
-    // Only show processBtn if files are already added
-    if (files.length > 0) {
-      document.getElementById('processBtn').style.display = 'block';
+    limitCard.style.display = 'none';
+    // Show process button if files are loaded
+    if (files.length > 0 && !busy) {
+      processBtn.style.display = 'block';
     }
   }
 }
@@ -498,7 +538,7 @@ function addFiles(list) {
   if (!activeTab && files.length) activeTab = files[0].name;
   document.getElementById('emptyState').style.display = 'none';
 
-  // FIX: Only show the process button if daily limit has NOT been reached
+  // FIXED: only show process button when NOT at daily limit
   if (!dailyLimitReached) {
     document.getElementById('processBtn').style.display = 'block';
   }
@@ -556,27 +596,45 @@ function renderTabs() {
 
 function setTab(name) { activeTab = name; renderTabs(); renderStudy(); }
 
+// ── FIXED: renderStudy — properly renders all sections including word-for-word ──
 function renderStudy() {
   const area = document.getElementById('studyArea');
   const r = results[activeTab];
   if (!r || r.status !== 'done') { area.innerHTML = ''; return; }
+
   const icons = {
-    'WORD-FOR-WORD TRANSLATION':'🔄',
-    'KEY VOCABULARY':'📚',
-    'GRAMMAR POINTS':'🔤',
-    'SAMPLE QUESTIONS & MODEL ANSWERS':'❓',
-    'TIPS TO ACE THIS TOPIC':'🏆'
+    'WORD-FOR-WORD TRANSLATION': '🔄',
+    'KEY VOCABULARY': '📚',
+    'GRAMMAR POINTS': '🔤',
+    'SAMPLE QUESTIONS & MODEL ANSWERS': '❓',
+    'TIPS TO ACE THIS TOPIC': '🏆'
   };
-  let html = `<div class="study-card"><div class="study-card-title">🎤 Transcription — ${esc(tabLabel(activeTab))}</div><div class="text-box">${esc(r.transcript)}</div></div>`;
-  if (r.parsed?.length) {
+
+  let html = `<div class="study-card">
+    <div class="study-card-title">🎤 Transcription — ${esc(tabLabel(activeTab))}</div>
+    <div class="text-box">${esc(r.transcript)}</div>
+  </div>`;
+
+  if (r.parsed && r.parsed.length > 0) {
     html += `<div class="study-card"><div class="study-card-title">📖 Study Guide</div>`;
     r.parsed.forEach(s => {
-      html += `<div class="sec-label">${icons[s.label] || '•'} ${s.label}</div><div class="text-box">${esc(s.content)}</div>`;
+      html += `<div class="sec-label">${icons[s.label] || '•'} ${s.label}</div>
+               <div class="text-box">${esc(s.content)}</div>`;
     });
     html += `</div>`;
+  } else if (r.rawGuide) {
+    // FALLBACK: if parsing failed, show raw guide text
+    html += `<div class="study-card">
+      <div class="study-card-title">📖 Study Guide</div>
+      <div class="text-box">${esc(r.rawGuide)}</div>
+    </div>`;
   } else if (r.guideError) {
-    html += `<div class="study-card"><div class="study-card-title">⚠️ Study Guide Unavailable</div><div class="text-box" style="color:#f87171;">Transcription worked ✅ but the study guide failed: ${esc(r.guideError)}.\n\nYou can still read and study from the transcription above.</div></div>`;
+    html += `<div class="study-card">
+      <div class="study-card-title">⚠️ Study Guide Unavailable</div>
+      <div class="text-box" style="color:#f87171;">Transcription worked ✅ but the study guide failed: ${esc(r.guideError)}.\n\nYou can still read and study from the transcription above.</div>
+    </div>`;
   }
+
   area.innerHTML = html;
 }
 
@@ -656,7 +714,17 @@ async function processAll() {
         });
         const gData = await gRes.json();
         if (!gRes.ok) throw new Error(gData.error || 'Study guide failed');
-        results[file.name] = { status: 'done', transcript, parsed: parseGuide(gData.guide) };
+
+        const parsed = parseGuide(gData.guide);
+        console.log(`[RESULT] Parsed ${parsed.length} sections from guide`);
+
+        // FIXED: always store rawGuide as fallback in case parsing misses sections
+        results[file.name] = {
+          status: 'done',
+          transcript,
+          parsed,
+          rawGuide: parsed.length === 0 ? gData.guide : null
+        };
       } catch (guideErr) {
         results[file.name] = { status: 'done', transcript, parsed: [], guideError: guideErr.message };
       }
@@ -683,9 +751,12 @@ async function processAll() {
   document.getElementById('processBtn').textContent = left ? `🚀 Transcribe Remaining (${left})` : '✓ All Done!';
 }
 
-// ── Guide parser — FIXED: handles **NAME**, ## NAME, and plain NAME formats ──
+// ── FIXED: parseGuide — handles ALL formats AI models might return ─────────────
+// Tested against: **BOLD**, ## Heading, ### Heading, plain uppercase
 function parseGuide(text) {
-  const names = [
+  if (!text) return [];
+
+  const SECTION_NAMES = [
     'WORD-FOR-WORD TRANSLATION',
     'KEY VOCABULARY',
     'GRAMMAR POINTS',
@@ -693,102 +764,121 @@ function parseGuide(text) {
     'TIPS TO ACE THIS TOPIC'
   ];
 
-  // Find a section header in the text, trying multiple formats
+  // Find a section header using multiple format patterns
   function findHeader(t, name) {
-    const escaped = name.replace(/[.*+?^${}()|[\]\\&]/g, '\\$&');
+    // Escape special regex chars in name (& is the only one here)
+    const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
     const patterns = [
-      // **SECTION NAME** (original format)
+      // **SECTION NAME** or **Section Name** (bold markdown)
       new RegExp(`\\*\\*${escaped}\\*\\*`, 'i'),
-      // ## SECTION NAME or ### SECTION NAME
-      new RegExp(`#{1,4}\\s*${escaped}`, 'i'),
-      // Plain uppercase on its own line
-      new RegExp(`(?:^|\\n)\\s*${escaped}\\s*(?:\\n|$)`, 'i'),
+      // ## SECTION NAME or ### SECTION NAME (heading markdown)
+      new RegExp(`(?:^|\\n)#{1,4}\\s*${escaped}[ \\t]*(?:\\n|$)`, 'i'),
+      // Plain uppercase on its own line (no markup)
+      new RegExp(`(?:^|\\n)[ \\t]*${escaped}[ \\t]*(?:\\n|$)`, 'i'),
     ];
+
+    let best = null;
     for (const pattern of patterns) {
       const m = t.match(pattern);
       if (m && m.index !== undefined) {
-        return { index: m.index, end: m.index + m[0].length };
+        if (!best || m.index < best.index) {
+          best = { index: m.index, end: m.index + m[0].length };
+        }
       }
     }
-    return null;
+    return best;
   }
 
+  // Build index of found sections
+  const found = [];
+  for (const name of SECTION_NAMES) {
+    const h = findHeader(text, name);
+    if (h) {
+      found.push({ name, start: h.index, contentStart: h.end });
+      console.log(`[PARSE] Found "${name}" at index ${h.index}`);
+    } else {
+      console.warn(`[PARSE] Section NOT FOUND: "${name}"`);
+    }
+  }
+
+  // Sort by position in text
+  found.sort((a, b) => a.start - b.start);
+
+  // Extract content between sections
   const parsed = [];
-  for (let i = 0; i < names.length; i++) {
-    const found = findHeader(text, names[i]);
-    if (!found) {
-      console.log(`[PARSE] Section not found: ${names[i]}`);
-      continue;
+  for (let i = 0; i < found.length; i++) {
+    const current = found[i];
+    const nextStart = i + 1 < found.length ? found[i + 1].start : text.length;
+    const content = text.slice(current.contentStart, nextStart).trim();
+    if (content) {
+      parsed.push({ label: current.name, content });
+      console.log(`[PARSE] "${current.name}" — ${content.length} chars`);
     }
-
-    // Find where the next section starts
-    let nextIdx = text.length;
-    for (let j = i + 1; j < names.length; j++) {
-      const nextFound = findHeader(text, names[j]);
-      if (nextFound && nextFound.index > found.index) {
-        nextIdx = Math.min(nextIdx, nextFound.index);
-        break;
-      }
-    }
-
-    const content = text.slice(found.end, nextIdx).trim();
-    console.log(`[PARSE] ${names[i]}: found at ${found.index}, content length=${content.length}`);
-    if (content) parsed.push({ label: names[i], content });
   }
 
-  console.log(`[PARSE] Total sections parsed: ${parsed.length} — ${parsed.map(p => p.label).join(', ')}`);
+  console.log(`[PARSE] Total sections: ${parsed.length}`);
   return parsed;
 }
 
 function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
 }
 
-// ── Payment system ────────────────────────────────────────────────────────────
-// FIX: changed data-package → data-pkg to avoid confusion; using data-pkg in JS too
+// ── Package selection ─────────────────────────────────────────────────────────
 document.addEventListener('click', (e) => {
-  if (e.target.closest('.package')) {
-    const packageEl = e.target.closest('.package');
+  const pkgEl = e.target.closest('.package');
+  if (pkgEl) {
     document.querySelectorAll('.package').forEach(p => p.classList.remove('selected'));
-    packageEl.classList.add('selected');
-    selectedPackage = packageEl.dataset.pkg;  // FIX: use data-pkg not data-package
+    pkgEl.classList.add('selected');
+    selectedPackage = pkgEl.dataset.pkg;
 
     const payBtn = document.getElementById('payButton');
     payBtn.disabled = false;
     payBtn.textContent = '💳 Pay with Mobile Money / Card';
-    console.log('Package selected:', selectedPackage);
-  }
-
-  if (e.target.id === 'payButton' && !e.target.disabled) {
-    handlePayment();
+    payBtn.classList.add('selected-ready');
+    console.log('[PAYMENT] Package selected:', selectedPackage);
   }
 });
 
+// ── FIXED: Payment — proper callback_url and mobile money flow ────────────────
 async function handlePayment() {
   if (!selectedPackage) {
-    alert('Please select a package first');
+    alert('Please tap a package to select it first');
     return;
   }
 
   const email = document.getElementById('paymentEmail').value.trim();
   if (!email) {
-    alert('Please enter your email address');
+    alert('Please enter your email address to receive your receipt');
     document.getElementById('paymentEmail').focus();
     return;
   }
   if (!email.includes('@') || !email.includes('.')) {
-    alert('Please enter a valid email address');
+    alert('Please enter a valid email address (e.g. example@gmail.com)');
     document.getElementById('paymentEmail').focus();
+    return;
+  }
+
+  if (!SESSION_TOKEN) {
+    alert('Session not ready. Please wait a moment and try again.');
     return;
   }
 
   const payBtn = document.getElementById('payButton');
   payBtn.disabled = true;
   payBtn.textContent = '⏳ Creating payment…';
+  payBtn.classList.remove('selected-ready');
 
   try {
-    // FIX: send callback_url so Paystack redirects back here after payment
+    // FIXED: Use the exact current page URL as callback so Paystack redirects back here
+    // This ensures the ?reference= param lands on THIS page for verification
     const callbackUrl = window.location.origin + window.location.pathname;
+    console.log('[PAYMENT] callback_url:', callbackUrl);
 
     const res = await fetch(`${API_BASE}/create-payment`, {
       method: 'POST',
@@ -798,52 +888,73 @@ async function handlePayment() {
       },
       body: JSON.stringify({
         email,
-        pkg: selectedPackage,          // FIX: renamed from 'package' (reserved word)
+        pkg: selectedPackage,
         callback_url: callbackUrl
       })
     });
 
     const data = await res.json();
+    console.log('[PAYMENT] Response:', data);
 
-    if (data.status) {
-      console.log('Payment created, redirecting to:', data.payment_url);
+    if (data.status && data.payment_url) {
+      // Redirect to Paystack — user will see Mobile Money / Card selection + PIN prompt
+      console.log('[PAYMENT] Redirecting to Paystack:', data.payment_url);
       window.location.href = data.payment_url;
     } else {
-      alert('Payment creation failed: ' + (data.error || 'Unknown error'));
+      const errMsg = data.error || 'Unknown error';
+      console.error('[PAYMENT] Failed:', errMsg);
+      alert('Payment could not be created: ' + errMsg + '\n\nPlease try again.');
       payBtn.disabled = false;
       payBtn.textContent = '💳 Pay with Mobile Money / Card';
+      payBtn.classList.add('selected-ready');
     }
   } catch (e) {
-    console.error('Payment error:', e);
-    alert('Error creating payment. Please check your internet and try again.');
+    console.error('[PAYMENT] Network error:', e);
+    alert('Network error. Please check your internet connection and try again.');
     payBtn.disabled = false;
     payBtn.textContent = '💳 Pay with Mobile Money / Card';
+    payBtn.classList.add('selected-ready');
   }
 }
 
+// ── FIXED: Payment verification — called after Paystack redirect ──────────────
 async function verifyPayment(reference) {
+  console.log('[PAYMENT] Verifying reference:', reference);
+
+  // Show user that we're processing
+  const paymentCard = document.getElementById('paymentCard');
+  paymentCard.style.display = 'block';
+  paymentCard.querySelector('p').textContent = '⏳ Verifying your payment… please wait.';
+
   try {
     const res = await fetch(`${API_BASE}/verify-payment`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-session-token': SESSION_TOKEN || ''
+        'x-session-token': SESSION_TOKEN || localStorage.getItem('fom_session_token') || ''
       },
       body: JSON.stringify({ reference })
     });
 
     const data = await res.json();
+    console.log('[PAYMENT] Verification result:', data);
+
+    // Clean URL immediately
+    window.history.replaceState({}, document.title, window.location.pathname);
 
     if (data.status) {
-      alert(`✅ Payment successful! You now have ${data.extra_transcriptions} extra transcriptions.`);
-      // Clean URL and refresh UI
-      window.history.replaceState({}, document.title, window.location.pathname);
+      alert(`✅ Payment successful!\n\nYou now have ${data.extra_transcriptions} extra transcriptions available. You can continue transcribing your audios now!`);
+      // Refresh session to update usage display
       await initSession();
     } else {
-      alert('Payment verification failed. If you were charged, please contact support.');
+      const errMsg = data.error || 'Payment verification failed';
+      alert(`⚠️ ${errMsg}\n\nIf you were charged, please contact support with your payment reference: ${reference}`);
+      paymentCard.querySelector('p').textContent = 'Choose a package to continue transcribing beyond your daily limit:';
     }
   } catch (e) {
-    console.error('Payment verification error:', e);
+    console.error('[PAYMENT] Verification error:', e);
+    window.history.replaceState({}, document.title, window.location.pathname);
+    alert('Could not verify payment. If you were charged, please contact support.');
   }
 }
 </script>
