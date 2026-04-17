@@ -55,8 +55,23 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .usage-count { font-size: 12px; color: var(--muted); margin-top: 5px; }
 .extra-count { font-size: 11px; color: var(--green); margin-top: 3px; font-weight: 600; }
 
-/* ── PAYMENT CARD — always visible structure, toggled by JS ── */
-.payment-card { background: var(--card); border: 1px solid var(--gold); border-radius: 12px; padding: 16px; margin-bottom: 16px; display: none; }
+/* ── PAYMENT CARD ── */
+.payment-card {
+  background: var(--card);
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  /* FIX: use visibility+height trick instead of display:none
+     so desktop media queries can't accidentally hide it when JS shows it */
+  display: none;
+}
+/* FIX: ensure payment card stays visible on desktop when JS has shown it */
+@media (min-width: 640px) {
+  .payment-card.is-visible {
+    display: block !important;
+  }
+}
 .payment-card h3 { color: var(--gold); font-size: 15px; margin-bottom: 8px; }
 .payment-card p { color: var(--muted); font-size: 13px; margin-bottom: 12px; }
 .payment-packages { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
@@ -107,6 +122,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .process-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .limit-card { background: #1c1408; border: 1px solid var(--gold); border-radius: 12px; padding: 16px; margin-bottom: 16px; text-align: center; display: none; }
+.limit-card.is-visible { display: block !important; }
 .limit-card h3 { color: var(--gold); font-size: 15px; margin-bottom: 6px; }
 .limit-card p { color: #fcd34d; font-size: 13px; line-height: 1.6; }
 
@@ -115,7 +131,6 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .tab { padding: 7px 14px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 700; border: 1px solid var(--border); background: transparent; color: var(--muted); white-space: nowrap; flex-shrink: 0; transition: all 0.15s; }
 .tab.active { background: var(--highlight); color: var(--accent-light); border-color: var(--accent); }
 
-/* ── STUDY CARDS — key fix: text-box renders correctly on desktop ── */
 .study-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 14px; width: 100%; }
 .study-card-title { font-size: 15px; font-weight: 700; color: var(--accent-light); margin-bottom: 12px; }
 .text-box {
@@ -227,7 +242,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
   <!-- PAYMENT CARD — shown when daily limit hit -->
   <div class="payment-card" id="paymentCard">
     <h3>🚀 Get More Transcriptions</h3>
-    <p>You've used your 7 free transcriptions for today. Choose a package to keep going:</p>
+    <p id="paymentCardMsg">You've used your 7 free transcriptions for today. Choose a package to keep going:</p>
     <div class="payment-packages">
       <div class="package" data-pkg="small">
         <div class="package-name">Small Pack</div>
@@ -416,6 +431,28 @@ let SESSION_TOKEN = null;
 let dailyLimitReached = false;
 let selectedPackage = null;
 
+// ── Helper: show/hide payment UI reliably on all screen sizes ─────────────────
+// FIX: uses classList.add('is-visible') instead of style.display so the
+// desktop media query (.payment-card.is-visible { display: block !important })
+// guarantees visibility regardless of inherited CSS rules.
+function showPaymentUI() {
+  const paymentCard = document.getElementById('paymentCard');
+  const limitCard   = document.getElementById('limitCard');
+  paymentCard.classList.add('is-visible');
+  paymentCard.style.display = 'block';
+  limitCard.classList.add('is-visible');
+  limitCard.style.display = 'block';
+}
+
+function hidePaymentUI() {
+  const paymentCard = document.getElementById('paymentCard');
+  const limitCard   = document.getElementById('limitCard');
+  paymentCard.classList.remove('is-visible');
+  paymentCard.style.display = 'none';
+  limitCard.classList.remove('is-visible');
+  limitCard.style.display = 'none';
+}
+
 // ── Session init ──────────────────────────────────────────────────────────────
 async function initSession() {
   try {
@@ -446,7 +483,6 @@ async function initSession() {
     updateUsageUI(data.used, data.limit, data.extra_transcriptions || 0);
     console.log(`[SESSION] token=${SESSION_TOKEN.slice(0,8)}... used=${data.used}/${data.limit} extra=${data.extra_transcriptions || 0}`);
 
-    // Check for Paystack redirect after session is ready
     checkPaymentCallback();
 
   } catch (e) {
@@ -462,7 +498,6 @@ async function initSession() {
 }
 
 // ── Check for Paystack payment callback ──────────────────────────────────────
-// FIXED: called AFTER session is initialised so SESSION_TOKEN is available
 function checkPaymentCallback() {
   if (window.location.search.includes('reference=') || window.location.search.includes('trxref=')) {
     const urlParams = new URLSearchParams(window.location.search);
@@ -474,7 +509,6 @@ function checkPaymentCallback() {
   }
 }
 
-// Start session immediately
 initSession();
 
 // ── Usage UI ──────────────────────────────────────────────────────────────────
@@ -497,22 +531,17 @@ function updateUsageUI(used, limit, extra = 0) {
     extraEl.style.display = 'none';
   }
 
-  // FIXED: daily limit is reached only if daily quota exceeded AND no extra credits
+  // FIX: daily limit is reached only if daily quota exceeded AND no extra credits
   dailyLimitReached = (used >= limit && extra === 0);
 
-  const paymentCard = document.getElementById('paymentCard');
-  const limitCard = document.getElementById('limitCard');
   const processBtn = document.getElementById('processBtn');
 
   if (dailyLimitReached) {
-    paymentCard.style.display = 'block';
-    limitCard.style.display = 'block';
-    // Only hide process button if files haven't started processing yet
+    // FIX: use showPaymentUI() — works on both mobile and desktop
+    showPaymentUI();
     if (!busy) processBtn.style.display = 'none';
   } else {
-    paymentCard.style.display = 'none';
-    limitCard.style.display = 'none';
-    // Show process button if files are loaded
+    hidePaymentUI();
     if (files.length > 0 && !busy) {
       processBtn.style.display = 'block';
     }
@@ -538,7 +567,7 @@ function addFiles(list) {
   if (!activeTab && files.length) activeTab = files[0].name;
   document.getElementById('emptyState').style.display = 'none';
 
-  // FIXED: only show process button when NOT at daily limit
+  // FIX: only show process button when NOT at daily limit
   if (!dailyLimitReached) {
     document.getElementById('processBtn').style.display = 'block';
   }
@@ -596,7 +625,6 @@ function renderTabs() {
 
 function setTab(name) { activeTab = name; renderTabs(); renderStudy(); }
 
-// ── FIXED: renderStudy — properly renders all sections including word-for-word ──
 function renderStudy() {
   const area = document.getElementById('studyArea');
   const r = results[activeTab];
@@ -623,7 +651,6 @@ function renderStudy() {
     });
     html += `</div>`;
   } else if (r.rawGuide) {
-    // FALLBACK: if parsing failed, show raw guide text
     html += `<div class="study-card">
       <div class="study-card-title">📖 Study Guide</div>
       <div class="text-box">${esc(r.rawGuide)}</div>
@@ -688,8 +715,8 @@ async function processAll() {
 
       if (tRes.status === 429 && tData.error === 'daily_limit') {
         results[file.name] = { status: 'error', error: tData.message };
-        document.getElementById('limitCard').style.display = 'block';
-        document.getElementById('paymentCard').style.display = 'block';
+        // FIX: use showPaymentUI() so it works on desktop too
+        showPaymentUI();
         document.getElementById('processBtn').style.display = 'none';
         dailyLimitReached = true;
         renderAll();
@@ -718,7 +745,6 @@ async function processAll() {
         const parsed = parseGuide(gData.guide);
         console.log(`[RESULT] Parsed ${parsed.length} sections from guide`);
 
-        // FIXED: always store rawGuide as fallback in case parsing misses sections
         results[file.name] = {
           status: 'done',
           transcript,
@@ -751,8 +777,7 @@ async function processAll() {
   document.getElementById('processBtn').textContent = left ? `🚀 Transcribe Remaining (${left})` : '✓ All Done!';
 }
 
-// ── FIXED: parseGuide — handles ALL formats AI models might return ─────────────
-// Tested against: **BOLD**, ## Heading, ### Heading, plain uppercase
+// ── parseGuide ────────────────────────────────────────────────────────────────
 function parseGuide(text) {
   if (!text) return [];
 
@@ -764,20 +789,13 @@ function parseGuide(text) {
     'TIPS TO ACE THIS TOPIC'
   ];
 
-  // Find a section header using multiple format patterns
   function findHeader(t, name) {
-    // Escape special regex chars in name (& is the only one here)
     const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
     const patterns = [
-      // **SECTION NAME** or **Section Name** (bold markdown)
       new RegExp(`\\*\\*${escaped}\\*\\*`, 'i'),
-      // ## SECTION NAME or ### SECTION NAME (heading markdown)
       new RegExp(`(?:^|\\n)#{1,4}\\s*${escaped}[ \\t]*(?:\\n|$)`, 'i'),
-      // Plain uppercase on its own line (no markup)
       new RegExp(`(?:^|\\n)[ \\t]*${escaped}[ \\t]*(?:\\n|$)`, 'i'),
     ];
-
     let best = null;
     for (const pattern of patterns) {
       const m = t.match(pattern);
@@ -790,7 +808,6 @@ function parseGuide(text) {
     return best;
   }
 
-  // Build index of found sections
   const found = [];
   for (const name of SECTION_NAMES) {
     const h = findHeader(text, name);
@@ -802,10 +819,8 @@ function parseGuide(text) {
     }
   }
 
-  // Sort by position in text
   found.sort((a, b) => a.start - b.start);
 
-  // Extract content between sections
   const parsed = [];
   for (let i = 0; i < found.length; i++) {
     const current = found[i];
@@ -845,7 +860,7 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// ── FIXED: Payment — proper callback_url and mobile money flow ────────────────
+// ── Payment ───────────────────────────────────────────────────────────────────
 async function handlePayment() {
   if (!selectedPackage) {
     alert('Please tap a package to select it first');
@@ -875,8 +890,6 @@ async function handlePayment() {
   payBtn.classList.remove('selected-ready');
 
   try {
-    // FIXED: Use the exact current page URL as callback so Paystack redirects back here
-    // This ensures the ?reference= param lands on THIS page for verification
     const callbackUrl = window.location.origin + window.location.pathname;
     console.log('[PAYMENT] callback_url:', callbackUrl);
 
@@ -897,7 +910,6 @@ async function handlePayment() {
     console.log('[PAYMENT] Response:', data);
 
     if (data.status && data.payment_url) {
-      // Redirect to Paystack — user will see Mobile Money / Card selection + PIN prompt
       console.log('[PAYMENT] Redirecting to Paystack:', data.payment_url);
       window.location.href = data.payment_url;
     } else {
@@ -917,14 +929,13 @@ async function handlePayment() {
   }
 }
 
-// ── FIXED: Payment verification — called after Paystack redirect ──────────────
+// ── Payment verification ──────────────────────────────────────────────────────
 async function verifyPayment(reference) {
   console.log('[PAYMENT] Verifying reference:', reference);
 
-  // Show user that we're processing
-  const paymentCard = document.getElementById('paymentCard');
-  paymentCard.style.display = 'block';
-  paymentCard.querySelector('p').textContent = '⏳ Verifying your payment… please wait.';
+  // FIX: show payment card while verifying (works on desktop too)
+  showPaymentUI();
+  document.getElementById('paymentCardMsg').textContent = '⏳ Verifying your payment… please wait.';
 
   try {
     const res = await fetch(`${API_BASE}/verify-payment`, {
@@ -939,17 +950,15 @@ async function verifyPayment(reference) {
     const data = await res.json();
     console.log('[PAYMENT] Verification result:', data);
 
-    // Clean URL immediately
     window.history.replaceState({}, document.title, window.location.pathname);
 
     if (data.status) {
       alert(`✅ Payment successful!\n\nYou now have ${data.extra_transcriptions} extra transcriptions available. You can continue transcribing your audios now!`);
-      // Refresh session to update usage display
       await initSession();
     } else {
       const errMsg = data.error || 'Payment verification failed';
       alert(`⚠️ ${errMsg}\n\nIf you were charged, please contact support with your payment reference: ${reference}`);
-      paymentCard.querySelector('p').textContent = 'Choose a package to continue transcribing beyond your daily limit:';
+      document.getElementById('paymentCardMsg').textContent = 'Choose a package to continue transcribing beyond your daily limit:';
     }
   } catch (e) {
     console.error('[PAYMENT] Verification error:', e);
