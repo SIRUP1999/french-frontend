@@ -53,6 +53,25 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .usage-bar.warn  { background: linear-gradient(90deg, var(--gold), #f97316); }
 .usage-bar.full  { background: linear-gradient(90deg, var(--red), #b91c1c); }
 .usage-count { font-size: 12px; color: var(--muted); margin-top: 5px; }
+.extra-count { font-size: 11px; color: var(--green); margin-top: 3px; font-weight: 600; }
+
+.payment-card { background: var(--card); border: 1px solid var(--gold); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+.payment-card h3 { color: var(--gold); font-size: 15px; margin-bottom: 8px; }
+.payment-card p { color: var(--muted); font-size: 13px; margin-bottom: 12px; }
+.payment-packages { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+@media (max-width: 600px) { .payment-packages { grid-template-columns: 1fr; } }
+.package { background: #0f172a; border: 1px solid var(--border); border-radius: 8px; padding: 10px; text-align: center; cursor: pointer; position: relative; transition: all 0.2s; }
+.package:hover { border-color: var(--accent); }
+.package.selected { border-color: var(--gold); background: var(--highlight); }
+.package-name { font-size: 12px; font-weight: 700; color: var(--accent-light); margin-bottom: 4px; }
+.package-price { font-size: 16px; font-weight: 800; color: var(--gold); margin-bottom: 2px; }
+.package-desc { font-size: 11px; color: var(--muted); margin-bottom: 2px; }
+.package-validity { font-size: 10px; color: var(--muted); }
+.package-popular { position: absolute; top: -6px; right: 4px; background: var(--green); color: white; font-size: 9px; padding: 2px 6px; border-radius: 10px; }
+.package-best { position: absolute; top: -6px; right: 4px; background: var(--gold); color: black; font-size: 9px; padding: 2px 6px; border-radius: 10px; }
+.payment-form { margin-top: 12px; }
+.payment-form input { width: 100%; background: #0f172a; border: 1px solid var(--border); border-radius: 6px; padding: 10px; color: var(--text); margin-bottom: 8px; }
+.pay-btn { width: 100%; background: var(--gold); color: black; border: none; border-radius: 8px; padding: 12px; font-size: 14px; font-weight: 700; cursor: pointer; }
 
 .upload-zone { background: var(--card); border: 2px dashed var(--border); border-radius: 14px; padding: 28px 20px; text-align: center; margin-bottom: 16px; position: relative; overflow: hidden; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
 .upload-zone.drag-over { border-color: var(--accent); background: var(--highlight); }
@@ -174,6 +193,38 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     <div class="usage-title">📊 Today's Free Usage</div>
     <div class="usage-bar-bg"><div class="usage-bar" id="usageBar" style="width:0%"></div></div>
     <div class="usage-count" id="usageCount">Loading...</div>
+    <div class="extra-count" id="extraCount" style="display:none;">💎 Plus <span id="extraNumber">0</span> extra transcriptions</div>
+  </div>
+
+  <div class="payment-card" id="paymentCard" style="display:none;">
+    <h3>🚀 Get More Transcriptions</h3>
+    <p>Choose a package to continue transcribing beyond your daily limit:</p>
+    <div class="payment-packages">
+      <div class="package" data-package="small">
+        <div class="package-name">Small Pack</div>
+        <div class="package-price">GHS 5</div>
+        <div class="package-desc">10 extra transcriptions</div>
+        <div class="package-validity">Valid for 30 days</div>
+      </div>
+      <div class="package" data-package="medium">
+        <div class="package-name">Medium Pack</div>
+        <div class="package-price">GHS 12</div>
+        <div class="package-desc">25 extra transcriptions</div>
+        <div class="package-validity">Valid for 30 days</div>
+        <div class="package-popular">Most Popular</div>
+      </div>
+      <div class="package" data-package="large">
+        <div class="package-name">Large Pack</div>
+        <div class="package-price">GHS 20</div>
+        <div class="package-desc">50 extra transcriptions</div>
+        <div class="package-validity">Valid for 30 days</div>
+        <div class="package-best">Best Value</div>
+      </div>
+    </div>
+    <div class="payment-form" id="paymentForm" style="display:none;">
+      <input type="email" id="paymentEmail" placeholder="Enter your email for receipt" required>
+      <button id="payButton" class="pay-btn">Pay with Mobile Money / Card</button>
+    </div>
   </div>
 
   <div class="wakeup-card" id="wakeupCard">
@@ -358,8 +409,8 @@ async function initSession() {
     SESSION_TOKEN = data.token;
     localStorage.setItem('fom_session_token', SESSION_TOKEN);
 
-    updateUsageUI(data.used, data.limit);
-    console.log(`[SESSION] token=${SESSION_TOKEN.slice(0,8)}... used=${data.used}/${data.limit}`);
+    updateUsageUI(data.used, data.limit, data.extra_transcriptions || 0);
+    console.log(`[SESSION] token=${SESSION_TOKEN.slice(0,8)}... used=${data.used}/${data.limit} extra=${data.extra_transcriptions || 0}`);
 
   } catch (e) {
     console.warn('[SESSION] Could not reach backend on load:', e.message);
@@ -375,19 +426,42 @@ async function initSession() {
 }
 initSession();
 
-function updateUsageUI(used, limit) {
+let selectedPackage = null;
+
+function updateUsageUI(used, limit, extra = 0) {
   const pct = Math.min((used / limit) * 100, 100);
   const bar = document.getElementById('usageBar');
   bar.style.width = pct + '%';
-  // Colour shifts: green → gold (5+) → red (limit)
   bar.className = 'usage-bar' + (used >= limit ? ' full' : used >= limit - 2 ? ' warn' : '');
+  
   document.getElementById('usageCount').textContent =
     used >= limit
       ? `⛔ All ${limit} transcriptions used today — come back tomorrow!`
       : `${used} of ${limit} free transcriptions used today`;
+      
+  const extraEl = document.getElementById('extraCount');
+  const extraNum = document.getElementById('extraNumber');
+  if (extra > 0) {
+    extraNum.textContent = extra;
+    extraEl.style.display = 'block';
+  } else {
+    extraEl.style.display = 'none';
+  }
+  
+  // Show payment card if limit reached and no extras
+  const paymentCard = document.getElementById('paymentCard');
+  if (used >= limit && extra === 0) {
+    paymentCard.style.display = 'block';
+    document.getElementById('processBtn').style.display = 'none';
+  } else {
+    paymentCard.style.display = 'none';
+    if (used < limit || extra > 0) {
+      document.getElementById('processBtn').style.display = 'block';
+    }
+  }
+  
   if (used >= limit) {
     document.getElementById('limitCard').style.display = 'block';
-    document.getElementById('processBtn').style.display = 'none';
   }
 }
 
@@ -547,7 +621,7 @@ async function processAll() {
       const transcript = tData.transcript;
 
       // Update usage bar from server response
-      if (tData.usage) updateUsageUI(tData.usage.used, tData.usage.limit);
+      if (tData.usage) updateUsageUI(tData.usage.used, tData.usage.limit, tData.usage.extra_transcriptions || 0);
 
       // ── Study guide ────────────────────────────────────────────────────────
       results[file.name] = { status: 'studying', transcript };
@@ -602,6 +676,85 @@ function parseGuide(text) {
 
 function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Payment system
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('package')) {
+    // Select package
+    document.querySelectorAll('.package').forEach(p => p.classList.remove('selected'));
+    e.target.classList.add('selected');
+    selectedPackage = e.target.dataset.package;
+    document.getElementById('paymentForm').style.display = 'block';
+  }
+});
+
+document.getElementById('payButton')?.addEventListener('click', async () => {
+  if (!selectedPackage) return alert('Please select a package first');
+  
+  const email = document.getElementById('paymentEmail').value;
+  if (!email) return alert('Please enter your email');
+  
+  const payBtn = document.getElementById('payButton');
+  payBtn.disabled = true;
+  payBtn.textContent = 'Creating payment...';
+  
+  try {
+    const res = await fetch(`${API_BASE}/create-payment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-session-token': SESSION_TOKEN
+      },
+      body: JSON.stringify({ email, package: selectedPackage })
+    });
+    
+    const data = await res.json();
+    
+    if (data.status) {
+      // Redirect to Paystack payment page
+      window.location.href = data.payment_url;
+    } else {
+      alert('Payment creation failed: ' + data.error);
+    }
+  } catch (e) {
+    alert('Error creating payment. Please try again.');
+  } finally {
+    payBtn.disabled = false;
+    payBtn.textContent = 'Pay with Mobile Money / Card';
+  }
+});
+
+// Check for payment verification on page load
+if (window.location.search.includes('reference=')) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const reference = urlParams.get('reference');
+  
+  if (reference) {
+    verifyPayment(reference);
+  }
+}
+
+async function verifyPayment(reference) {
+  try {
+    const res = await fetch(`${API_BASE}/verify-payment`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reference })
+    });
+    
+    const data = await res.json();
+    
+    if (data.status) {
+      alert(`Payment successful! You now have ${data.extra_transcriptions} extra transcriptions.`);
+      // Refresh the page to update UI
+      window.location.href = window.location.pathname;
+    } else {
+      alert('Payment verification failed.');
+    }
+  } catch (e) {
+    console.error('Payment verification error:', e);
+  }
 }
 </script>
 </body>
