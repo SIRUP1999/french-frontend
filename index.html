@@ -667,12 +667,20 @@ async function processAll() {
 // ── Guide parser ──────────────────────────────────────────────────────────────
 function parseGuide(text) {
   const names = ['WORD-FOR-WORD TRANSLATION','KEY VOCABULARY','GRAMMAR POINTS','SAMPLE QUESTIONS & MODEL ANSWERS','TIPS TO ACE THIS TOPIC'];
-  return names.map((name, i) => {
+  console.log('[PARSE] Full guide text:', text.slice(0, 500)); // Debug: show first 500 chars
+  
+  const parsed = names.map((name, i) => {
     const start = text.indexOf(`**${name}**`);
+    console.log(`[PARSE] Looking for **${name}** at position:`, start); // Debug each section
     if (start === -1) return null;
     const next = names[i+1] ? text.indexOf(`**${names[i+1]}**`) : text.length;
-    return { label: name, content: text.slice(start + name.length + 4, next !== -1 ? next : text.length).trim() };
+    const content = text.slice(start + name.length + 4, next !== -1 ? next : text.length).trim();
+    console.log(`[PARSE] ${name} content:`, content.slice(0, 100)); // Debug content
+    return { label: name, content };
   }).filter(Boolean);
+  
+  console.log('[PARSE] Final parsed sections:', parsed.map(p => p.label)); // Debug final result
+  return parsed;
 }
 
 function esc(s) {
