@@ -71,7 +71,8 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .package-best { position: absolute; top: -6px; right: 4px; background: var(--gold); color: black; font-size: 9px; padding: 2px 6px; border-radius: 10px; }
 .payment-form { margin-top: 12px; }
 .payment-form input { width: 100%; background: #0f172a; border: 1px solid var(--border); border-radius: 6px; padding: 10px; color: var(--text); margin-bottom: 8px; }
-.pay-btn { width: 100%; background: var(--gold); color: black; border: none; border-radius: 8px; padding: 12px; font-size: 14px; font-weight: 700; cursor: pointer; }
+.pay-btn { width: 100%; background: var(--gold); color: black; border: none; border-radius: 8px; padding: 12px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.pay-btn:disabled { background: var(--muted); cursor: not-allowed; }
 
 .upload-zone { background: var(--card); border: 2px dashed var(--border); border-radius: 14px; padding: 28px 20px; text-align: center; margin-bottom: 16px; position: relative; overflow: hidden; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
 .upload-zone.drag-over { border-color: var(--accent); background: var(--highlight); }
@@ -221,9 +222,9 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
         <div class="package-best">Best Value</div>
       </div>
     </div>
-    <div class="payment-form" id="paymentForm" style="display:none;">
+    <div class="payment-form" id="paymentForm">
       <input type="email" id="paymentEmail" placeholder="Enter your email for receipt" required>
-      <button id="payButton" class="pay-btn">Pay with Mobile Money / Card</button>
+      <button id="payButton" class="pay-btn" disabled>Select a package first</button>
     </div>
   </div>
 
@@ -678,22 +679,51 @@ function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// Payment system
+// Payment system - use event delegation for better reliability
 document.addEventListener('click', (e) => {
-  if (e.target.classList.contains('package')) {
-    // Select package
+  // Handle package selection
+  if (e.target.closest('.package')) {
+    const packageEl = e.target.closest('.package');
+    
+    // Remove selection from all packages
     document.querySelectorAll('.package').forEach(p => p.classList.remove('selected'));
-    e.target.classList.add('selected');
-    selectedPackage = e.target.dataset.package;
-    document.getElementById('paymentForm').style.display = 'block';
+    
+    // Select clicked package
+    packageEl.classList.add('selected');
+    selectedPackage = packageEl.dataset.package;
+    
+    // Enable pay button
+    const payBtn = document.getElementById('payButton');
+    payBtn.disabled = false;
+    payBtn.textContent = 'Pay with Mobile Money / Card';
+    
+    console.log('Package selected:', selectedPackage);
+  }
+  
+  // Handle pay button click
+  if (e.target.id === 'payButton' && !e.target.disabled) {
+    handlePayment();
   }
 });
 
-document.getElementById('payButton')?.addEventListener('click', async () => {
-  if (!selectedPackage) return alert('Please select a package first');
+async function handlePayment() {
+  if (!selectedPackage) {
+    alert('Please select a package first');
+    return;
+  }
   
-  const email = document.getElementById('paymentEmail').value;
-  if (!email) return alert('Please enter your email');
+  const email = document.getElementById('paymentEmail').value.trim();
+  if (!email) {
+    alert('Please enter your email');
+    document.getElementById('paymentEmail').focus();
+    return;
+  }
+  
+  if (!email.includes('@')) {
+    alert('Please enter a valid email address');
+    document.getElementById('paymentEmail').focus();
+    return;
+  }
   
   const payBtn = document.getElementById('payButton');
   payBtn.disabled = true;
@@ -712,18 +742,20 @@ document.getElementById('payButton')?.addEventListener('click', async () => {
     const data = await res.json();
     
     if (data.status) {
+      console.log('Payment created, redirecting to:', data.payment_url);
       // Redirect to Paystack payment page
       window.location.href = data.payment_url;
     } else {
-      alert('Payment creation failed: ' + data.error);
+      alert('Payment creation failed: ' + (data.error || 'Unknown error'));
     }
   } catch (e) {
-    alert('Error creating payment. Please try again.');
+    console.error('Payment error:', e);
+    alert('Error creating payment. Please check your internet and try again.');
   } finally {
     payBtn.disabled = false;
     payBtn.textContent = 'Pay with Mobile Money / Card';
   }
-});
+}
 
 // Check for payment verification on page load
 if (window.location.search.includes('reference=')) {
