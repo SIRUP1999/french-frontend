@@ -469,7 +469,7 @@ function renderStudy() {
   const area = document.getElementById('studyArea');
   const r = results[activeTab];
   if (!r || r.status !== 'done') { area.innerHTML = ''; return; }
-  const icons = { 'SUMMARY':'📋','KEY VOCABULARY':'📚','GRAMMAR POINTS':'🔤','SAMPLE QUESTIONS & MODEL ANSWERS':'❓','TIPS TO ACE THIS TOPIC':'🏆' };
+  const icons = { 'WORD-FOR-WORD TRANSLATION':'🔄','KEY VOCABULARY':'📚','GRAMMAR POINTS':'🔤','SAMPLE QUESTIONS & MODEL ANSWERS':'❓','TIPS TO ACE THIS TOPIC':'🏆' };
   let html = `<div class="study-card"><div class="study-card-title">🎤 Transcription — ${esc(tabLabel(activeTab))}</div><div class="text-box">${esc(r.transcript)}</div></div>`;
   if (r.parsed?.length) {
     html += `<div class="study-card"><div class="study-card-title">📖 Study Guide</div>`;
@@ -591,7 +591,7 @@ async function processAll() {
 
 // ── Guide parser ──────────────────────────────────────────────────────────────
 function parseGuide(text) {
-  const names = ['SUMMARY','KEY VOCABULARY','GRAMMAR POINTS','SAMPLE QUESTIONS & MODEL ANSWERS','TIPS TO ACE THIS TOPIC'];
+  const names = ['WORD-FOR-WORD TRANSLATION','KEY VOCABULARY','GRAMMAR POINTS','SAMPLE QUESTIONS & MODEL ANSWERS','TIPS TO ACE THIS TOPIC'];
   return names.map((name, i) => {
     const start = text.indexOf(`**${name}**`);
     if (start === -1) return null;
