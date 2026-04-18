@@ -9,15 +9,60 @@
 <title>French Oral Master — AI Transcription & Study Guide</title>
 
 <!-- Google AdSense -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7076616078598631" crossorigin="anonymous"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7076616078598631" crossorigin="anonymous">
+// ── Upgrade Modal ──────────────────────────────────────────────────────────
+function showUpgradeModal() {
+  document.getElementById('upgradeModal').classList.add('open');
+}
+function closeUpgradeModal() {
+  document.getElementById('upgradeModal').classList.remove('open');
+}
+// Close on overlay click
+document.getElementById('upgradeModal').addEventListener('click', function(e) {
+  if (e.target === this) closeUpgradeModal();
+});
+
+let modalSelectedPkg = null;
+function selectPkgFromModal(pkg) {
+  modalSelectedPkg = pkg;
+  // sync with main payment card
+  selectedPackage = pkg;
+  document.querySelectorAll('#upgradeModal .package').forEach(p => p.classList.remove('selected'));
+  document.querySelector(`#upgradeModal .package[data-pkg="${pkg}"]`).classList.add('selected');
+  const btn = document.getElementById('modalPayBtn');
+  btn.disabled = false;
+  btn.style.background = 'linear-gradient(135deg, #f59e0b, #f97316)';
+  btn.style.cursor = 'pointer';
+  btn.textContent = '💳 Pay with Mobile Money / Card';
+}
+
+async function handleModalPayment() {
+  const email = document.getElementById('modalEmail').value.trim();
+  if (!modalSelectedPkg) { alert('Please select a package first'); return; }
+  if (!email) { alert('Please enter your email address'); document.getElementById('modalEmail').focus(); return; }
+  if (!email.includes('@') || !email.includes('.')) { alert('Please enter a valid email address'); return; }
+  // Copy email to main payment form and trigger payment
+  document.getElementById('paymentEmail').value = email;
+  selectedPackage = modalSelectedPkg;
+  closeUpgradeModal();
+  await handlePayment();
+}
+</script>
 
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg: #0a0e1a; --card: #111827; --border: #1e2d45;
-  --accent: #3b82f6; --accent-light: #60a5fa; --gold: #f59e0b;
-  --green: #10b981; --red: #ef4444; --text: #e2e8f0;
-  --muted: #64748b; --highlight: #1e3a5f;
+  --bg: #0a0e1a;
+  --card: #111827;
+  --border: #1e2d45;
+  --accent: #3b82f6;
+  --accent-light: #60a5fa;
+  --gold: #f59e0b;
+  --green: #10b981;
+  --red: #ef4444;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --highlight: #1e3a5f;
 }
 body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; min-height: 100vh; }
 
@@ -36,63 +81,22 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .feature-pill { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); border-radius: 20px; padding: 5px 12px; font-size: 12px; color: var(--accent-light); font-weight: 600; }
 .hero-free { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; padding: 10px 16px; display: inline-block; font-size: 13px; color: var(--green); font-weight: 700; }
 
-.ad-slot { background: var(--card); border: 1px dashed var(--border); border-radius: 10px; padding: 12px; text-align: center; color: var(--muted); font-size: 11px; margin: 0 16px 16px; min-height: 70px; display: block; width: auto; overflow: hidden; }
+.ad-slot { background: var(--card); border: 1px dashed var(--border); border-radius: 10px; padding: 12px; text-align: center; color: var(--muted); font-size: 11px; margin: 0 16px 16px; min-height: 70px; display: flex; align-items: center; justify-content: center; }
 
 .main { padding: 16px; max-width: 700px; margin: 0 auto; }
 
 .wakeup-card { background: #1c1a08; border: 1px solid var(--gold); border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; display: none; }
 .wakeup-card p { color: #fcd34d; font-size: 13px; line-height: 1.6; }
 .wakeup-bar-bg { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; margin-top: 8px; }
-.wakeup-bar { height: 100%; background: linear-gradient(90deg, var(--gold), var(--green)); border-radius: 3px; animation: wakeup 30s linear forwards; }
+.wakeup-bar { height: 100%; background: linear-gradient(90deg, var(--gold), var(--green)); border-radius: 3px; animation: wakeup 25s linear forwards; }
 @keyframes wakeup { from { width: 5%; } to { width: 100%; } }
 
-.usage-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; }
-.usage-title { font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 6px; }
-.usage-bar-bg { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
-.usage-bar { height: 100%; background: linear-gradient(90deg, var(--green), var(--accent)); border-radius: 4px; transition: width 0.5s, background 0.5s; }
-.usage-bar.warn  { background: linear-gradient(90deg, var(--gold), #f97316); }
-.usage-bar.full  { background: linear-gradient(90deg, var(--red), #b91c1c); }
-.usage-count { font-size: 12px; color: var(--muted); margin-top: 5px; }
-.extra-count { font-size: 11px; color: var(--green); margin-top: 3px; font-weight: 600; }
-
-/* ── PAYMENT CARD ── */
-.payment-card {
-  background: var(--card);
-  border: 1px solid var(--gold);
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 16px;
-  /* FIX: use visibility+height trick instead of display:none
-     so desktop media queries can't accidentally hide it when JS shows it */
-  display: none;
-}
-/* FIX: ensure payment card stays visible on desktop when JS has shown it */
-@media (min-width: 640px) {
-  .payment-card.is-visible {
-    display: block !important;
-  }
-}
-.payment-card h3 { color: var(--gold); font-size: 15px; margin-bottom: 8px; }
-.payment-card p { color: var(--muted); font-size: 13px; margin-bottom: 12px; }
-.payment-packages { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-@media (max-width: 500px) { .payment-packages { grid-template-columns: 1fr; } }
-.package { background: #0f172a; border: 2px solid var(--border); border-radius: 8px; padding: 12px; text-align: center; cursor: pointer; position: relative; transition: all 0.2s; }
-.package:hover { border-color: var(--accent); transform: translateY(-1px); }
-.package.selected { border-color: var(--gold) !important; background: var(--highlight); box-shadow: 0 0 0 1px var(--gold); }
-.package-name { font-size: 12px; font-weight: 700; color: var(--accent-light); margin-bottom: 4px; }
-.package-price { font-size: 18px; font-weight: 800; color: var(--gold); margin-bottom: 2px; }
-.package-desc { font-size: 11px; color: var(--muted); margin-bottom: 2px; }
-.package-validity { font-size: 10px; color: var(--muted); }
-.package-popular { position: absolute; top: -8px; right: 6px; background: var(--green); color: white; font-size: 9px; padding: 2px 6px; border-radius: 10px; font-weight: 700; }
-.package-best { position: absolute; top: -8px; right: 6px; background: var(--gold); color: black; font-size: 9px; padding: 2px 6px; border-radius: 10px; font-weight: 700; }
-.payment-form { margin-top: 12px; }
-.payment-form input { width: 100%; background: #0f172a; border: 1px solid var(--border); border-radius: 6px; padding: 10px; color: var(--text); margin-bottom: 8px; font-size: 14px; }
-.payment-form input:focus { outline: none; border-color: var(--accent); }
-.pay-btn { width: 100%; background: var(--gold); color: #000; border: none; border-radius: 8px; padding: 13px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-.pay-btn:hover:not(:disabled) { background: #fbbf24; transform: translateY(-1px); }
-.pay-btn:disabled { background: var(--muted); cursor: not-allowed; color: #fff; transform: none; }
-.pay-btn.selected-ready { background: linear-gradient(135deg, var(--gold), #f97316); animation: pulse-gold 2s infinite; }
-@keyframes pulse-gold { 0%,100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.4); } 50% { box-shadow: 0 0 0 8px rgba(245,158,11,0); } }
+.usage-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.usage-info { flex: 1; }
+.usage-title { font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+.usage-bar-bg { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.usage-bar { height: 100%; background: linear-gradient(90deg, var(--green), var(--accent)); border-radius: 3px; transition: width 0.5s; }
+.usage-count { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
 .upload-zone { background: var(--card); border: 2px dashed var(--border); border-radius: 14px; padding: 28px 20px; text-align: center; margin-bottom: 16px; position: relative; overflow: hidden; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
 .upload-zone.drag-over { border-color: var(--accent); background: var(--highlight); }
@@ -121,8 +125,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .process-btn { width: 100%; background: #78350f; color: var(--gold); border: 1px solid var(--gold); border-radius: 10px; padding: 13px; font-size: 15px; font-weight: 700; cursor: pointer; margin-bottom: 18px; }
 .process-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-.limit-card { background: #1c1408; border: 1px solid var(--gold); border-radius: 12px; padding: 16px; margin-bottom: 16px; text-align: center; display: none; }
-.limit-card.is-visible { display: block !important; }
+.limit-card { background: #1c1408; border: 1px solid var(--gold); border-radius: 12px; padding: 16px; margin-bottom: 16px; text-align: center; }
 .limit-card h3 { color: var(--gold); font-size: 15px; margin-bottom: 6px; }
 .limit-card p { color: #fcd34d; font-size: 13px; line-height: 1.6; }
 
@@ -131,22 +134,9 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .tab { padding: 7px 14px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 700; border: 1px solid var(--border); background: transparent; color: var(--muted); white-space: nowrap; flex-shrink: 0; transition: all 0.15s; }
 .tab.active { background: var(--highlight); color: var(--accent-light); border-color: var(--accent); }
 
-.study-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 14px; width: 100%; }
+.study-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 14px; }
 .study-card-title { font-size: 15px; font-weight: 700; color: var(--accent-light); margin-bottom: 12px; }
-.text-box {
-  background: #0f172a;
-  border-radius: 10px;
-  padding: 14px;
-  font-size: 14px;
-  line-height: 1.8;
-  color: var(--text);
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  border: 1px solid var(--border);
-  max-width: 100%;
-  overflow-x: hidden;
-}
+.text-box { background: #0f172a; border-radius: 10px; padding: 14px; font-size: 14px; line-height: 1.8; color: var(--text); white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word; word-break: break-word; border: 1px solid var(--border); width: 100%; max-width: 100%; overflow-x: auto; display: block; box-sizing: border-box; }
 .sec-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); margin: 16px 0 8px; }
 
 .spin { display: inline-block; width: 12px; height: 12px; border: 2px solid var(--border); border-top-color: var(--accent-light); border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 4px; }
@@ -160,7 +150,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .step.green { border-left-color: var(--green); }
 .step.green .step-title { color: var(--green); }
 
-/* ── CONTENT ARTICLES ── */
+/* ── CONTENT ARTICLES (for AdSense approval) ── */
 .content-section { max-width: 700px; margin: 0 auto; padding: 0 16px; }
 .content-section h2 { font-size: 20px; font-weight: 800; color: #fff; margin: 32px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
 .article-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 16px; }
@@ -186,13 +176,13 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .empty { text-align: center; color: var(--muted); padding: 32px 0; font-size: 14px; }
 .empty-icon { font-size: 44px; margin-bottom: 10px; }
 
-/* Desktop layout improvements */
-@media (min-width: 640px) {
-  .main { padding: 24px; }
-  .hero h1 { font-size: 32px; }
-  .payment-packages { grid-template-columns: 1fr 1fr 1fr; }
-  #studyArea { width: 100%; }
-}
+/* ── UPGRADE MODAL ── */
+.modal-overlay { position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:1000;display:none;align-items:center;justify-content:center;padding:16px; }
+.modal-overlay.open { display:flex; }
+.modal-box { background:#111827;border:1px solid #1e2d45;border-radius:16px;padding:24px;max-width:480px;width:100%;position:relative;max-height:90vh;overflow-y:auto; }
+.modal-close { position:absolute;top:12px;right:16px;background:none;border:none;color:#64748b;font-size:20px;cursor:pointer;line-height:1; }
+.modal-title { font-size:18px;font-weight:800;color:#f59e0b;margin-bottom:6px; }
+.modal-sub { font-size:13px;color:#64748b;margin-bottom:18px; }
 </style>
 </head>
 <body>
@@ -205,7 +195,10 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
       <div class="header-sub">AI-Powered Exam Prep</div>
     </div>
   </div>
-  <span class="header-badge">✨ Free</span>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <span class="header-badge">✨ Free</span>
+    <button onclick="showUpgradeModal()" style="background:#78350f;color:#f59e0b;border:1px solid #f59e0b;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;">🚀 Upgrade</button>
+  </div>
 </div>
 
 <div class="hero">
@@ -218,11 +211,11 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     <span class="feature-pill">❓ Sample Q&A</span>
     <span class="feature-pill">🏆 Exam Tips</span>
   </div>
-  <div class="hero-free">✅ No account needed &nbsp;·&nbsp; 7 free audios per day &nbsp;·&nbsp; No credit card</div>
+  <div class="hero-free">✅ No account needed &nbsp;·&nbsp; 3 free audios per day &nbsp;·&nbsp; No credit card</div>
 </div>
 
 <div class="ad-slot" style="margin-top:16px;">
-  <ins class="adsbygoogle" style="display:block;"
+  <ins class="adsbygoogle" style="display:block;width:100%;min-height:60px;"
     data-ad-client="ca-pub-7076616078598631"
     data-ad-slot="1924514855"
     data-ad-format="auto"
@@ -233,51 +226,15 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 <div class="main">
 
   <div class="usage-card" id="usageCard">
-    <div class="usage-title">📊 Today's Free Usage</div>
-    <div class="usage-bar-bg"><div class="usage-bar" id="usageBar" style="width:0%"></div></div>
-    <div class="usage-count" id="usageCount">Loading...</div>
-    <div class="extra-count" id="extraCount" style="display:none;">💎 Plus <span id="extraNumber">0</span> extra transcriptions available</div>
-  </div>
-
-  <!-- PAYMENT CARD — shown when daily limit hit -->
-  <div class="payment-card" id="paymentCard">
-    <h3>🚀 Get More Transcriptions</h3>
-    <p id="paymentCardMsg">You've used your 7 free transcriptions for today. Choose a package to keep going:</p>
-    <div class="payment-packages">
-      <div class="package" data-pkg="small">
-        <div class="package-name">Small Pack</div>
-        <div class="package-price">GHS 5</div>
-        <div class="package-desc">10 transcriptions</div>
-        <div class="package-validity">Valid 30 days</div>
-      </div>
-      <div class="package" data-pkg="medium">
-        <div class="package-name">Medium Pack</div>
-        <div class="package-price">GHS 12</div>
-        <div class="package-desc">20 transcriptions</div>
-        <div class="package-validity">Valid 30 days</div>
-        <div class="package-popular">⭐ Popular</div>
-      </div>
-      <div class="package" data-pkg="large">
-        <div class="package-name">Large Pack</div>
-        <div class="package-price">GHS 20</div>
-        <div class="package-desc">30 transcriptions</div>
-        <div class="package-validity">Valid 30 days</div>
-        <div class="package-best">💎 Best Value</div>
-      </div>
+    <div class="usage-info">
+      <div class="usage-title">📊 Today's Free Usage</div>
+      <div class="usage-bar-bg"><div class="usage-bar" id="usageBar" style="width:0%"></div></div>
+      <div class="usage-count" id="usageCount">Loading...</div>
     </div>
-    <div class="payment-form">
-      <input type="email" id="paymentEmail" placeholder="Enter your email for receipt" autocomplete="email"/>
-      <button id="payButton" class="pay-btn" disabled onclick="handlePayment()">
-        👆 Select a package above first
-      </button>
-    </div>
-    <p style="font-size:11px; color:var(--muted); margin-top:8px; text-align:center;">
-      🔒 Secured by Paystack · Mobile Money &amp; Card accepted
-    </p>
   </div>
 
   <div class="wakeup-card" id="wakeupCard">
-    <p id="wakeupMsg">⏳ <strong>Waking up the server…</strong> This takes up to 30 seconds on first use. Please wait — do not close the app!</p>
+    <p>⏳ <strong>Waking up the server…</strong> This takes up to 30 seconds on first use. Please wait — do not close the app!</p>
     <div class="wakeup-bar-bg"><div class="wakeup-bar" id="wakeupBar"></div></div>
   </div>
 
@@ -296,16 +253,18 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     <div class="progress-bg"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
   </div>
 
-  <div class="limit-card" id="limitCard">
+  <div class="limit-card" id="limitCard" style="display:none">
     <h3>🎯 Daily Limit Reached</h3>
-    <p>You've used your 7 free transcriptions for today.<br/>Buy a pack below to continue, or come back tomorrow ☀️</p>
+    <p>You've used your 3 free transcriptions for today.<br/>Come back tomorrow for 7 more — completely free! ☀️</p>
   </div>
 
   <button class="process-btn" id="processBtn" style="display:none" onclick="processAll()">
     🚀 Transcribe &amp; Study All Files
   </button>
 
-  <div id="midAdSlot" style="display:none; margin-bottom:16px;"></div>
+  <div id="midAdSlot" style="display:none; margin-bottom:16px;">
+    <!-- Ad loaded dynamically when user uploads files -->
+  </div>
 
   <div class="tabs" id="tabs" style="display:none"></div>
   <div id="studyArea"></div>
@@ -326,8 +285,9 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 
 </div>
 
+<!-- AD SLOT MID PAGE -->
 <div class="ad-slot" style="margin: 0 16px 16px;">
-  <ins class="adsbygoogle" style="display:block;"
+  <ins class="adsbygoogle" style="display:block;width:100%;min-height:60px;"
     data-ad-client="ca-pub-7076616078598631"
     data-ad-slot="1924514855"
     data-ad-format="auto"
@@ -335,17 +295,20 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
-<!-- ══ CONTENT ARTICLES ══ -->
+<!-- ══ CONTENT ARTICLES — required for AdSense approval ══ -->
 <div class="content-section">
+
   <h2>🇫🇷 Your Complete Guide to Passing the French Oral Exam</h2>
+
   <div class="article-card">
     <h3>What is a French Oral Exam?</h3>
     <p>A French oral exam (also called an <em>épreuve orale</em>) is a spoken language assessment where students demonstrate their ability to understand and communicate in French. It typically involves listening to audio passages, answering questions, describing images, or having a conversation with an examiner in French.</p>
     <p>The exam tests several key skills: listening comprehension, spoken fluency, vocabulary range, grammar accuracy, and the ability to express opinions and ideas clearly in French. Most oral exams at the secondary and university level in West Africa, including Ghana, follow the WAEC or GCE format, which requires students to respond to audio-based prompts.</p>
   </div>
+
   <div class="article-card">
     <h3>How French Oral Master Helps You Prepare</h3>
-    <p>French Oral Master uses advanced AI technology (powered by Groq Whisper) to automatically transcribe your French audio files into text. Once transcribed, our AI generates a complete study guide for each audio that includes:</p>
+    <p>French Oral Master uses advanced AI technology (powered by Groq Whisper) to automatically transcribe your French audio files into text. Once transcribed, our AI (powered by Llama) generates a complete study guide for each audio that includes:</p>
     <ul>
       <li><strong>A full transcription</strong> — so you can read exactly what was said</li>
       <li><strong>Key vocabulary</strong> — important French words with English translations</li>
@@ -353,59 +316,97 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
       <li><strong>Sample questions and model answers</strong> — to practice responding to the audio topic</li>
       <li><strong>Tips to ace the topic</strong> — practical advice for performing well in your oral exam</li>
     </ul>
+    <p>This means you no longer have to struggle alone with audio files you don't fully understand. Our tool breaks everything down for you step by step, completely free.</p>
   </div>
+
   <div class="article-card">
     <h3>Top Tips for Passing Your French Oral Exam</h3>
     <div class="tip-grid">
-      <div class="tip-box"><div class="tip-box-icon">🎧</div><div class="tip-box-title">Listen Repeatedly</div><div class="tip-box-body">Play each audio at least 3 times. First for general meaning, second for details, third while reading the transcription.</div></div>
-      <div class="tip-box"><div class="tip-box-icon">📝</div><div class="tip-box-title">Learn Key Phrases</div><div class="tip-box-body">Memorise transition phrases like "À mon avis" (In my opinion), "Par exemple" (For example), and "En conclusion" (In conclusion).</div></div>
-      <div class="tip-box"><div class="tip-box-icon">🗣️</div><div class="tip-box-title">Speak Out Loud</div><div class="tip-box-body">Practice answering the sample questions out loud. Speaking French daily, even for 5 minutes, significantly improves your fluency.</div></div>
-      <div class="tip-box"><div class="tip-box-icon">📖</div><div class="tip-box-title">Study Vocabulary</div><div class="tip-box-body">Focus on the key vocabulary from each audio. Use flashcards or write each word in a sentence to help you remember it.</div></div>
-      <div class="tip-box"><div class="tip-box-icon">⏱️</div><div class="tip-box-title">Time Yourself</div><div class="tip-box-body">In the actual exam, you have limited time. Practice answering questions within 1–2 minutes to build the habit of being concise.</div></div>
-      <div class="tip-box"><div class="tip-box-icon">🤝</div><div class="tip-box-title">Study in Groups</div><div class="tip-box-body">Share this tool with your classmates. Quiz each other using the sample questions. Group study makes French oral prep more effective and fun.</div></div>
+      <div class="tip-box">
+        <div class="tip-box-icon">🎧</div>
+        <div class="tip-box-title">Listen Repeatedly</div>
+        <div class="tip-box-body">Play each audio at least 3 times. First for general meaning, second for details, third while reading the transcription.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-box-icon">📝</div>
+        <div class="tip-box-title">Learn Key Phrases</div>
+        <div class="tip-box-body">Memorise transition phrases like "À mon avis" (In my opinion), "Par exemple" (For example), and "En conclusion" (In conclusion).</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-box-icon">🗣️</div>
+        <div class="tip-box-title">Speak Out Loud</div>
+        <div class="tip-box-body">Practice answering the sample questions out loud. Speaking French daily, even for 5 minutes, significantly improves your fluency.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-box-icon">📖</div>
+        <div class="tip-box-title">Study Vocabulary</div>
+        <div class="tip-box-body">Focus on the key vocabulary from each audio. Use flashcards or write each word in a sentence to help you remember it.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-box-icon">⏱️</div>
+        <div class="tip-box-title">Time Yourself</div>
+        <div class="tip-box-body">In the actual exam, you have limited time. Practice answering questions within 1–2 minutes to build the habit of being concise.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-box-icon">🤝</div>
+        <div class="tip-box-title">Study in Groups</div>
+        <div class="tip-box-body">Share this tool with your classmates. Quiz each other using the sample questions. Group study makes French oral prep more effective and fun.</div>
+      </div>
     </div>
   </div>
+
   <div class="article-card">
     <h3>Common French Vocabulary for Oral Exams</h3>
+    <p>These are some of the most frequently tested French words and phrases in West African oral exams. Make sure you know them before your exam day.</p>
     <table class="vocab-table">
       <tr><th>French</th><th>English</th><th>Example Use</th></tr>
       <tr><td>Bonjour / Bonsoir</td><td>Good morning / Good evening</td><td>Greeting the examiner</td></tr>
       <tr><td>Je pense que…</td><td>I think that…</td><td>Expressing an opinion</td></tr>
       <tr><td>À mon avis</td><td>In my opinion</td><td>Starting a personal view</td></tr>
-      <tr><td>C'est-à-dire</td><td>That is to say</td><td>Clarifying a point</td></tr>
+      <tr><td>C'est-à-dire</td><td>That is to say / Meaning</td><td>Clarifying a point</td></tr>
       <tr><td>Par exemple</td><td>For example</td><td>Giving an example</td></tr>
       <tr><td>Cependant</td><td>However</td><td>Introducing contrast</td></tr>
-      <tr><td>Il faut</td><td>It is necessary</td><td>Giving advice</td></tr>
+      <tr><td>En revanche</td><td>On the other hand</td><td>Comparing two ideas</td></tr>
+      <tr><td>Il faut</td><td>It is necessary / One must</td><td>Giving advice or stating a need</td></tr>
       <tr><td>Je suis d'accord</td><td>I agree</td><td>Agreeing with a statement</td></tr>
       <tr><td>Je ne suis pas d'accord</td><td>I disagree</td><td>Politely disagreeing</td></tr>
       <tr><td>En conclusion</td><td>In conclusion</td><td>Ending a response</td></tr>
-      <tr><td>Pouvez-vous répéter?</td><td>Can you repeat?</td><td>Asking examiner to repeat</td></tr>
+      <tr><td>Pouvez-vous répéter?</td><td>Can you repeat?</td><td>Asking the examiner to repeat</td></tr>
     </table>
   </div>
+
   <div class="article-card">
     <h3>Common French Oral Exam Topics</h3>
+    <p>French oral exams in West Africa typically cover a range of everyday and social topics. Being familiar with the vocabulary for each topic gives you a major advantage. Here are the most common topics you should prepare for:</p>
     <ul>
       <li><strong>La famille</strong> (Family) — describing family members, relationships, and home life</li>
       <li><strong>L'école et l'éducation</strong> (School and Education) — subjects, teachers, school life, and future plans</li>
       <li><strong>La santé</strong> (Health) — illness, visiting the doctor, healthy habits, and hospitals</li>
       <li><strong>L'environnement</strong> (The Environment) — climate change, pollution, nature, and conservation</li>
+      <li><strong>La nourriture</strong> (Food) — local and French cuisine, cooking, restaurants, and shopping</li>
       <li><strong>Les transports</strong> (Transport) — types of transport, travel, directions, and road safety</li>
       <li><strong>Le travail</strong> (Work) — jobs, careers, workplace situations, and ambitions</li>
       <li><strong>La technologie</strong> (Technology) — the internet, social media, mobile phones, and modern life</li>
       <li><strong>Les loisirs</strong> (Hobbies and Leisure) — sports, music, reading, and free time activities</li>
+      <li><strong>La ville et la campagne</strong> (City and Countryside) — comparing urban and rural life</li>
     </ul>
+    <p>Upload any audio on these topics to French Oral Master and get an instant study guide tailored to that specific topic.</p>
   </div>
+
   <div class="article-card">
     <h3>How to Improve Your French Pronunciation</h3>
+    <p>Pronunciation is one of the most challenging aspects of French for English speakers, but it is also one of the most rewarding skills to develop. Here are practical steps to improve your French pronunciation before your oral exam:</p>
     <p><strong>1. Shadow the audio:</strong> After transcribing your audio with French Oral Master, play it back and try to speak along with the recording at the same time. This technique, called shadowing, is one of the fastest ways to improve pronunciation and natural rhythm in French.</p>
     <p><strong>2. Pay attention to nasal sounds:</strong> French has nasal vowels that don't exist in English — sounds like "an", "en", "in", "on", and "un". Practice these sounds separately until they feel natural.</p>
-    <p><strong>3. Learn liaison rules:</strong> In French, the final consonant of a word is often linked to the next word when it starts with a vowel. For example, "vous avez" is pronounced "voo-za-vay".</p>
+    <p><strong>3. Learn liaison rules:</strong> In French, the final consonant of a word is often linked to the next word when it starts with a vowel. For example, "vous avez" is pronounced "voo-za-vay". Knowing liaison rules makes you sound much more natural.</p>
     <p><strong>4. Record yourself:</strong> Use your phone to record yourself speaking French, then compare it to the original audio. This helps you identify where your pronunciation differs and what to improve.</p>
   </div>
+
 </div>
 
+<!-- AD SLOT BOTTOM -->
 <div class="ad-slot" style="margin: 16px 16px;">
-  <ins class="adsbygoogle" style="display:block;"
+  <ins class="adsbygoogle" style="display:block;width:100%;min-height:60px;"
     data-ad-client="ca-pub-7076616078598631"
     data-ad-slot="1924514855"
     data-ad-format="auto"
@@ -427,128 +428,48 @@ const files = [];
 const results = {};
 let activeTab = null;
 let busy = false;
+
+// ── Session token — tracks usage per browser, not just IP ──────────────────
 let SESSION_TOKEN = null;
-let dailyLimitReached = false;
-let selectedPackage = null;
 
-// ── Helper: show/hide payment UI reliably on all screen sizes ─────────────────
-// FIX: uses classList.add('is-visible') instead of style.display so the
-// desktop media query (.payment-card.is-visible { display: block !important })
-// guarantees visibility regardless of inherited CSS rules.
-function showPaymentUI() {
-  const paymentCard = document.getElementById('paymentCard');
-  const limitCard   = document.getElementById('limitCard');
-  paymentCard.classList.add('is-visible');
-  paymentCard.style.display = 'block';
-  limitCard.classList.add('is-visible');
-  limitCard.style.display = 'block';
-}
-
-function hidePaymentUI() {
-  const paymentCard = document.getElementById('paymentCard');
-  const limitCard   = document.getElementById('limitCard');
-  paymentCard.classList.remove('is-visible');
-  paymentCard.style.display = 'none';
-  limitCard.classList.remove('is-visible');
-  limitCard.style.display = 'none';
-}
-
-// ── Session init ──────────────────────────────────────────────────────────────
 async function initSession() {
   try {
+    let token = localStorage.getItem('fom_session_token');
+    const tokenDate = localStorage.getItem('fom_session_date');
     const today = new Date().toISOString().slice(0, 10);
-    let stored = localStorage.getItem('fom_session_token');
-    const storedDate = localStorage.getItem('fom_session_date');
-
-    if (stored && storedDate && storedDate !== today) {
-      localStorage.removeItem('fom_session_token');
-      localStorage.removeItem('fom_session_date');
-      stored = null;
-    }
-
-    localStorage.setItem('fom_session_date', today);
-
+    if (tokenDate !== today) { token = null; localStorage.removeItem('fom_session_token'); }
     const headers = {};
-    if (stored) headers['x-session-token'] = stored;
-
-    const res = await fetch(`${API_BASE}/session`, {
-      headers,
-      signal: AbortSignal.timeout(60000)
-    });
+    if (token) headers['x-session-token'] = token;
+    const res = await fetch(`${API_BASE}/session`, { headers, signal: AbortSignal.timeout(35000) });
     const data = await res.json();
-
     SESSION_TOKEN = data.token;
     localStorage.setItem('fom_session_token', SESSION_TOKEN);
-
-    updateUsageUI(data.used, data.limit, data.extra_transcriptions || 0);
-    console.log(`[SESSION] token=${SESSION_TOKEN.slice(0,8)}... used=${data.used}/${data.limit} extra=${data.extra_transcriptions || 0}`);
-
-    checkPaymentCallback();
-
-  } catch (e) {
-    console.warn('[SESSION] Could not reach backend on load:', e.message);
+    localStorage.setItem('fom_session_date', today);
+    updateUsageUI(data.used, data.limit);
+    console.log(`[SESSION] ${SESSION_TOKEN.slice(0,8)}... used:${data.used}/${data.limit}`);
+  } catch(e) {
+    console.log('[SESSION] fallback to IP:', e.message);
     try {
-      const r = await fetch(`${API_BASE}/usage`, { signal: AbortSignal.timeout(60000) });
-      const d = await r.json();
-      updateUsageUI(d.used, d.limit, 0);
-    } catch (e2) {
-      document.getElementById('usageCount').textContent = 'Tap Transcribe to begin — server will wake up automatically.';
+      const res = await fetch(`${API_BASE}/usage`, { signal: AbortSignal.timeout(35000) });
+      const data = await res.json();
+      updateUsageUI(data.used, data.limit);
+    } catch(e2) {
+      document.getElementById('usageCount').textContent = 'Could not load usage info.';
     }
   }
 }
-
-// ── Check for Paystack payment callback ──────────────────────────────────────
-function checkPaymentCallback() {
-  if (window.location.search.includes('reference=') || window.location.search.includes('trxref=')) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const reference = urlParams.get('reference') || urlParams.get('trxref');
-    if (reference) {
-      console.log('[PAYMENT] Detected reference in URL:', reference);
-      verifyPayment(reference);
-    }
-  }
-}
-
 initSession();
 
-// ── Usage UI ──────────────────────────────────────────────────────────────────
-function updateUsageUI(used, limit, extra = 0) {
+function updateUsageUI(used, limit) {
   const pct = Math.min((used / limit) * 100, 100);
-  const bar = document.getElementById('usageBar');
-  bar.style.width = pct + '%';
-  bar.className = 'usage-bar' + (used >= limit ? ' full' : used >= limit - 2 ? ' warn' : '');
-
-  document.getElementById('usageCount').textContent =
-    used >= limit
-      ? `⛔ All ${limit} free transcriptions used today`
-      : `${used} of ${limit} free transcriptions used today`;
-
-  const extraEl = document.getElementById('extraCount');
-  if (extra > 0) {
-    document.getElementById('extraNumber').textContent = extra;
-    extraEl.style.display = 'block';
-  } else {
-    extraEl.style.display = 'none';
-  }
-
-  // FIX: daily limit is reached only if daily quota exceeded AND no extra credits
-  dailyLimitReached = (used >= limit && extra === 0);
-
-  const processBtn = document.getElementById('processBtn');
-
-  if (dailyLimitReached) {
-    // FIX: use showPaymentUI() — works on both mobile and desktop
-    showPaymentUI();
-    if (!busy) processBtn.style.display = 'none';
-  } else {
-    hidePaymentUI();
-    if (files.length > 0 && !busy) {
-      processBtn.style.display = 'block';
-    }
+  document.getElementById('usageBar').style.width = pct + '%';
+  document.getElementById('usageCount').textContent = `${used} of ${limit} free transcriptions used today`;
+  if (used >= limit) {
+    document.getElementById('limitCard').style.display = 'block';
+    document.getElementById('processBtn').style.display = 'none';
   }
 }
 
-// ── Drag & drop ───────────────────────────────────────────────────────────────
 const zone = document.getElementById('uploadZone');
 zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
 zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
@@ -556,61 +477,46 @@ zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('
 
 function addFiles(list) {
   const arr = Array.from(list).filter(f => {
-    const hasAudioExt = /\.(mp3|m4a|ogg|wav|aac|webm|opus|mpeg|mpga|flac)$/i.test(f.name);
+    // Accept if extension matches audio, OR mime type is audio, OR no extension info (dragged file)
+    const hasAudioExt = /\.(mp3|m4a|ogg|wav|aac|webm|m4b|opus|mpeg|mpga)$/i.test(f.name);
     const hasAudioMime = f.type.startsWith('audio');
-    const noType = !f.type;
-    return hasAudioExt || hasAudioMime || noType;
+    const noTypeInfo = !f.type; // dragged files sometimes have no type
+    return hasAudioExt || hasAudioMime || noTypeInfo;
   });
   if (!arr.length) return alert('Please select audio files (MP3, M4A, OGG, WAV, etc)');
   const existing = new Set(files.map(f => f.name));
   arr.forEach(f => { if (!existing.has(f.name)) files.push(f); });
   if (!activeTab && files.length) activeTab = files[0].name;
   document.getElementById('emptyState').style.display = 'none';
-
-  // FIX: only show process button when NOT at daily limit
-  if (!dailyLimitReached) {
-    document.getElementById('processBtn').style.display = 'block';
-  }
-
+  document.getElementById('processBtn').style.display = 'block';
   const midAd = document.getElementById('midAdSlot');
   if (!midAd.dataset.adLoaded) {
     midAd.dataset.adLoaded = '1';
-    midAd.innerHTML = '<ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-7076616078598631" data-ad-slot="1924514855" data-ad-format="auto" data-full-width-responsive="true"></ins>';
+    midAd.innerHTML = '<ins class="adsbygoogle" style="display:block;width:100%;min-height:60px;" data-ad-client="ca-pub-7076616078598631" data-ad-slot="1924514855" data-ad-format="auto" data-full-width-responsive="true"></ins>';
     try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
   }
   midAd.style.display = 'block';
   renderAll();
 }
 
-// ── Render helpers ────────────────────────────────────────────────────────────
 function renderAll() { renderFileList(); renderTabs(); renderStudy(); }
 
 function renderFileList() {
   document.getElementById('fileList').innerHTML = files.map(f => {
     const r = results[f.name];
     let cls = 'badge-pending', lbl = 'Ready';
+    let errorTip = '';
     if (r) {
       if (r.status === 'transcribing') { cls = 'badge-loading'; lbl = 'Transcribing…'; }
-      else if (r.status === 'studying') { cls = 'badge-loading'; lbl = 'Building guide…'; }
-      else if (r.status === 'done')     { cls = 'badge-done';    lbl = '✓ Done'; }
-      else if (r.status === 'error')    { cls = 'badge-error';   lbl = '✗ Error'; }
+      else if (r.status === 'studying')  { cls = 'badge-loading'; lbl = 'Building guide…'; }
+      else if (r.status === 'done')      { cls = 'badge-done';    lbl = '✓ Done'; }
+      else if (r.status === 'error')     { cls = 'badge-error';   lbl = '✗ Error'; errorTip = ` title="${esc(r.error || 'Unknown error')}"` }
     }
     const spin = (r?.status === 'transcribing' || r?.status === 'studying') ? '<span class="spin"></span>' : '';
     const viewBtn = r?.status === 'done' ? `<button class="btn-view" onclick="setTab('${esc(f.name)}')">Study →</button>` : '';
-    const errMsg = r?.status === 'error' ? `<div style="width:100%;font-size:11px;color:#f87171;margin-top:4px;">⚠️ ${esc(r.error || 'Unknown error')}</div>` : '';
-    return `<div class="file-card">
-      <span class="file-icon">🎵</span>
-      <span class="file-name">${esc(f.name)}</span>
-      <span class="badge ${cls}">${spin}${lbl}</span>
-      ${viewBtn}${errMsg}
-    </div>`;
+    const errMsg = r?.status === 'error' ? `<div style="width:100%;font-size:11px;color:#f87171;margin-top:4px;">⚠️ ${esc(r.error||'Unknown error')}</div>` : '';
+    return `<div class="file-card"><span class="file-icon">🎵</span><span class="file-name">${esc(f.name)}</span><span class="badge ${cls}"${errorTip}>${spin}${lbl}</span>${viewBtn}${errMsg}</div>`;
   }).join('');
-}
-
-function tabLabel(filename) {
-  const waMatch = filename.match(/WA(\d+)/i);
-  if (waMatch) return 'Audio ' + parseInt(waMatch[1], 10);
-  return filename.replace(/\.\w+$/, '').slice(0, 12);
 }
 
 function renderTabs() {
@@ -618,9 +524,11 @@ function renderTabs() {
   const el = document.getElementById('tabs');
   if (!done.length) { el.style.display = 'none'; return; }
   el.style.display = 'flex';
-  el.innerHTML = done.map(f =>
-    `<button class="tab${activeTab === f.name ? ' active' : ''}" onclick="setTab('${esc(f.name)}')">🎙 ${esc(tabLabel(f.name))}</button>`
-  ).join('');
+  el.innerHTML = done.map(f => {
+    const short = f.name.replace(/AUD-\d+-WA\d+/i, '').replace(/\.\w+$/, '') || f.name.replace(/\.\w+$/, '');
+    const label = short || f.name.replace(/\.\w+$/, '');
+    return `<button class="tab${activeTab === f.name ? ' active' : ''}" onclick="setTab('${esc(f.name)}')">🎙 ${esc(label)}</button>`;
+  }).join('');
 }
 
 function setTab(name) { activeTab = name; renderTabs(); renderStudy(); }
@@ -629,61 +537,39 @@ function renderStudy() {
   const area = document.getElementById('studyArea');
   const r = results[activeTab];
   if (!r || r.status !== 'done') { area.innerHTML = ''; return; }
-
-  const icons = {
-    'WORD-FOR-WORD TRANSLATION': '🔄',
-    'KEY VOCABULARY': '📚',
-    'GRAMMAR POINTS': '🔤',
-    'SAMPLE QUESTIONS & MODEL ANSWERS': '❓',
-    'TIPS TO ACE THIS TOPIC': '🏆'
-  };
-
-  let html = `<div class="study-card">
-    <div class="study-card-title">🎤 Transcription — ${esc(tabLabel(activeTab))}</div>
-    <div class="text-box">${esc(r.transcript)}</div>
-  </div>`;
-
-  if (r.parsed && r.parsed.length > 0) {
+  const icons = { 'SUMMARY':'📋','KEY VOCABULARY':'📚','GRAMMAR POINTS':'🔤','SAMPLE QUESTIONS & MODEL ANSWERS':'❓','TIPS TO ACE THIS TOPIC':'🏆' };
+  let html = `<div class="study-card"><div class="study-card-title">🎤 Transcription</div><div class="text-box">${esc(r.transcript)}</div></div>`;
+  if (r.parsed?.length) {
     html += `<div class="study-card"><div class="study-card-title">📖 Study Guide</div>`;
-    r.parsed.forEach(s => {
-      html += `<div class="sec-label">${icons[s.label] || '•'} ${s.label}</div>
-               <div class="text-box">${esc(s.content)}</div>`;
-    });
+    r.parsed.forEach(s => { html += `<div class="sec-label">${icons[s.label]||'•'} ${s.label}</div><div class="text-box">${esc(s.content)}</div>`; });
     html += `</div>`;
-  } else if (r.rawGuide) {
-    html += `<div class="study-card">
-      <div class="study-card-title">📖 Study Guide</div>
-      <div class="text-box">${esc(r.rawGuide)}</div>
-    </div>`;
   } else if (r.guideError) {
-    html += `<div class="study-card">
-      <div class="study-card-title">⚠️ Study Guide Unavailable</div>
-      <div class="text-box" style="color:#f87171;">Transcription worked ✅ but the study guide failed: ${esc(r.guideError)}.\n\nYou can still read and study from the transcription above.</div>
-    </div>`;
+    html += `<div class="study-card"><div class="study-card-title">⚠️ Study Guide Unavailable</div><div class="text-box" style="color:#f87171;">Transcription worked ✅ but the study guide failed: ${esc(r.guideError)}.\n\nYou can still read and study from the transcription above.</div></div>`;
   }
-
   area.innerHTML = html;
 }
 
-// ── Fetch with auto-retry ─────────────────────────────────────────────────────
-async function fetchWithRetry(url, options = {}, attempt = 1) {
-  const MAX = 3;
+async function fetchWithWakeup(url, options = {}, attempt = 1) {
+  const MAX_ATTEMPTS = 3;
+  const TIMEOUT = 90000; // 90 seconds to allow full cold start
   try {
-    const res = await fetch(url, { ...options, signal: AbortSignal.timeout(90000) });
+    const res = await fetch(url, { ...options, signal: AbortSignal.timeout(TIMEOUT) });
     return res;
-  } catch (e) {
-    if (attempt < MAX) {
+  } catch(e) {
+    if (attempt < MAX_ATTEMPTS) {
+      console.log(`Attempt ${attempt} failed, retrying... (${attempt}/${MAX_ATTEMPTS})`);
+      // Show retry message to user
       document.getElementById('wakeupCard').style.display = 'block';
-      document.getElementById('wakeupMsg').innerHTML =
-        `⏳ <strong>Server waking up… (Attempt ${attempt + 1} of ${MAX})</strong><br/>Please wait — retrying automatically, do not close the app!`;
-      await new Promise(r => setTimeout(r, 8000));
-      return fetchWithRetry(url, options, attempt + 1);
+      document.getElementById('wakeupCard').querySelector('p').innerHTML =
+        `⏳ <strong>Server is waking up… (Attempt ${attempt + 1} of ${MAX_ATTEMPTS})</strong><br/>Please wait — retrying automatically, do not close the app!`;
+      // Wait 5 seconds then retry
+      await new Promise(r => setTimeout(r, 5000));
+      return fetchWithWakeup(url, options, attempt + 1);
     }
-    throw new Error('Server took too long to respond. Please wait 30 seconds and tap Transcribe again.');
+    throw new Error('Server is still waking up. Please wait 30 seconds and tap Transcribe again.');
   }
 }
 
-// ── Main process ──────────────────────────────────────────────────────────────
 async function processAll() {
   if (busy) return;
   busy = true;
@@ -692,7 +578,7 @@ async function processAll() {
 
   const wakeup = document.getElementById('wakeupCard');
   wakeup.style.display = 'block';
-  const wakeupTimer = setTimeout(() => { wakeup.style.display = 'none'; }, 35000);
+  setTimeout(() => { wakeup.style.display = 'none'; }, 35000);
 
   const todo = files.filter(f => !results[f.name]?.transcript);
 
@@ -707,58 +593,41 @@ async function processAll() {
 
       const tHeaders = {};
       if (SESSION_TOKEN) tHeaders['x-session-token'] = SESSION_TOKEN;
-
-      const tRes = await fetchWithRetry(`${API_BASE}/transcribe`, {
-        method: 'POST', body: form, headers: tHeaders
-      });
+      const tRes = await fetchWithWakeup(`${API_BASE}/transcribe`, { method: 'POST', body: form, headers: tHeaders });
       const tData = await tRes.json();
 
       if (tRes.status === 429 && tData.error === 'daily_limit') {
         results[file.name] = { status: 'error', error: tData.message };
-        // FIX: use showPaymentUI() so it works on desktop too
-        showPaymentUI();
-        document.getElementById('processBtn').style.display = 'none';
-        dailyLimitReached = true;
+        document.getElementById('limitCard').style.display = 'block';
         renderAll();
         break;
       }
-
       if (!tRes.ok) throw new Error(tData.error || tData.message || 'Transcription failed');
 
       const transcript = tData.transcript;
-
-      if (tData.usage) updateUsageUI(tData.usage.used, tData.usage.limit, tData.usage.extra_transcriptions || 0);
+      if (tData.usage) updateUsageUI(tData.usage.used, tData.usage.limit);
 
       results[file.name] = { status: 'studying', transcript };
       if (!activeTab || results[activeTab]?.status !== 'done') activeTab = file.name;
       renderAll();
 
       try {
-        const gRes = await fetchWithRetry(`${API_BASE}/study-guide`, {
+        const gRes = await fetchWithWakeup(`${API_BASE}/study-guide`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ transcript })
         });
         const gData = await gRes.json();
-        if (!gRes.ok) throw new Error(gData.error || 'Study guide failed');
-
-        const parsed = parseGuide(gData.guide);
-        console.log(`[RESULT] Parsed ${parsed.length} sections from guide`);
-
-        results[file.name] = {
-          status: 'done',
-          transcript,
-          parsed,
-          rawGuide: parsed.length === 0 ? gData.guide : null
-        };
-      } catch (guideErr) {
+        if (!gRes.ok) throw new Error(gData.error || gData.message || 'Study guide failed');
+        results[file.name] = { status: 'done', transcript, parsed: parseGuide(gData.guide) };
+      } catch(guideErr) {
         results[file.name] = { status: 'done', transcript, parsed: [], guideError: guideErr.message };
       }
 
       if (!activeTab || results[activeTab]?.status !== 'done') activeTab = file.name;
       wakeup.style.display = 'none';
 
-    } catch (e) {
+    } catch(e) {
       results[file.name] = { status: 'error', error: e.message };
     }
 
@@ -768,204 +637,60 @@ async function processAll() {
     renderAll();
   }
 
-  clearTimeout(wakeupTimer);
   busy = false;
   document.getElementById('processBtn').disabled = false;
-  wakeup.style.display = 'none';
-
+  document.getElementById('wakeupCard').style.display = 'none';
   const left = files.filter(f => !results[f.name]?.transcript).length;
   document.getElementById('processBtn').textContent = left ? `🚀 Transcribe Remaining (${left})` : '✓ All Done!';
 }
 
-// ── parseGuide ────────────────────────────────────────────────────────────────
 function parseGuide(text) {
-  if (!text) return [];
-
-  const SECTION_NAMES = [
-    'WORD-FOR-WORD TRANSLATION',
-    'KEY VOCABULARY',
-    'GRAMMAR POINTS',
-    'SAMPLE QUESTIONS & MODEL ANSWERS',
-    'TIPS TO ACE THIS TOPIC'
-  ];
-
-  function findHeader(t, name) {
-    const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const patterns = [
-      new RegExp(`\\*\\*${escaped}\\*\\*`, 'i'),
-      new RegExp(`(?:^|\\n)#{1,4}\\s*${escaped}[ \\t]*(?:\\n|$)`, 'i'),
-      new RegExp(`(?:^|\\n)[ \\t]*${escaped}[ \\t]*(?:\\n|$)`, 'i'),
-    ];
-    let best = null;
-    for (const pattern of patterns) {
-      const m = t.match(pattern);
-      if (m && m.index !== undefined) {
-        if (!best || m.index < best.index) {
-          best = { index: m.index, end: m.index + m[0].length };
-        }
-      }
-    }
-    return best;
-  }
-
-  const found = [];
-  for (const name of SECTION_NAMES) {
-    const h = findHeader(text, name);
-    if (h) {
-      found.push({ name, start: h.index, contentStart: h.end });
-      console.log(`[PARSE] Found "${name}" at index ${h.index}`);
-    } else {
-      console.warn(`[PARSE] Section NOT FOUND: "${name}"`);
-    }
-  }
-
-  found.sort((a, b) => a.start - b.start);
-
-  const parsed = [];
-  for (let i = 0; i < found.length; i++) {
-    const current = found[i];
-    const nextStart = i + 1 < found.length ? found[i + 1].start : text.length;
-    const content = text.slice(current.contentStart, nextStart).trim();
-    if (content) {
-      parsed.push({ label: current.name, content });
-      console.log(`[PARSE] "${current.name}" — ${content.length} chars`);
-    }
-  }
-
-  console.log(`[PARSE] Total sections: ${parsed.length}`);
-  return parsed;
+  const names = ['SUMMARY','KEY VOCABULARY','GRAMMAR POINTS','SAMPLE QUESTIONS & MODEL ANSWERS','TIPS TO ACE THIS TOPIC'];
+  return names.map((name, i) => {
+    const start = text.indexOf(`**${name}**`);
+    if (start === -1) return null;
+    const next = names[i+1] ? text.indexOf(`**${names[i+1]}**`) : text.length;
+    return { label: name, content: text.slice(start + name.length + 4, next !== -1 ? next : text.length).trim() };
+  }).filter(Boolean);
 }
 
 function esc(s) {
-  return String(s)
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;');
-}
-
-// ── Package selection ─────────────────────────────────────────────────────────
-document.addEventListener('click', (e) => {
-  const pkgEl = e.target.closest('.package');
-  if (pkgEl) {
-    document.querySelectorAll('.package').forEach(p => p.classList.remove('selected'));
-    pkgEl.classList.add('selected');
-    selectedPackage = pkgEl.dataset.pkg;
-
-    const payBtn = document.getElementById('payButton');
-    payBtn.disabled = false;
-    payBtn.textContent = '💳 Pay with Mobile Money / Card';
-    payBtn.classList.add('selected-ready');
-    console.log('[PAYMENT] Package selected:', selectedPackage);
-  }
-});
-
-// ── Payment ───────────────────────────────────────────────────────────────────
-async function handlePayment() {
-  if (!selectedPackage) {
-    alert('Please tap a package to select it first');
-    return;
-  }
-
-  const email = document.getElementById('paymentEmail').value.trim();
-  if (!email) {
-    alert('Please enter your email address to receive your receipt');
-    document.getElementById('paymentEmail').focus();
-    return;
-  }
-  if (!email.includes('@') || !email.includes('.')) {
-    alert('Please enter a valid email address (e.g. example@gmail.com)');
-    document.getElementById('paymentEmail').focus();
-    return;
-  }
-
-  if (!SESSION_TOKEN) {
-    alert('Session not ready. Please wait a moment and try again.');
-    return;
-  }
-
-  const payBtn = document.getElementById('payButton');
-  payBtn.disabled = true;
-  payBtn.textContent = '⏳ Creating payment…';
-  payBtn.classList.remove('selected-ready');
-
-  try {
-    const callbackUrl = window.location.origin + window.location.pathname;
-    console.log('[PAYMENT] callback_url:', callbackUrl);
-
-    const res = await fetch(`${API_BASE}/create-payment`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-session-token': SESSION_TOKEN
-      },
-      body: JSON.stringify({
-        email,
-        pkg: selectedPackage,
-        callback_url: callbackUrl
-      })
-    });
-
-    const data = await res.json();
-    console.log('[PAYMENT] Response:', data);
-
-    if (data.status && data.payment_url) {
-      console.log('[PAYMENT] Redirecting to Paystack:', data.payment_url);
-      window.location.href = data.payment_url;
-    } else {
-      const errMsg = data.error || 'Unknown error';
-      console.error('[PAYMENT] Failed:', errMsg);
-      alert('Payment could not be created: ' + errMsg + '\n\nPlease try again.');
-      payBtn.disabled = false;
-      payBtn.textContent = '💳 Pay with Mobile Money / Card';
-      payBtn.classList.add('selected-ready');
-    }
-  } catch (e) {
-    console.error('[PAYMENT] Network error:', e);
-    alert('Network error. Please check your internet connection and try again.');
-    payBtn.disabled = false;
-    payBtn.textContent = '💳 Pay with Mobile Money / Card';
-    payBtn.classList.add('selected-ready');
-  }
-}
-
-// ── Payment verification ──────────────────────────────────────────────────────
-async function verifyPayment(reference) {
-  console.log('[PAYMENT] Verifying reference:', reference);
-
-  // FIX: show payment card while verifying (works on desktop too)
-  showPaymentUI();
-  document.getElementById('paymentCardMsg').textContent = '⏳ Verifying your payment… please wait.';
-
-  try {
-    const res = await fetch(`${API_BASE}/verify-payment`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-session-token': SESSION_TOKEN || localStorage.getItem('fom_session_token') || ''
-      },
-      body: JSON.stringify({ reference })
-    });
-
-    const data = await res.json();
-    console.log('[PAYMENT] Verification result:', data);
-
-    window.history.replaceState({}, document.title, window.location.pathname);
-
-    if (data.status) {
-      alert(`✅ Payment successful!\n\nYou now have ${data.extra_transcriptions} extra transcriptions available. You can continue transcribing your audios now!`);
-      await initSession();
-    } else {
-      const errMsg = data.error || 'Payment verification failed';
-      alert(`⚠️ ${errMsg}\n\nIf you were charged, please contact support with your payment reference: ${reference}`);
-      document.getElementById('paymentCardMsg').textContent = 'Choose a package to continue transcribing beyond your daily limit:';
-    }
-  } catch (e) {
-    console.error('[PAYMENT] Verification error:', e);
-    window.history.replaceState({}, document.title, window.location.pathname);
-    alert('Could not verify payment. If you were charged, please contact support.');
-  }
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 </script>
+
+<!-- UPGRADE MODAL -->
+<div class="modal-overlay" id="upgradeModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeUpgradeModal()">✕</button>
+    <div class="modal-title">🚀 Get More Transcriptions</div>
+    <div class="modal-sub">3 free transcriptions per day. Buy a pack to get more instantly.</div>
+    <div class="payment-packages" style="margin-bottom:16px;">
+      <div class="package" data-pkg="small" onclick="selectPkgFromModal('small')">
+        <div class="package-name">Starter</div>
+        <div class="package-price">GHS 5</div>
+        <div class="package-desc">10 transcriptions</div>
+        <div class="package-validity">Valid 30 days</div>
+      </div>
+      <div class="package" data-pkg="medium" onclick="selectPkgFromModal('medium')">
+        <div class="package-name">Standard</div>
+        <div class="package-price">GHS 12</div>
+        <div class="package-desc">15 transcriptions</div>
+        <div class="package-validity">Valid 30 days</div>
+        <div class="package-popular">⭐ Popular</div>
+      </div>
+      <div class="package" data-pkg="large" onclick="selectPkgFromModal('large')">
+        <div class="package-name">Premium</div>
+        <div class="package-price">GHS 20</div>
+        <div class="package-desc">20 transcriptions</div>
+        <div class="package-validity">Valid 30 days</div>
+        <div class="package-best">💎 Best Value</div>
+      </div>
+    </div>
+    <input type="email" id="modalEmail" placeholder="Your email for receipt" style="width:100%;background:#0f172a;border:1px solid #1e2d45;border-radius:8px;padding:10px;color:#e2e8f0;margin-bottom:10px;font-size:14px;box-sizing:border-box;"/>
+    <button id="modalPayBtn" onclick="handleModalPayment()" disabled style="width:100%;background:#64748b;color:#fff;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:700;cursor:not-allowed;">👆 Select a package first</button>
+    <p style="font-size:11px;color:#475569;text-align:center;margin-top:8px;">🔒 Secured by Paystack · Mobile Money & Card accepted</p>
+  </div>
+</div>
 </body>
 </html>
