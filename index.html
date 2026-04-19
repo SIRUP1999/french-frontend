@@ -8,70 +8,104 @@
 <meta name="theme-color" content="#0a0e1a"/>
 <title>French Oral Master — AI Transcription & Study Guide</title>
 
-<!--
-  BUG 1 FIX: AdSense script tag is now EMPTY — no JS code inside it.
-  Previously all modal functions were placed inside this tag body and never executed.
--->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7076616078598631" crossorigin="anonymous"></script>
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7076616078598631" crossorigin="anonymous">
+// ── Upgrade Modal ──────────────────────────────────────────────────────────
+function showUpgradeModal() {
+  document.getElementById('upgradeModal').classList.add('open');
+}
+function closeUpgradeModal() {
+  document.getElementById('upgradeModal').classList.remove('open');
+}
+// Close on overlay click
+document.getElementById('upgradeModal').addEventListener('click', function(e) {
+  if (e.target === this) closeUpgradeModal();
+});
+
+let modalSelectedPkg = null;
+function selectPkgFromModal(pkg) {
+  modalSelectedPkg = pkg;
+  // sync with main payment card
+  selectedPackage = pkg;
+  document.querySelectorAll('#upgradeModal .package').forEach(p => p.classList.remove('selected'));
+  document.querySelector(`#upgradeModal .package[data-pkg="${pkg}"]`).classList.add('selected');
+  const btn = document.getElementById('modalPayBtn');
+  btn.disabled = false;
+  btn.style.background = 'linear-gradient(135deg, #f59e0b, #f97316)';
+  btn.style.cursor = 'pointer';
+  btn.textContent = '💳 Pay with Mobile Money / Card';
+}
+
+async function handleModalPayment() {
+  const email = document.getElementById('modalEmail').value.trim();
+  if (!modalSelectedPkg) { alert('Please select a package first'); return; }
+  if (!email) { alert('Please enter your email address'); document.getElementById('modalEmail').focus(); return; }
+  if (!email.includes('@') || !email.includes('.')) { alert('Please enter a valid email address'); return; }
+  // Copy email to main payment form and trigger payment
+  document.getElementById('paymentEmail').value = email;
+  selectedPackage = modalSelectedPkg;
+  closeUpgradeModal();
+  await handlePayment();
+}
+</script>
 
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg: #0a0e1a; --card: #111827; --border: #1e2d45;
-  --accent: #3b82f6; --accent-light: #60a5fa;
-  --gold: #f59e0b; --green: #10b981; --red: #ef4444;
-  --text: #e2e8f0; --muted: #64748b; --highlight: #1e3a5f;
+  --bg: #0a0e1a;
+  --card: #111827;
+  --border: #1e2d45;
+  --accent: #3b82f6;
+  --accent-light: #60a5fa;
+  --gold: #f59e0b;
+  --green: #10b981;
+  --red: #ef4444;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --highlight: #1e3a5f;
 }
-body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; min-height: 100vh; }
 
-/* ── Header ── */
-.header { background: linear-gradient(135deg,#0f172a,#1e2d45); border-bottom: 1px solid var(--border); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.header { background: linear-gradient(135deg, #0f172a 0%, #1e2d45 100%); border-bottom: 1px solid var(--border); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
 .header-left { display: flex; align-items: center; gap: 12px; }
 .header-flag { font-size: 26px; }
 .header-title { font-size: 17px; font-weight: 800; color: var(--accent-light); }
 .header-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
 .header-badge { background: var(--highlight); border: 1px solid var(--accent); border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 700; color: var(--accent-light); }
-.upgrade-btn { background: #78350f; color: #f59e0b; border: 1px solid #f59e0b; border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 700; cursor: pointer; }
 
-/* ── Hero ── */
-.hero { background: linear-gradient(160deg,#0f172a 0%,#1e3a5f 50%,#0f172a 100%); padding: 40px 20px 32px; text-align: center; }
+.hero { background: linear-gradient(160deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%); padding: 40px 20px 32px; text-align: center; }
 .hero h1 { font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 10px; line-height: 1.3; }
 .hero h1 span { color: var(--accent-light); }
 .hero p { font-size: 14px; color: var(--muted); max-width: 400px; margin: 0 auto 20px; line-height: 1.6; }
 .hero-features { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 24px; }
-.feature-pill { background: rgba(59,130,246,.15); border: 1px solid rgba(59,130,246,.3); border-radius: 20px; padding: 5px 12px; font-size: 12px; color: var(--accent-light); font-weight: 600; }
-.hero-free { background: rgba(16,185,129,.15); border: 1px solid rgba(16,185,129,.3); border-radius: 10px; padding: 10px 16px; display: inline-block; font-size: 13px; color: var(--green); font-weight: 700; }
+.feature-pill { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); border-radius: 20px; padding: 5px 12px; font-size: 12px; color: var(--accent-light); font-weight: 600; }
+.hero-free { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; padding: 10px 16px; display: inline-block; font-size: 13px; color: var(--green); font-weight: 700; }
 
-/* ── Ad slots ── */
 .ad-slot { background: var(--card); border: 1px dashed var(--border); border-radius: 10px; padding: 12px; text-align: center; color: var(--muted); font-size: 11px; margin: 0 16px 16px; min-height: 70px; display: flex; align-items: center; justify-content: center; }
 
-/* ── Main ── */
 .main { padding: 16px; max-width: 700px; margin: 0 auto; }
 
-/* ── Wakeup card ── */
 .wakeup-card { background: #1c1a08; border: 1px solid var(--gold); border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; display: none; }
 .wakeup-card p { color: #fcd34d; font-size: 13px; line-height: 1.6; }
 .wakeup-bar-bg { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; margin-top: 8px; }
-.wakeup-bar { height: 100%; background: linear-gradient(90deg,var(--gold),var(--green)); border-radius: 3px; animation: wakeup 25s linear forwards; }
-@keyframes wakeup { from{width:5%} to{width:100%} }
+.wakeup-bar { height: 100%; background: linear-gradient(90deg, var(--gold), var(--green)); border-radius: 3px; animation: wakeup 25s linear forwards; }
+@keyframes wakeup { from { width: 5%; } to { width: 100%; } }
 
-/* ── Usage ── */
-.usage-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; }
+.usage-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.usage-info { flex: 1; }
 .usage-title { font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
 .usage-bar-bg { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
-.usage-bar { height: 100%; background: linear-gradient(90deg,var(--green),var(--accent)); border-radius: 3px; transition: width 0.5s; }
+.usage-bar { height: 100%; background: linear-gradient(90deg, var(--green), var(--accent)); border-radius: 3px; transition: width 0.5s; }
 .usage-count { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
-/* ── Upload zone ── */
-.upload-zone { background: var(--card); border: 2px dashed var(--border); border-radius: 14px; padding: 28px 20px; text-align: center; margin-bottom: 16px; position: relative; overflow: hidden; cursor: pointer; transition: border-color 0.2s,background 0.2s; }
+.upload-zone { background: var(--card); border: 2px dashed var(--border); border-radius: 14px; padding: 28px 20px; text-align: center; margin-bottom: 16px; position: relative; overflow: hidden; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
 .upload-zone.drag-over { border-color: var(--accent); background: var(--highlight); }
 .upload-icon { font-size: 36px; margin-bottom: 8px; }
 .upload-title { font-size: 15px; font-weight: 700; margin-bottom: 5px; }
 .upload-sub { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
 .upload-btn { display: inline-block; background: var(--accent); color: #fff; border-radius: 8px; padding: 9px 22px; font-size: 14px; font-weight: 700; pointer-events: none; }
-.upload-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; font-size: 16px; }
+.upload-zone input[type=file] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; font-size: 16px; }
 
-/* ── File cards ── */
 .file-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
 .file-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .file-icon { font-size: 18px; flex-shrink: 0; }
@@ -79,156 +113,80 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 700; white-space: nowrap; }
 .badge-pending { background: #1f2937; color: var(--muted); }
 .badge-loading { background: var(--highlight); color: var(--accent-light); }
-.badge-done    { background: #064e3b; color: var(--green); }
-.badge-error   { background: #450a0a; color: var(--red); }
+.badge-done { background: #064e3b; color: var(--green); }
+.badge-error { background: #450a0a; color: var(--red); }
 .btn-view { background: var(--highlight); color: var(--accent-light); border: 1px solid var(--accent); border-radius: 6px; padding: 5px 12px; font-size: 12px; font-weight: 700; cursor: pointer; }
 
-/* ── Progress ── */
 .progress-wrap { margin-bottom: 12px; }
 .progress-info { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 5px; }
 .progress-bg { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
-.progress-bar { height: 100%; background: linear-gradient(90deg,var(--accent),var(--green)); border-radius: 3px; transition: width 0.5s; }
+.progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); border-radius: 3px; transition: width 0.5s; }
 
-/* ── Process button ── */
 .process-btn { width: 100%; background: #78350f; color: var(--gold); border: 1px solid var(--gold); border-radius: 10px; padding: 13px; font-size: 15px; font-weight: 700; cursor: pointer; margin-bottom: 18px; }
 .process-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-/* ── Limit card ── */
 .limit-card { background: #1c1408; border: 1px solid var(--gold); border-radius: 12px; padding: 16px; margin-bottom: 16px; text-align: center; }
-.limit-card h3 { color: var(--gold); font-size: 15px; margin-bottom: 8px; }
-.limit-card p  { color: #fcd34d; font-size: 13px; line-height: 1.6; }
+.limit-card h3 { color: var(--gold); font-size: 15px; margin-bottom: 6px; }
+.limit-card p { color: #fcd34d; font-size: 13px; line-height: 1.6; }
 
-/* ── Tabs ── */
-.tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 14px; scrollbar-width: none; }
+.tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 14px; }
 .tabs::-webkit-scrollbar { display: none; }
-.tab { padding: 7px 14px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 700; border: 1px solid var(--border); background: transparent; color: var(--muted); white-space: nowrap; flex-shrink: 0; transition: all .15s; }
+.tab { padding: 7px 14px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 700; border: 1px solid var(--border); background: transparent; color: var(--muted); white-space: nowrap; flex-shrink: 0; transition: all 0.15s; }
 .tab.active { background: var(--highlight); color: var(--accent-light); border-color: var(--accent); }
 
-/* ── Study cards ── */
 .study-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 14px; }
 .study-card-title { font-size: 15px; font-weight: 700; color: var(--accent-light); margin-bottom: 12px; }
-.text-box { background: #0f172a; border-radius: 10px; padding: 14px; font-size: 14px; line-height: 1.8; color: var(--text); white-space: pre-wrap; word-break: break-word; overflow-wrap: break-word; border: 1px solid var(--border); width: 100%; box-sizing: border-box; display: block; overflow-x: auto; }
+.text-box { background: #0f172a; border-radius: 10px; padding: 14px; font-size: 14px; line-height: 1.8; color: var(--text); white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word; word-break: break-word; border: 1px solid var(--border); width: 100%; max-width: 100%; overflow-x: auto; display: block; box-sizing: border-box; }
 .sec-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); margin: 16px 0 8px; }
 
-/* ── Spinner ── */
-.spin { display: inline-block; width: 12px; height: 12px; border: 2px solid var(--border); border-top-color: var(--accent-light); border-radius: 50%; animation: spin .8s linear infinite; vertical-align: middle; margin-right: 4px; }
+.spin { display: inline-block; width: 12px; height: 12px; border: 2px solid var(--border); border-top-color: var(--accent-light); border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 4px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── How-to ── */
 .howto { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 14px; }
 .howto-title { font-size: 14px; font-weight: 700; color: var(--gold); margin-bottom: 14px; }
 .step { background: #0f172a; border-radius: 10px; padding: 13px; border-left: 3px solid var(--accent); margin-bottom: 10px; }
 .step-title { font-size: 13px; font-weight: 700; color: var(--accent-light); margin-bottom: 4px; }
-.step-body  { font-size: 13px; color: #cbd5e1; line-height: 1.6; }
+.step-body { font-size: 13px; color: #cbd5e1; line-height: 1.6; }
 .step.green { border-left-color: var(--green); }
 .step.green .step-title { color: var(--green); }
 
-/* ── Content articles ── */
+/* ── CONTENT ARTICLES (for AdSense approval) ── */
 .content-section { max-width: 700px; margin: 0 auto; padding: 0 16px; }
 .content-section h2 { font-size: 20px; font-weight: 800; color: #fff; margin: 32px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
 .article-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 16px; }
 .article-card h3 { font-size: 16px; font-weight: 700; color: var(--accent-light); margin-bottom: 10px; }
-.article-card p  { font-size: 14px; color: #cbd5e1; line-height: 1.8; margin-bottom: 10px; }
+.article-card p { font-size: 14px; color: #cbd5e1; line-height: 1.8; margin-bottom: 10px; }
 .article-card p:last-child { margin-bottom: 0; }
 .article-card ul { padding-left: 18px; }
 .article-card ul li { font-size: 14px; color: #cbd5e1; line-height: 1.8; margin-bottom: 6px; }
 .tip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
-@media(max-width:500px){ .tip-grid { grid-template-columns: 1fr; } }
+@media (max-width: 500px) { .tip-grid { grid-template-columns: 1fr; } }
 .tip-box { background: #0f172a; border-radius: 10px; padding: 14px; border: 1px solid var(--border); }
-.tip-box-icon  { font-size: 22px; margin-bottom: 6px; }
+.tip-box-icon { font-size: 22px; margin-bottom: 6px; }
 .tip-box-title { font-size: 13px; font-weight: 700; color: var(--accent-light); margin-bottom: 4px; }
-.tip-box-body  { font-size: 12px; color: var(--muted); line-height: 1.6; }
-.vocab-table   { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.tip-box-body { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.vocab-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
 .vocab-table th { background: var(--highlight); color: var(--accent-light); font-size: 12px; padding: 8px 12px; text-align: left; }
 .vocab-table td { font-size: 13px; color: #cbd5e1; padding: 8px 12px; border-bottom: 1px solid var(--border); }
 .vocab-table tr:last-child td { border-bottom: none; }
 
-/* ── Footer ── */
 .footer { text-align: center; padding: 24px 20px 40px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 20px; }
 .footer a { color: var(--accent-light); text-decoration: none; }
+
 .empty { text-align: center; color: var(--muted); padding: 32px 0; font-size: 14px; }
 .empty-icon { font-size: 44px; margin-bottom: 10px; }
 
-/* ════════════════════════════════════════════════════════
-   UPGRADE MODAL
-   BUG 4 FIX: ALL package CSS was missing. Added below.
-   ════════════════════════════════════════════════════════ */
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,.78); z-index: 1000;
-  display: none; align-items: center; justify-content: center; padding: 16px;
-}
-.modal-overlay.open { display: flex; }
-.modal-box {
-  background: #111827; border: 1px solid #1e2d45;
-  border-radius: 16px; padding: 24px;
-  max-width: 480px; width: 100%;
-  position: relative; max-height: 90vh; overflow-y: auto;
-}
-.modal-close {
-  position: absolute; top: 12px; right: 16px;
-  background: none; border: none;
-  color: var(--muted); font-size: 22px; cursor: pointer; line-height: 1;
-}
-.modal-close:hover { color: var(--text); }
-.modal-title { font-size: 18px; font-weight: 800; color: var(--gold); margin-bottom: 6px; }
-.modal-sub   { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
-
-/* Package grid */
-.payment-packages { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 16px; }
-@media(max-width:400px){ .payment-packages { grid-template-columns: 1fr; } }
-
-.package {
-  background: #0f172a; border: 2px solid var(--border);
-  border-radius: 12px; padding: 16px 10px 14px;
-  text-align: center; cursor: pointer; position: relative;
-  transition: border-color .2s, background .2s;
-}
-.package:hover   { border-color: var(--accent); background: var(--highlight); }
-.package.selected{ border-color: var(--gold);   background: #1c1408; }
-
-.package-name     { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
-.package-price    { font-size: 24px; font-weight: 900; color: var(--gold); margin-bottom: 5px; }
-.package-desc     { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
-.package-validity { font-size: 11px; color: var(--muted); }
-
-.package-popular {
-  position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
-  background: var(--accent); color: #fff;
-  font-size: 10px; font-weight: 800; padding: 2px 10px;
-  border-radius: 20px; white-space: nowrap;
-}
-.package-best {
-  position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
-  background: var(--gold); color: #000;
-  font-size: 10px; font-weight: 800; padding: 2px 10px;
-  border-radius: 20px; white-space: nowrap;
-}
-
-.modal-email {
-  width: 100%; background: #0f172a;
-  border: 1px solid var(--border); border-radius: 8px;
-  padding: 10px 12px; color: var(--text);
-  font-size: 14px; box-sizing: border-box;
-  margin-bottom: 10px; outline: none;
-}
-.modal-email:focus { border-color: var(--accent); }
-
-.modal-pay-btn {
-  width: 100%; border: none; border-radius: 8px;
-  padding: 13px; font-size: 14px; font-weight: 700;
-  background: var(--muted); color: #fff;
-  cursor: not-allowed; transition: background .2s, color .2s;
-}
-.modal-pay-btn.ready  { background: linear-gradient(135deg,#f59e0b,#f97316); color: #000; cursor: pointer; }
-.modal-pay-btn:disabled { opacity: .6; }
-
-.modal-status { margin-top: 10px; font-size: 13px; text-align: center; display: none; }
+/* ── UPGRADE MODAL ── */
+.modal-overlay { position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:1000;display:none;align-items:center;justify-content:center;padding:16px; }
+.modal-overlay.open { display:flex; }
+.modal-box { background:#111827;border:1px solid #1e2d45;border-radius:16px;padding:24px;max-width:480px;width:100%;position:relative;max-height:90vh;overflow-y:auto; }
+.modal-close { position:absolute;top:12px;right:16px;background:none;border:none;color:#64748b;font-size:20px;cursor:pointer;line-height:1; }
+.modal-title { font-size:18px;font-weight:800;color:#f59e0b;margin-bottom:6px; }
+.modal-sub { font-size:13px;color:#64748b;margin-bottom:18px; }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-left">
     <span class="header-flag">🇫🇷</span>
@@ -239,49 +197,56 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
   </div>
   <div style="display:flex;gap:8px;align-items:center;">
     <span class="header-badge">✨ Free</span>
-    <button class="upgrade-btn" onclick="showUpgradeModal()">🚀 Upgrade</button>
+    <button onclick="showUpgradeModal()" style="background:#78350f;color:#f59e0b;border:1px solid #f59e0b;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;">🚀 Upgrade</button>
   </div>
 </div>
 
-<!-- HERO -->
 <div class="hero">
   <h1>Master Your <span>French Oral</span> Exam with AI</h1>
-  <p>Upload your audio files and instantly get transcriptions, word-for-word translations, vocabulary, grammar notes, and study guides — all for free.</p>
+  <p>Upload your audio files and instantly get transcriptions, vocabulary, grammar notes, and study guides — all for free.</p>
   <div class="hero-features">
     <span class="feature-pill">🎤 Auto Transcription</span>
-    <span class="feature-pill">🌐 Word-for-Word Translation</span>
     <span class="feature-pill">📚 Vocabulary</span>
     <span class="feature-pill">🔤 Grammar Notes</span>
-    <span class="feature-pill">❓ Sample Q&amp;A</span>
+    <span class="feature-pill">❓ Sample Q&A</span>
     <span class="feature-pill">🏆 Exam Tips</span>
   </div>
   <div class="hero-free">✅ No account needed &nbsp;·&nbsp; 3 free audios per day &nbsp;·&nbsp; No credit card</div>
 </div>
 
-<!-- AD TOP -->
+<!-- CONTENT FOR ADSENSE — visible immediately to Google crawler -->
+<div style="max-width:700px;margin:16px auto;padding:0 16px;">
+  <div style="background:#111827;border:1px solid #1e2d45;border-radius:14px;padding:20px;">
+    <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:10px;">🇫🇷 What is French Oral Master?</h2>
+    <p style="font-size:14px;color:#cbd5e1;line-height:1.8;margin-bottom:10px;">French Oral Master is a free AI-powered tool designed to help students prepare for French oral exams. Upload your French audio files and instantly receive a full word-for-word English translation, key vocabulary list, grammar notes, sample exam questions with model answers, and practical exam tips — all generated automatically in seconds.</p>
+    <p style="font-size:14px;color:#cbd5e1;line-height:1.8;">Whether you are a secondary school or university student in Ghana preparing for WAEC, GCE, or any French oral assessment, this tool gives you everything you need to understand your audio and perform confidently on exam day. Used by students at UENR, UG, KNUST, UCC and many more institutions across West Africa.</p>
+  </div>
+</div>
+
 <div class="ad-slot" style="margin-top:16px;">
   <ins class="adsbygoogle" style="display:block;width:100%;min-height:60px;"
-    data-ad-client="ca-pub-7076616078598631" data-ad-slot="1924514855"
-    data-ad-format="auto" data-full-width-responsive="true"></ins>
+    data-ad-client="ca-pub-7076616078598631"
+    data-ad-slot="1924514855"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
 <div class="main">
 
-  <!-- USAGE BAR -->
   <div class="usage-card" id="usageCard">
-    <div class="usage-title">📊 Today's Free Usage</div>
-    <div class="usage-bar-bg"><div class="usage-bar" id="usageBar" style="width:0%"></div></div>
-    <div class="usage-count" id="usageCount">Loading...</div>
+    <div class="usage-info">
+      <div class="usage-title">📊 Today's Free Usage</div>
+      <div class="usage-bar-bg"><div class="usage-bar" id="usageBar" style="width:0%"></div></div>
+      <div class="usage-count" id="usageCount">Loading...</div>
+    </div>
   </div>
 
-  <!-- WAKEUP NOTICE -->
   <div class="wakeup-card" id="wakeupCard">
-    <p id="wakeupMsg">⏳ <strong>Waking up the server…</strong> This takes up to 30 seconds on first use. Please wait — do not close the app!</p>
-    <div class="wakeup-bar-bg"><div class="wakeup-bar"></div></div>
+    <p>⏳ <strong>Waking up the server…</strong> This takes up to 30 seconds on first use. Please wait — do not close the app!</p>
+    <div class="wakeup-bar-bg"><div class="wakeup-bar" id="wakeupBar"></div></div>
   </div>
 
-  <!-- UPLOAD ZONE -->
   <div class="upload-zone" id="uploadZone">
     <div class="upload-icon">🎧</div>
     <div class="upload-title">Tap to upload your French audio files</div>
@@ -292,31 +257,23 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 
   <div class="file-list" id="fileList"></div>
 
-  <!-- PROGRESS -->
   <div class="progress-wrap" id="progressWrap" style="display:none">
-    <div class="progress-info">
-      <span>Processing your audios…</span>
-      <span id="progressTxt">0/0</span>
-    </div>
+    <div class="progress-info"><span>Processing your audios…</span><span id="progressTxt">0/0</span></div>
     <div class="progress-bg"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
   </div>
 
-  <!-- LIMIT CARD -->
   <div class="limit-card" id="limitCard" style="display:none">
     <h3>🎯 Daily Limit Reached</h3>
-    <p>You've used your 3 free transcriptions for today.<br/>
-      <button onclick="showUpgradeModal()"
-        style="margin-top:10px;background:linear-gradient(135deg,#f59e0b,#f97316);color:#000;border:none;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:800;cursor:pointer;">
-        🚀 Buy More Transcriptions
-      </button>
-    </p>
+    <p>You've used your 3 free transcriptions for today.<br/>Come back tomorrow for 7 more — completely free! ☀️</p>
   </div>
 
   <button class="process-btn" id="processBtn" style="display:none" onclick="processAll()">
     🚀 Transcribe &amp; Study All Files
   </button>
 
-  <div id="midAdSlot" style="display:none;margin-bottom:16px;"></div>
+  <div id="midAdSlot" style="display:none; margin-bottom:16px;">
+    <!-- Ad loaded dynamically when user uploads files -->
+  </div>
 
   <div class="tabs" id="tabs" style="display:none"></div>
   <div id="studyArea"></div>
@@ -326,369 +283,323 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     Upload your French oral audio files above<br/>to get your instant study guide.
   </div>
 
-  <!-- HOW-TO -->
   <div class="howto">
     <div class="howto-title">📖 How to Upload Your Audio Files</div>
     <div class="step"><div class="step-title">Step 1 — Tap the upload box</div><div class="step-body">Tap anywhere on the 🎧 upload area. Your phone's file picker will open.</div></div>
     <div class="step"><div class="step-title">Step 2 — It shows images? Switch to files</div><div class="step-body"><strong>Android:</strong> Tap the ☰ menu → select "Files" or "Browse"<br/><strong>iPhone:</strong> Tap "Browse" at the bottom → go to Downloads or WhatsApp folder</div></div>
     <div class="step"><div class="step-title">Step 3 — Find your audio files</div><div class="step-body">From <strong>WhatsApp</strong>: Internal Storage → WhatsApp → Media → WhatsApp Audio<br/>From <strong>Downloads</strong>: Internal Storage → Downloads</div></div>
     <div class="step"><div class="step-title">Step 4 — Select all files at once</div><div class="step-body"><strong>Long press</strong> the first file → tap each remaining file → tap Open / Done</div></div>
-    <div class="step green"><div class="step-title">✅ Then tap "Transcribe & Study All"</div><div class="step-body">Each audio will be transcribed and a full study guide built automatically.</div></div>
+    <div class="step green"><div class="step-title">✅ Then tap "Transcribe & Study All"</div><div class="step-body">Each audio will be transcribed and a full study guide built automatically. Tap each tab to switch between audios.</div></div>
   </div>
 
 </div>
 
-<!-- AD MID -->
-<div class="ad-slot" style="margin:0 16px 16px;">
+<!-- AD SLOT MID PAGE -->
+<div class="ad-slot" style="margin: 0 16px 16px;">
   <ins class="adsbygoogle" style="display:block;width:100%;min-height:60px;"
-    data-ad-client="ca-pub-7076616078598631" data-ad-slot="1924514855"
-    data-ad-format="auto" data-full-width-responsive="true"></ins>
+    data-ad-client="ca-pub-7076616078598631"
+    data-ad-slot="1924514855"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
-<!-- ══ CONTENT ARTICLES ══ -->
+<!-- ══ CONTENT ARTICLES — required for AdSense approval ══ -->
 <div class="content-section">
+
   <h2>🇫🇷 Your Complete Guide to Passing the French Oral Exam</h2>
 
   <div class="article-card">
     <h3>What is a French Oral Exam?</h3>
     <p>A French oral exam (also called an <em>épreuve orale</em>) is a spoken language assessment where students demonstrate their ability to understand and communicate in French. It typically involves listening to audio passages, answering questions, describing images, or having a conversation with an examiner in French.</p>
-    <p>Most oral exams at the secondary and university level in West Africa, including Ghana, follow the WAEC or GCE format, which requires students to respond to audio-based prompts.</p>
+    <p>The exam tests several key skills: listening comprehension, spoken fluency, vocabulary range, grammar accuracy, and the ability to express opinions and ideas clearly in French. Most oral exams at the secondary and university level in West Africa, including Ghana, follow the WAEC or GCE format, which requires students to respond to audio-based prompts.</p>
   </div>
 
   <div class="article-card">
     <h3>How French Oral Master Helps You Prepare</h3>
-    <p>French Oral Master uses advanced AI (powered by Groq Whisper + Gemini) to transcribe your French audio files and generate a complete 5-section study guide including:</p>
+    <p>French Oral Master uses advanced AI technology (powered by Groq Whisper) to automatically transcribe your French audio files into text. Once transcribed, our AI (powered by Llama) generates a complete study guide for each audio that includes:</p>
     <ul>
-      <li><strong>Word-for-word English translation</strong> — understand every sentence</li>
+      <li><strong>A full transcription</strong> — so you can read exactly what was said</li>
       <li><strong>Key vocabulary</strong> — important French words with English translations</li>
-      <li><strong>Grammar points</strong> — structures used in the audio</li>
-      <li><strong>Sample questions and model answers</strong></li>
-      <li><strong>Tips to ace this specific topic</strong></li>
+      <li><strong>Grammar points</strong> — structures used in the audio that you should know</li>
+      <li><strong>Sample questions and model answers</strong> — to practice responding to the audio topic</li>
+      <li><strong>Tips to ace the topic</strong> — practical advice for performing well in your oral exam</li>
     </ul>
+    <p>This means you no longer have to struggle alone with audio files you don't fully understand. Our tool breaks everything down for you step by step, completely free.</p>
   </div>
 
   <div class="article-card">
     <h3>Top Tips for Passing Your French Oral Exam</h3>
     <div class="tip-grid">
-      <div class="tip-box"><div class="tip-box-icon">🎧</div><div class="tip-box-title">Listen Repeatedly</div><div class="tip-box-body">Play each audio at least 3 times. First for meaning, second for details, third while reading the transcription.</div></div>
-      <div class="tip-box"><div class="tip-box-icon">📝</div><div class="tip-box-title">Learn Key Phrases</div><div class="tip-box-body">Memorise "À mon avis" (In my opinion), "Par exemple" (For example), "En conclusion" (In conclusion).</div></div>
-      <div class="tip-box"><div class="tip-box-icon">🗣️</div><div class="tip-box-title">Speak Out Loud</div><div class="tip-box-body">Practice answering sample questions out loud. Speaking French daily for 5 minutes improves fluency significantly.</div></div>
-      <div class="tip-box"><div class="tip-box-icon">📖</div><div class="tip-box-title">Study Vocabulary</div><div class="tip-box-body">Write each key word in a sentence to help you remember it. Flashcards work very well for exam vocabulary.</div></div>
-      <div class="tip-box"><div class="tip-box-icon">⏱️</div><div class="tip-box-title">Time Yourself</div><div class="tip-box-body">Practice answering questions within 1–2 minutes to build the habit of being concise in the actual exam.</div></div>
-      <div class="tip-box"><div class="tip-box-icon">🤝</div><div class="tip-box-title">Study in Groups</div><div class="tip-box-body">Share this tool with classmates. Quiz each other using the sample questions generated from your audios.</div></div>
+      <div class="tip-box">
+        <div class="tip-box-icon">🎧</div>
+        <div class="tip-box-title">Listen Repeatedly</div>
+        <div class="tip-box-body">Play each audio at least 3 times. First for general meaning, second for details, third while reading the transcription.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-box-icon">📝</div>
+        <div class="tip-box-title">Learn Key Phrases</div>
+        <div class="tip-box-body">Memorise transition phrases like "À mon avis" (In my opinion), "Par exemple" (For example), and "En conclusion" (In conclusion).</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-box-icon">🗣️</div>
+        <div class="tip-box-title">Speak Out Loud</div>
+        <div class="tip-box-body">Practice answering the sample questions out loud. Speaking French daily, even for 5 minutes, significantly improves your fluency.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-box-icon">📖</div>
+        <div class="tip-box-title">Study Vocabulary</div>
+        <div class="tip-box-body">Focus on the key vocabulary from each audio. Use flashcards or write each word in a sentence to help you remember it.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-box-icon">⏱️</div>
+        <div class="tip-box-title">Time Yourself</div>
+        <div class="tip-box-body">In the actual exam, you have limited time. Practice answering questions within 1–2 minutes to build the habit of being concise.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-box-icon">🤝</div>
+        <div class="tip-box-title">Study in Groups</div>
+        <div class="tip-box-body">Share this tool with your classmates. Quiz each other using the sample questions. Group study makes French oral prep more effective and fun.</div>
+      </div>
     </div>
   </div>
 
   <div class="article-card">
     <h3>Common French Vocabulary for Oral Exams</h3>
+    <p>These are some of the most frequently tested French words and phrases in West African oral exams. Make sure you know them before your exam day.</p>
     <table class="vocab-table">
       <tr><th>French</th><th>English</th><th>Example Use</th></tr>
       <tr><td>Bonjour / Bonsoir</td><td>Good morning / Good evening</td><td>Greeting the examiner</td></tr>
       <tr><td>Je pense que…</td><td>I think that…</td><td>Expressing an opinion</td></tr>
       <tr><td>À mon avis</td><td>In my opinion</td><td>Starting a personal view</td></tr>
-      <tr><td>C'est-à-dire</td><td>That is to say</td><td>Clarifying a point</td></tr>
+      <tr><td>C'est-à-dire</td><td>That is to say / Meaning</td><td>Clarifying a point</td></tr>
       <tr><td>Par exemple</td><td>For example</td><td>Giving an example</td></tr>
       <tr><td>Cependant</td><td>However</td><td>Introducing contrast</td></tr>
       <tr><td>En revanche</td><td>On the other hand</td><td>Comparing two ideas</td></tr>
-      <tr><td>Il faut</td><td>It is necessary</td><td>Giving advice</td></tr>
-      <tr><td>Je suis d'accord</td><td>I agree</td><td>Agreeing</td></tr>
+      <tr><td>Il faut</td><td>It is necessary / One must</td><td>Giving advice or stating a need</td></tr>
+      <tr><td>Je suis d'accord</td><td>I agree</td><td>Agreeing with a statement</td></tr>
       <tr><td>Je ne suis pas d'accord</td><td>I disagree</td><td>Politely disagreeing</td></tr>
       <tr><td>En conclusion</td><td>In conclusion</td><td>Ending a response</td></tr>
-      <tr><td>Pouvez-vous répéter?</td><td>Can you repeat?</td><td>Asking examiner to repeat</td></tr>
+      <tr><td>Pouvez-vous répéter?</td><td>Can you repeat?</td><td>Asking the examiner to repeat</td></tr>
     </table>
   </div>
 
   <div class="article-card">
     <h3>Common French Oral Exam Topics</h3>
+    <p>French oral exams in West Africa typically cover a range of everyday and social topics. Being familiar with the vocabulary for each topic gives you a major advantage. Here are the most common topics you should prepare for:</p>
     <ul>
-      <li><strong>La famille</strong> — family members, relationships, home life</li>
-      <li><strong>L'école et l'éducation</strong> — subjects, teachers, school life</li>
-      <li><strong>La santé</strong> — illness, visiting the doctor, healthy habits</li>
-      <li><strong>L'environnement</strong> — climate change, pollution, conservation</li>
-      <li><strong>La nourriture</strong> — local and French cuisine, restaurants</li>
-      <li><strong>Les transports</strong> — travel, directions, road safety</li>
-      <li><strong>Le travail</strong> — jobs, careers, ambitions</li>
-      <li><strong>La technologie</strong> — internet, social media, modern life</li>
-      <li><strong>Les loisirs</strong> — sports, music, reading, free time</li>
-      <li><strong>La ville et la campagne</strong> — urban vs rural life</li>
+      <li><strong>La famille</strong> (Family) — describing family members, relationships, and home life</li>
+      <li><strong>L'école et l'éducation</strong> (School and Education) — subjects, teachers, school life, and future plans</li>
+      <li><strong>La santé</strong> (Health) — illness, visiting the doctor, healthy habits, and hospitals</li>
+      <li><strong>L'environnement</strong> (The Environment) — climate change, pollution, nature, and conservation</li>
+      <li><strong>La nourriture</strong> (Food) — local and French cuisine, cooking, restaurants, and shopping</li>
+      <li><strong>Les transports</strong> (Transport) — types of transport, travel, directions, and road safety</li>
+      <li><strong>Le travail</strong> (Work) — jobs, careers, workplace situations, and ambitions</li>
+      <li><strong>La technologie</strong> (Technology) — the internet, social media, mobile phones, and modern life</li>
+      <li><strong>Les loisirs</strong> (Hobbies and Leisure) — sports, music, reading, and free time activities</li>
+      <li><strong>La ville et la campagne</strong> (City and Countryside) — comparing urban and rural life</li>
     </ul>
+    <p>Upload any audio on these topics to French Oral Master and get an instant study guide tailored to that specific topic.</p>
   </div>
 
   <div class="article-card">
     <h3>How to Improve Your French Pronunciation</h3>
-    <p><strong>1. Shadow the audio:</strong> Play back the audio and speak along with the recording at the same time. This technique improves pronunciation and rhythm faster than any other method.</p>
-    <p><strong>2. Nasal sounds:</strong> French has nasal vowels that don't exist in English — "an", "en", "in", "on", "un". Practice these separately until they feel natural.</p>
-    <p><strong>3. Liaison rules:</strong> The final consonant of a word is often linked to the next word when it starts with a vowel. "Vous avez" → "voo-za-vay".</p>
-    <p><strong>4. Record yourself:</strong> Record yourself speaking French, then compare it to the original audio to identify what to improve.</p>
+    <p>Pronunciation is one of the most challenging aspects of French for English speakers, but it is also one of the most rewarding skills to develop. Here are practical steps to improve your French pronunciation before your oral exam:</p>
+    <p><strong>1. Shadow the audio:</strong> After transcribing your audio with French Oral Master, play it back and try to speak along with the recording at the same time. This technique, called shadowing, is one of the fastest ways to improve pronunciation and natural rhythm in French.</p>
+    <p><strong>2. Pay attention to nasal sounds:</strong> French has nasal vowels that don't exist in English — sounds like "an", "en", "in", "on", and "un". Practice these sounds separately until they feel natural.</p>
+    <p><strong>3. Learn liaison rules:</strong> In French, the final consonant of a word is often linked to the next word when it starts with a vowel. For example, "vous avez" is pronounced "voo-za-vay". Knowing liaison rules makes you sound much more natural.</p>
+    <p><strong>4. Record yourself:</strong> Use your phone to record yourself speaking French, then compare it to the original audio. This helps you identify where your pronunciation differs and what to improve.</p>
   </div>
+
 </div>
 
-<!-- AD BOTTOM -->
-<div class="ad-slot" style="margin:16px;">
+<!-- AD SLOT BOTTOM -->
+<div class="ad-slot" style="margin: 16px 16px;">
   <ins class="adsbygoogle" style="display:block;width:100%;min-height:60px;"
-    data-ad-client="ca-pub-7076616078598631" data-ad-slot="1924514855"
-    data-ad-format="auto" data-full-width-responsive="true"></ins>
+    data-ad-client="ca-pub-7076616078598631"
+    data-ad-slot="1924514855"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
 <div class="footer">
   French Oral Master &copy; 2026 &nbsp;·&nbsp; Free AI-powered French exam prep<br/>
-  <small style="color:#334155;">Powered by Groq Whisper &amp; Gemini AI</small><br/>
+  <small style="color:#334155;">Powered by Groq Whisper &amp; Llama AI</small><br/>
   <small style="color:#334155;">made with ❤️ by Nana</small><br/>
-  <a href="privacy-policy.html">Privacy Policy</a>
+  <a href="privacy-policy.html" style="color:#60a5fa; font-size:12px;">Privacy Policy</a>
 </div>
 
-<!-- ══════════════════════════════════════════════════════
-     UPGRADE MODAL — HTML
-     ══════════════════════════════════════════════════════ -->
-<div class="modal-overlay" id="upgradeModal">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeUpgradeModal()">✕</button>
-    <div class="modal-title">🚀 Get More Transcriptions</div>
-    <div class="modal-sub">3 free per day. Buy a pack that stays valid for 30 days.</div>
-
-    <div class="payment-packages">
-      <div class="package" data-pkg="small" onclick="selectPkg('small')">
-        <div class="package-name">Starter</div>
-        <div class="package-price">GHS 5</div>
-        <div class="package-desc">10 transcriptions</div>
-        <div class="package-validity">Valid 30 days</div>
-      </div>
-      <div class="package" data-pkg="medium" onclick="selectPkg('medium')">
-        <div class="package-popular">⭐ Popular</div>
-        <div class="package-name">Standard</div>
-        <div class="package-price">GHS 12</div>
-        <div class="package-desc">15 transcriptions</div>
-        <div class="package-validity">Valid 30 days</div>
-      </div>
-      <div class="package" data-pkg="large" onclick="selectPkg('large')">
-        <div class="package-best">💎 Best Value</div>
-        <div class="package-name">Premium</div>
-        <div class="package-price">GHS 20</div>
-        <div class="package-desc">20 transcriptions</div>
-        <div class="package-validity">Valid 30 days</div>
-      </div>
-    </div>
-
-    <input type="email" id="modalEmail" class="modal-email"
-      placeholder="Your email address (for receipt)" autocomplete="email"/>
-
-    <button id="modalPayBtn" class="modal-pay-btn" onclick="handlePayment()" disabled>
-      👆 Select a package first
-    </button>
-
-    <div class="modal-status" id="modalStatus"></div>
-
-    <p style="font-size:11px;color:#475569;text-align:center;margin-top:8px;">
-      🔒 Secured by Paystack · Mobile Money &amp; Card accepted
-    </p>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════════
-     ALL JAVASCRIPT
-     BUG 1 FIX: Now in a proper <script> block, not inside AdSense tag.
-     ══════════════════════════════════════════════════════ -->
 <script>
-'use strict';
+const API_BASE = "https://french-backend-9bz8.onrender.com";
 
-const API_BASE = 'https://french-backend-9bz8.onrender.com';
-
-/* ── App state ─────────────────────────────────────────── */
-const files   = [];
+const files = [];
 const results = {};
-let activeTab     = null;
-let busy          = false;
-let SESSION_TOKEN = null;
-let selectedPkg   = null;   // BUG 1/3 FIX: was trapped in dead AdSense block
+let activeTab = null;
+let busy = false;
 
-/* ══════════════════════════════════════════════
-   SESSION MANAGEMENT
-   ══════════════════════════════════════════════ */
+// ── Session token — tracks usage per browser, not just IP ──────────────────
+let SESSION_TOKEN = null;
+
 async function initSession() {
   try {
-    let token   = localStorage.getItem('fom_session_token');
-    const saved = localStorage.getItem('fom_session_date');
+    let token = localStorage.getItem('fom_session_token');
+    const tokenDate = localStorage.getItem('fom_session_date');
     const today = new Date().toISOString().slice(0, 10);
-    if (saved !== today) { token = null; localStorage.removeItem('fom_session_token'); }
-
-    const headers = token ? { 'x-session-token': token } : {};
-    const res  = await fetch(`${API_BASE}/session`, { headers, signal: AbortSignal.timeout(35000) });
+    // IMPORTANT: Never delete the token on a new day.
+    // The token is used to look up purchased credits in Redis (30-day expiry).
+    // Deleting it means users lose paid transcriptions when they visit the next day.
+    if (tokenDate !== today) {
+      localStorage.setItem('fom_session_date', today);
+      // Keep token alive — do NOT remove it
+    }
+    const headers = {};
+    if (token) headers['x-session-token'] = token;
+    const res = await fetch(`${API_BASE}/session`, { headers, signal: AbortSignal.timeout(35000) });
     const data = await res.json();
-
     SESSION_TOKEN = data.token;
     localStorage.setItem('fom_session_token', SESSION_TOKEN);
     localStorage.setItem('fom_session_date', today);
-    updateUsageUI(data.used, data.limit);
+    updateUsageUI(data.used, data.limit, data.extra_transcriptions || 0);
+    console.log(`[SESSION] ${SESSION_TOKEN.slice(0,8)}... used:${data.used}/${data.limit} extra:${data.extra_transcriptions || 0}`);
   } catch(e) {
-    /* fallback: try IP-based usage */
+    console.log('[SESSION] fallback to IP:', e.message);
     try {
-      const res  = await fetch(`${API_BASE}/usage`, { signal: AbortSignal.timeout(35000) });
+      const res = await fetch(`${API_BASE}/usage`, { signal: AbortSignal.timeout(35000) });
       const data = await res.json();
-      updateUsageUI(data.used, data.limit);
-    } catch(_) {
+      updateUsageUI(data.used, data.limit, 0);
+    } catch(e2) {
       document.getElementById('usageCount').textContent = 'Could not load usage info.';
     }
   }
 }
 initSession();
 
-function updateUsageUI(used, limit) {
+function updateUsageUI(used, limit, extra = 0) {
   const pct = Math.min((used / limit) * 100, 100);
-  document.getElementById('usageBar').style.width  = pct + '%';
-  document.getElementById('usageCount').textContent =
-    `${used} of ${limit} free transcriptions used today`;
-  if (used >= limit) {
-    document.getElementById('limitCard').style.display  = 'block';
+  const bar = document.getElementById('usageBar');
+  bar.style.width = pct + '%';
+
+  if (used >= limit && extra > 0) {
+    // Free limit reached but they have paid credits — let them continue
+    bar.style.background = 'linear-gradient(90deg, #f59e0b, #10b981)';
+    document.getElementById('usageCount').textContent =
+      `Free limit reached · 💎 ${extra} paid transcription${extra !== 1 ? 's' : ''} remaining`;
+    document.getElementById('limitCard').style.display = 'none';
+    if (files.length > 0) document.getElementById('processBtn').style.display = 'block';
+  } else if (used >= limit) {
+    // Truly out — show limit card
+    bar.style.background = 'linear-gradient(90deg, #ef4444, #b91c1c)';
+    document.getElementById('usageCount').textContent = `⛔ All ${limit} free transcriptions used today`;
+    document.getElementById('limitCard').style.display = 'block';
     document.getElementById('processBtn').style.display = 'none';
+  } else {
+    // Has free transcriptions left
+    bar.style.background = 'linear-gradient(90deg, var(--green), var(--accent))';
+    document.getElementById('usageCount').textContent = extra > 0
+      ? `${used} of ${limit} free used · 💎 ${extra} paid remaining`
+      : `${used} of ${limit} free transcriptions used today`;
+    document.getElementById('limitCard').style.display = 'none';
   }
 }
 
-/* ══════════════════════════════════════════════
-   DRAG & DROP
-   ══════════════════════════════════════════════ */
 const zone = document.getElementById('uploadZone');
-zone.addEventListener('dragover',  e => { e.preventDefault(); zone.classList.add('drag-over'); });
-zone.addEventListener('dragleave', ()  => zone.classList.remove('drag-over'));
-zone.addEventListener('drop', e  => {
-  e.preventDefault(); zone.classList.remove('drag-over');
-  addFiles(e.dataTransfer.files);
-});
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('drag-over'); addFiles(e.dataTransfer.files); });
 
 function addFiles(list) {
   const arr = Array.from(list).filter(f => {
-    const hasExt  = /\.(mp3|m4a|ogg|wav|aac|webm|m4b|opus|mpeg|mpga)$/i.test(f.name);
-    const hasMime = f.type.startsWith('audio');
-    return hasExt || hasMime || !f.type;
+    // Accept if extension matches audio, OR mime type is audio, OR no extension info (dragged file)
+    const hasAudioExt = /\.(mp3|m4a|ogg|wav|aac|webm|m4b|opus|mpeg|mpga)$/i.test(f.name);
+    const hasAudioMime = f.type.startsWith('audio');
+    const noTypeInfo = !f.type; // dragged files sometimes have no type
+    return hasAudioExt || hasAudioMime || noTypeInfo;
   });
   if (!arr.length) return alert('Please select audio files (MP3, M4A, OGG, WAV, etc)');
-
   const existing = new Set(files.map(f => f.name));
   arr.forEach(f => { if (!existing.has(f.name)) files.push(f); });
   if (!activeTab && files.length) activeTab = files[0].name;
-
-  document.getElementById('emptyState').style.display  = 'none';
-  document.getElementById('processBtn').style.display  = 'block';
-
-  const mid = document.getElementById('midAdSlot');
-  if (!mid.dataset.adLoaded) {
-    mid.dataset.adLoaded = '1';
-    mid.innerHTML =
-      '<ins class="adsbygoogle" style="display:block;width:100%;min-height:60px;"' +
-      ' data-ad-client="ca-pub-7076616078598631" data-ad-slot="1924514855"' +
-      ' data-ad-format="auto" data-full-width-responsive="true"></ins>';
-    try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch(_) {}
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('processBtn').style.display = 'block';
+  const midAd = document.getElementById('midAdSlot');
+  if (!midAd.dataset.adLoaded) {
+    midAd.dataset.adLoaded = '1';
+    midAd.innerHTML = '<ins class="adsbygoogle" style="display:block;width:100%;min-height:60px;" data-ad-client="ca-pub-7076616078598631" data-ad-slot="1924514855" data-ad-format="auto" data-full-width-responsive="true"></ins>';
+    try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
   }
-  mid.style.display = 'block';
+  midAd.style.display = 'block';
   renderAll();
 }
 
-/* ══════════════════════════════════════════════
-   RENDER FUNCTIONS
-   ══════════════════════════════════════════════ */
 function renderAll() { renderFileList(); renderTabs(); renderStudy(); }
 
 function renderFileList() {
-  document.getElementById('fileList').innerHTML = files.map((f, idx) => {
+  document.getElementById('fileList').innerHTML = files.map(f => {
     const r = results[f.name];
     let cls = 'badge-pending', lbl = 'Ready';
+    let errorTip = '';
     if (r) {
       if (r.status === 'transcribing') { cls = 'badge-loading'; lbl = 'Transcribing…'; }
-      else if (r.status === 'studying') { cls = 'badge-loading'; lbl = 'Building guide…'; }
-      else if (r.status === 'done')    { cls = 'badge-done';    lbl = '✓ Done'; }
-      else if (r.status === 'error')   { cls = 'badge-error';   lbl = '✗ Error'; }
+      else if (r.status === 'studying')  { cls = 'badge-loading'; lbl = 'Building guide…'; }
+      else if (r.status === 'done')      { cls = 'badge-done';    lbl = '✓ Done'; }
+      else if (r.status === 'error')     { cls = 'badge-error';   lbl = '✗ Error'; errorTip = ` title="${esc(r.error || 'Unknown error')}"` }
     }
-    const spin    = (r?.status === 'transcribing' || r?.status === 'studying')
-                    ? '<span class="spin"></span>' : '';
-    /*
-      BUG 5 FIX: Use data-idx instead of inline onclick with filename string.
-      Filenames like "L'examen.mp3" contain an apostrophe which breaks
-      onclick="setTab('L'examen.mp3')" with a JS syntax error.
-    */
-    const viewBtn = r?.status === 'done'
-      ? `<button class="btn-view" data-idx="${idx}" onclick="setTabByIdx(this.dataset.idx)">Study →</button>` : '';
-    const errMsg  = r?.status === 'error'
-      ? `<div style="width:100%;font-size:11px;color:#f87171;margin-top:4px;">⚠️ ${esc(r.error||'Unknown error')}</div>` : '';
-
-    return `<div class="file-card">
-      <span class="file-icon">🎵</span>
-      <span class="file-name">${esc(f.name)}</span>
-      <span class="badge ${cls}">${spin}${lbl}</span>
-      ${viewBtn}${errMsg}
-    </div>`;
+    const spin = (r?.status === 'transcribing' || r?.status === 'studying') ? '<span class="spin"></span>' : '';
+    const viewBtn = r?.status === 'done' ? `<button class="btn-view" onclick="setTab('${esc(f.name)}')">Study →</button>` : '';
+    const errMsg = r?.status === 'error' ? `<div style="width:100%;font-size:11px;color:#f87171;margin-top:4px;">⚠️ ${esc(r.error||'Unknown error')}</div>` : '';
+    return `<div class="file-card"><span class="file-icon">🎵</span><span class="file-name">${esc(f.name)}</span><span class="badge ${cls}"${errorTip}>${spin}${lbl}</span>${viewBtn}${errMsg}</div>`;
   }).join('');
 }
 
 function renderTabs() {
   const done = files.filter(f => results[f.name]?.status === 'done');
-  const el   = document.getElementById('tabs');
+  const el = document.getElementById('tabs');
   if (!done.length) { el.style.display = 'none'; return; }
   el.style.display = 'flex';
   el.innerHTML = done.map(f => {
-    const idx   = files.indexOf(f);
-    const short = f.name.replace(/AUD-\d+-WA\d+/i,'').replace(/\.\w+$/,'') || f.name.replace(/\.\w+$/,'');
-    return `<button class="tab${activeTab === f.name ? ' active' : ''}"
-      data-idx="${idx}" onclick="setTabByIdx(this.dataset.idx)">🎙 ${esc(short)}</button>`;
+    const short = f.name.replace(/AUD-\d+-WA\d+/i, '').replace(/\.\w+$/, '') || f.name.replace(/\.\w+$/, '');
+    const label = short || f.name.replace(/\.\w+$/, '');
+    return `<button class="tab${activeTab === f.name ? ' active' : ''}" onclick="setTab('${esc(f.name)}')">🎙 ${esc(label)}</button>`;
   }).join('');
 }
 
-/* BUG 5 FIX: safe index-based tab switching */
-function setTabByIdx(rawIdx) {
-  const f = files[parseInt(rawIdx, 10)];
-  if (f) { activeTab = f.name; renderTabs(); renderStudy(); }
-}
+function setTab(name) { activeTab = name; renderTabs(); renderStudy(); }
 
 function renderStudy() {
   const area = document.getElementById('studyArea');
-  const r    = results[activeTab];
+  const r = results[activeTab];
   if (!r || r.status !== 'done') { area.innerHTML = ''; return; }
-
-  const ICONS = {
-    'WORD-FOR-WORD TRANSLATION':        '🌐',
-    'KEY VOCABULARY':                    '📚',
-    'GRAMMAR POINTS':                    '🔤',
-    'SAMPLE QUESTIONS & MODEL ANSWERS': '❓',
-    'TIPS TO ACE THIS TOPIC':           '🏆'
-  };
-
-  let html = `<div class="study-card">
-    <div class="study-card-title">🎤 French Transcription</div>
-    <div class="text-box">${esc(r.transcript)}</div>
-  </div>`;
-
-  if (r.parsed && r.parsed.length) {
-    html += `<div class="study-card"><div class="study-card-title">📖 Full Study Guide</div>`;
-    r.parsed.forEach(s => {
-      const icon = ICONS[s.label] || '•';
-      html += `<div class="sec-label">${icon} ${esc(s.label)}</div>
-               <div class="text-box">${esc(s.content)}</div>`;
-    });
+  const icons = { 'SUMMARY':'📋','KEY VOCABULARY':'📚','GRAMMAR POINTS':'🔤','SAMPLE QUESTIONS & MODEL ANSWERS':'❓','TIPS TO ACE THIS TOPIC':'🏆' };
+  let html = `<div class="study-card"><div class="study-card-title">🎤 Transcription</div><div class="text-box">${esc(r.transcript)}</div></div>`;
+  if (r.parsed?.length) {
+    html += `<div class="study-card"><div class="study-card-title">📖 Study Guide</div>`;
+    r.parsed.forEach(s => { html += `<div class="sec-label">${icons[s.label]||'•'} ${s.label}</div><div class="text-box">${esc(s.content)}</div>`; });
     html += `</div>`;
   } else if (r.guideError) {
-    html += `<div class="study-card">
-      <div class="study-card-title">⚠️ Study Guide Unavailable</div>
-      <div class="text-box" style="color:#f87171;">Transcription succeeded ✅ but the study guide could not be generated:\n\n${esc(r.guideError)}\n\nYou can still study from the French transcription above.</div>
-    </div>`;
+    html += `<div class="study-card"><div class="study-card-title">⚠️ Study Guide Unavailable</div><div class="text-box" style="color:#f87171;">Transcription worked ✅ but the study guide failed: ${esc(r.guideError)}.\n\nYou can still read and study from the transcription above.</div></div>`;
   }
   area.innerHTML = html;
 }
 
-/* ══════════════════════════════════════════════
-   TRANSCRIPTION & STUDY GUIDE
-   ══════════════════════════════════════════════ */
-async function fetchWithWakeup(url, opts = {}, attempt = 1) {
+async function fetchWithWakeup(url, options = {}, attempt = 1) {
+  const MAX_ATTEMPTS = 3;
+  const TIMEOUT = 90000; // 90 seconds to allow full cold start
   try {
-    return await fetch(url, { ...opts, signal: AbortSignal.timeout(90000) });
+    const res = await fetch(url, { ...options, signal: AbortSignal.timeout(TIMEOUT) });
+    return res;
   } catch(e) {
-    if (attempt < 3) {
+    if (attempt < MAX_ATTEMPTS) {
+      console.log(`Attempt ${attempt} failed, retrying... (${attempt}/${MAX_ATTEMPTS})`);
+      // Show retry message to user
       document.getElementById('wakeupCard').style.display = 'block';
-      document.getElementById('wakeupMsg').innerHTML =
-        `⏳ <strong>Server waking up… (attempt ${attempt + 1} of 3)</strong><br/>Retrying automatically — do not close the app!`;
+      document.getElementById('wakeupCard').querySelector('p').innerHTML =
+        `⏳ <strong>Server is waking up… (Attempt ${attempt + 1} of ${MAX_ATTEMPTS})</strong><br/>Please wait — retrying automatically, do not close the app!`;
+      // Wait 5 seconds then retry
       await new Promise(r => setTimeout(r, 5000));
-      return fetchWithWakeup(url, opts, attempt + 1);
+      return fetchWithWakeup(url, options, attempt + 1);
     }
-    throw new Error('Server still waking up. Please wait 30 seconds then tap Transcribe again.');
+    throw new Error('Server is still waking up. Please wait 30 seconds and tap Transcribe again.');
   }
 }
 
@@ -700,7 +611,7 @@ async function processAll() {
 
   const wakeup = document.getElementById('wakeupCard');
   wakeup.style.display = 'block';
-  const wakeupTimer = setTimeout(() => { wakeup.style.display = 'none'; }, 35000);
+  setTimeout(() => { wakeup.style.display = 'none'; }, 35000);
 
   const todo = files.filter(f => !results[f.name]?.transcript);
 
@@ -710,35 +621,34 @@ async function processAll() {
     renderAll();
 
     try {
-      /* ── Transcription ── */
       const form = new FormData();
       form.append('file', file, file.name);
-      const tHeaders = SESSION_TOKEN ? { 'x-session-token': SESSION_TOKEN } : {};
 
-      const tRes  = await fetchWithWakeup(`${API_BASE}/transcribe`,
-                      { method: 'POST', body: form, headers: tHeaders });
+      const tHeaders = {};
+      if (SESSION_TOKEN) tHeaders['x-session-token'] = SESSION_TOKEN;
+      const tRes = await fetchWithWakeup(`${API_BASE}/transcribe`, { method: 'POST', body: form, headers: tHeaders });
       const tData = await tRes.json();
 
       if (tRes.status === 429 && tData.error === 'daily_limit') {
         results[file.name] = { status: 'error', error: tData.message };
         document.getElementById('limitCard').style.display = 'block';
-        renderAll(); break;
+        renderAll();
+        break;
       }
       if (!tRes.ok) throw new Error(tData.error || tData.message || 'Transcription failed');
 
-      const { transcript } = tData;
-      if (tData.usage) updateUsageUI(tData.usage.used, tData.usage.limit);
+      const transcript = tData.transcript;
+      if (tData.usage) updateUsageUI(tData.usage.used, tData.usage.limit, tData.usage.extra_transcriptions || 0);
 
       results[file.name] = { status: 'studying', transcript };
       if (!activeTab || results[activeTab]?.status !== 'done') activeTab = file.name;
       renderAll();
 
-      /* ── Study guide ── */
       try {
-        const gRes  = await fetchWithWakeup(`${API_BASE}/study-guide`, {
-          method:  'POST',
+        const gRes = await fetchWithWakeup(`${API_BASE}/study-guide`, {
+          method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify({ transcript })
+          body: JSON.stringify({ transcript })
         });
         const gData = await gRes.json();
         if (!gRes.ok) throw new Error(gData.error || gData.message || 'Study guide failed');
@@ -750,197 +660,70 @@ async function processAll() {
       if (!activeTab || results[activeTab]?.status !== 'done') activeTab = file.name;
       wakeup.style.display = 'none';
 
-    } catch(err) {
-      results[file.name] = { status: 'error', error: err.message };
+    } catch(e) {
+      results[file.name] = { status: 'error', error: e.message };
     }
 
-    const doneCount = files.filter(f => results[f.name]?.status === 'done').length;
-    document.getElementById('progressTxt').textContent  = `${doneCount}/${files.length}`;
-    document.getElementById('progressBar').style.width  = `${(doneCount / files.length) * 100}%`;
+    const done = files.filter(f => results[f.name]?.status === 'done').length;
+    document.getElementById('progressTxt').textContent = `${done}/${files.length}`;
+    document.getElementById('progressBar').style.width = `${(done / files.length) * 100}%`;
     renderAll();
   }
 
-  clearTimeout(wakeupTimer);
-  wakeup.style.display = 'none';
   busy = false;
   document.getElementById('processBtn').disabled = false;
-  const remaining = files.filter(f => !results[f.name]?.transcript).length;
-  document.getElementById('processBtn').textContent =
-    remaining ? `🚀 Transcribe Remaining (${remaining})` : '✓ All Done!';
+  document.getElementById('wakeupCard').style.display = 'none';
+  const left = files.filter(f => !results[f.name]?.transcript).length;
+  document.getElementById('processBtn').textContent = left ? `🚀 Transcribe Remaining (${left})` : '✓ All Done!';
 }
 
-/* ══════════════════════════════════════════════
-   parseGuide
-   BUG 2 FIX: Changed 'SUMMARY' → 'WORD-FOR-WORD TRANSLATION'
-              (must match exactly what the backend prompt generates)
-   BUG 6 FIX: Search is case-insensitive (uppercased comparison text)
-              so slight AI capitalisation variations don't break it.
-   ══════════════════════════════════════════════ */
 function parseGuide(text) {
-  const SECTIONS = [
-    'WORD-FOR-WORD TRANSLATION',
-    'KEY VOCABULARY',
-    'GRAMMAR POINTS',
-    'SAMPLE QUESTIONS & MODEL ANSWERS',
-    'TIPS TO ACE THIS TOPIC'
-  ];
-
-  const UPPER = text.toUpperCase(); // case-insensitive search surface
-
-  return SECTIONS.map((name, i) => {
-    const marker = `**${name}**`;
-    const start  = UPPER.indexOf(marker);
+  const names = ['SUMMARY','KEY VOCABULARY','GRAMMAR POINTS','SAMPLE QUESTIONS & MODEL ANSWERS','TIPS TO ACE THIS TOPIC'];
+  return names.map((name, i) => {
+    const start = text.indexOf(`**${name}**`);
     if (start === -1) return null;
-
-    const contentStart = start + marker.length;
-    const nextName     = SECTIONS[i + 1];
-    const end          = nextName ? UPPER.indexOf(`**${nextName}**`) : -1;
-    const content      = text.slice(contentStart, end !== -1 ? end : text.length).trim();
-
-    return content ? { label: name, content } : null;
+    const next = names[i+1] ? text.indexOf(`**${names[i+1]}**`) : text.length;
+    return { label: name, content: text.slice(start + name.length + 4, next !== -1 ? next : text.length).trim() };
   }).filter(Boolean);
 }
 
-/* ══════════════════════════════════════════════
-   esc — HTML entity escape
-   BUG 5 FIX: Now also escapes single quotes (&#39;)
-              Prevents filenames with apostrophes
-              breaking onclick="..." attribute strings.
-   ══════════════════════════════════════════════ */
 function esc(s) {
-  return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
-/* ══════════════════════════════════════════════
-   UPGRADE MODAL
-   BUG 1 FIX: Functions now in proper <script> block.
-   BUG 3 FIX: handlePayment() fully implemented — no more ReferenceError.
-   BUG 4 FIX: Package CSS added in <style> above.
-   BUG 7 FIX: No longer references non-existent #paymentEmail element.
-   BUG 8 FIX: Auto-verify payment after Paystack redirect.
-   ══════════════════════════════════════════════ */
-function showUpgradeModal() {
-  selectedPkg = null;
-  document.querySelectorAll('.package').forEach(p => p.classList.remove('selected'));
-  const btn = document.getElementById('modalPayBtn');
-  btn.disabled    = true;
-  btn.className   = 'modal-pay-btn';
-  btn.textContent = '👆 Select a package first';
-  setModalStatus('', '');
-  document.getElementById('modalEmail').value = '';
-  document.getElementById('upgradeModal').classList.add('open');
-}
-
-function closeUpgradeModal() {
-  document.getElementById('upgradeModal').classList.remove('open');
-}
-
-document.getElementById('upgradeModal').addEventListener('click', function(e) {
-  if (e.target === this) closeUpgradeModal();
-});
-
-function selectPkg(pkg) {
-  selectedPkg = pkg;
-  document.querySelectorAll('.package').forEach(p =>
-    p.classList.toggle('selected', p.dataset.pkg === pkg)
-  );
-  const btn = document.getElementById('modalPayBtn');
-  btn.disabled    = false;
-  btn.className   = 'modal-pay-btn ready';
-  btn.textContent = '💳 Pay with Mobile Money / Card';
-  setModalStatus('', '');
-}
-
-function setModalStatus(msg, color) {
-  const el = document.getElementById('modalStatus');
-  el.style.display = msg ? 'block' : 'none';
-  el.style.color   = color || 'var(--gold)';
-  el.textContent   = msg;
-}
-
-/* BUG 3 FIX: handlePayment now fully implemented */
-async function handlePayment() {
-  const email = (document.getElementById('modalEmail').value || '').trim();
-
-  if (!selectedPkg) {
-    alert('Please select a package first.'); return;
-  }
-  if (!email) {
-    alert('Please enter your email address.');
-    document.getElementById('modalEmail').focus(); return;
-  }
-  if (!email.includes('@') || !email.includes('.')) {
-    alert('Please enter a valid email address.'); return;
-  }
-
-  const btn = document.getElementById('modalPayBtn');
-  btn.disabled    = true;
-  btn.textContent = '⏳ Creating payment link…';
-  setModalStatus('Connecting to Paystack…', 'var(--gold)');
-
-  try {
-    const token       = SESSION_TOKEN || localStorage.getItem('fom_session_token') || '';
-    const callbackUrl = window.location.origin + window.location.pathname + '?fom_verify=1';
-
-    const res  = await fetch(`${API_BASE}/create-payment`, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json', 'x-session-token': token },
-      body:    JSON.stringify({ email, pkg: selectedPkg, callback_url: callbackUrl })
-    });
-    const data = await res.json();
-
-    if (data.status && data.payment_url) {
-      localStorage.setItem('fom_pay_ref', data.reference);
-      setModalStatus('✅ Redirecting to payment page…', 'var(--green)');
-      setTimeout(() => { window.location.href = data.payment_url; }, 900);
-    } else {
-      throw new Error(data.error || 'Could not create payment link. Please try again.');
-    }
-  } catch(e) {
-    setModalStatus('❌ ' + e.message, 'var(--red)');
-    btn.disabled    = false;
-    btn.textContent = '💳 Try Again';
-  }
-}
-
-/* ══════════════════════════════════════════════
-   BUG 8 FIX: Auto-verify when Paystack redirects back
-   ══════════════════════════════════════════════ */
-(async function checkPaymentReturn() {
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('fom_verify') !== '1') return;
-
-  history.replaceState({}, '', window.location.pathname); // clean URL immediately
-
-  const ref   = params.get('trxref') || params.get('reference') || localStorage.getItem('fom_pay_ref');
-  const token = SESSION_TOKEN || localStorage.getItem('fom_session_token') || '';
-  if (!ref) return;
-
-  try {
-    const res  = await fetch(`${API_BASE}/verify-payment`, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json', 'x-session-token': token },
-      body:    JSON.stringify({ reference: ref })
-    });
-    const data = await res.json();
-    localStorage.removeItem('fom_pay_ref');
-
-    if (data.status) {
-      alert(`🎉 Payment successful! You now have ${data.extra_transcriptions} extra transcriptions. Enjoy!`);
-      initSession(); // refresh usage bar
-    } else {
-      alert('⚠️ Payment could not be verified automatically. If you were charged, please contact us with your email and we will credit your account manually.');
-    }
-  } catch(e) {
-    console.error('[verify-payment]', e);
-  }
-})();
 </script>
 
+<!-- UPGRADE MODAL -->
+<div class="modal-overlay" id="upgradeModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeUpgradeModal()">✕</button>
+    <div class="modal-title">🚀 Get More Transcriptions</div>
+    <div class="modal-sub">3 free transcriptions per day. Buy a pack to get more instantly.</div>
+    <div class="payment-packages" style="margin-bottom:16px;">
+      <div class="package" data-pkg="small" onclick="selectPkgFromModal('small')">
+        <div class="package-name">Starter</div>
+        <div class="package-price">GHS 5</div>
+        <div class="package-desc">10 transcriptions</div>
+        <div class="package-validity">Valid 30 days</div>
+      </div>
+      <div class="package" data-pkg="medium" onclick="selectPkgFromModal('medium')">
+        <div class="package-name">Standard</div>
+        <div class="package-price">GHS 12</div>
+        <div class="package-desc">15 transcriptions</div>
+        <div class="package-validity">Valid 30 days</div>
+        <div class="package-popular">⭐ Popular</div>
+      </div>
+      <div class="package" data-pkg="large" onclick="selectPkgFromModal('large')">
+        <div class="package-name">Premium</div>
+        <div class="package-price">GHS 20</div>
+        <div class="package-desc">20 transcriptions</div>
+        <div class="package-validity">Valid 30 days</div>
+        <div class="package-best">💎 Best Value</div>
+      </div>
+    </div>
+    <input type="email" id="modalEmail" placeholder="Your email for receipt" style="width:100%;background:#0f172a;border:1px solid #1e2d45;border-radius:8px;padding:10px;color:#e2e8f0;margin-bottom:10px;font-size:14px;box-sizing:border-box;"/>
+    <button id="modalPayBtn" onclick="handleModalPayment()" disabled style="width:100%;background:#64748b;color:#fff;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:700;cursor:not-allowed;">👆 Select a package first</button>
+    <p style="font-size:11px;color:#475569;text-align:center;margin-top:8px;">🔒 Secured by Paystack · Mobile Money & Card accepted</p>
+  </div>
+</div>
 </body>
 </html>
