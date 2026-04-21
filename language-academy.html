@@ -1,1 +1,1726 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Language Academy — Master French, Spanish, Arabic & Portuguese</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0a0e1a;--card:#111827;--border:#1e2d45;
+  --accent:#3b82f6;--accent-light:#60a5fa;
+  --gold:#f59e0b;--green:#10b981;--red:#ef4444;
+  --text:#e2e8f0;--muted:#64748b;--highlight:#1e3a5f;
+  --purple:#8b5cf6;--pink:#ec4899;
+}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#0f172a,#1e2d45);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.header-left{display:flex;align-items:center;gap:12px;}
+.header-title{font-size:17px;font-weight:800;color:var(--accent-light);}
+.header-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.back-btn{display:flex;align-items:center;gap:6px;background:var(--highlight);border:1px solid var(--accent);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--accent-light);text-decoration:none;transition:all .2s;}
+.back-btn:hover{background:#1e4a7f;}
+
+/* HERO */
+.hero{background:linear-gradient(160deg,#0f172a 0%,#1e3a5f 50%,#0f172a 100%);padding:32px 20px 24px;text-align:center;}
+.hero h1{font-size:24px;font-weight:800;color:#fff;margin-bottom:8px;line-height:1.3;}
+.hero h1 span{color:var(--accent-light);}
+.hero p{font-size:13px;color:var(--muted);max-width:480px;margin:0 auto 18px;line-height:1.6;}
+
+/* LANG TABS */
+.lang-tabs{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-bottom:8px;}
+.lang-tab{background:rgba(30,58,95,.4);border:1px solid rgba(59,130,246,.25);border-radius:24px;padding:8px 18px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .2s;}
+.lang-tab.active{background:var(--highlight);border-color:var(--accent);color:var(--accent-light);}
+
+/* NAV PILLS */
+.nav-pills{display:flex;gap:8px;overflow-x:auto;padding:14px 16px 0;scrollbar-width:none;justify-content:center;flex-wrap:wrap;}
+.nav-pills::-webkit-scrollbar{display:none;}
+.nav-pill{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .15s;}
+.nav-pill.active,.nav-pill:hover{background:var(--highlight);color:var(--accent-light);border-color:var(--accent);}
+
+/* MAIN */
+.main{padding:16px;max-width:780px;margin:0 auto;}
+
+/* SECTION CARD */
+.section-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;display:none;}
+.section-card.active{display:block;}
+.section-title{font-size:18px;font-weight:800;color:var(--accent-light);margin-bottom:4px;display:flex;align-items:center;gap:10px;}
+.section-subtitle{font-size:12px;color:var(--muted);margin-bottom:18px;}
+
+/* LESSON BLOCKS */
+.lesson-block{background:#0f172a;border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px;border-left:3px solid var(--accent);}
+.lesson-block.green{border-left-color:var(--green);}
+.lesson-block.gold{border-left-color:var(--gold);}
+.lesson-block.purple{border-left-color:var(--purple);}
+.lesson-block.pink{border-left-color:var(--pink);}
+.lesson-title{font-size:13px;font-weight:800;color:var(--accent-light);margin-bottom:10px;}
+.lesson-block.green .lesson-title{color:var(--green);}
+.lesson-block.gold .lesson-title{color:var(--gold);}
+.lesson-block.purple .lesson-title{color:#a78bfa;}
+.lesson-block.pink .lesson-title{color:#f472b6;}
+
+/* TABLE */
+.learn-table{width:100%;border-collapse:collapse;font-size:13px;}
+.learn-table th{background:var(--highlight);color:var(--accent-light);padding:8px 12px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+.learn-table td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top;}
+.learn-table tr:last-child td{border-bottom:none;}
+.learn-table .fr{color:#60a5fa;font-weight:700;}
+.learn-table .es{color:#34d399;font-weight:700;}
+.learn-table .ar{color:#f472b6;font-weight:700;direction:rtl;}
+.learn-table .pt{color:#fbbf24;font-weight:700;}
+.learn-table .en{color:#94a3b8;font-style:italic;}
+.learn-table .note{color:#f59e0b;font-size:11px;}
+
+/* EXAMPLE BOX */
+.example-box{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);border-radius:8px;padding:10px 14px;margin:8px 0;font-size:13px;}
+.example-box .target{font-weight:700;color:var(--accent-light);display:block;margin-bottom:4px;}
+.example-box .en{color:var(--muted);font-style:italic;font-size:12px;}
+.example-box .es-color{color:#34d399;}
+.example-box .ar-color{font-weight:700;color:#f472b6;direction:rtl;display:block;}
+.example-box .pt-color{color:#fbbf24;}
+
+/* TIP */
+.tip-box{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:10px 14px;margin:10px 0;font-size:12px;color:#fcd34d;line-height:1.6;}
+.tip-box strong{color:var(--gold);}
+
+/* BADGE */
+.badge-pill{display:inline-block;font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;margin-left:8px;vertical-align:middle;}
+.badge-beginner{background:rgba(16,185,129,.2);color:var(--green);border:1px solid rgba(16,185,129,.3);}
+.badge-intermediate{background:rgba(245,158,11,.2);color:var(--gold);border:1px solid rgba(245,158,11,.3);}
+
+/* PROGRESS */
+.progress-pill{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:14px;width:fit-content;}
+.progress-pill span{color:var(--green);}
+
+/* ═══════════════════
+   GAME SECTION
+   ═══════════════════ */
+.game-card{background:linear-gradient(135deg,#0f172a,#1e3a5f);border:2px solid var(--accent);border-radius:16px;padding:20px;margin-bottom:16px;}
+.game-title{font-size:16px;font-weight:800;color:#fff;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.game-sub{font-size:12px;color:var(--muted);margin-bottom:16px;}
+
+.game-modes{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.game-mode-btn{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .15s;}
+.game-mode-btn.active{background:var(--highlight);color:var(--accent-light);border-color:var(--accent);}
+
+/* Match Game */
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+@media(max-width:480px){.match-grid{grid-template-columns:1fr;}}
+.match-item{background:#0f172a;border:2px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer;font-size:13px;font-weight:700;text-align:center;transition:all .2s;min-height:52px;display:flex;align-items:center;justify-content:center;}
+.match-item:hover{border-color:var(--accent);background:var(--highlight);}
+.match-item.selected{border-color:var(--gold);background:rgba(245,158,11,.1);color:var(--gold);}
+.match-item.correct{border-color:var(--green);background:rgba(16,185,129,.15);color:var(--green);}
+.match-item.wrong{border-color:var(--red);background:rgba(239,68,68,.1);color:#f87171;}
+.match-item.disabled{opacity:.4;cursor:not-allowed;}
+
+/* Fill-in game */
+.fill-question{background:#0f172a;border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px;}
+.fill-q-num{font-size:11px;color:var(--muted);font-weight:700;margin-bottom:6px;}
+.fill-q-text{font-size:16px;font-weight:800;color:var(--text);margin-bottom:12px;line-height:1.5;}
+.fill-hint{font-size:12px;color:var(--muted);margin-bottom:10px;font-style:italic;}
+.fill-options{display:flex;flex-direction:column;gap:6px;}
+.fill-option{background:#0f172a;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;font-weight:600;cursor:pointer;text-align:left;transition:all .15s;display:flex;align-items:center;gap:8px;}
+.fill-option:hover:not(:disabled){border-color:var(--accent);color:var(--accent-light);background:var(--highlight);}
+.fill-option.correct{border-color:var(--green)!important;background:#064e3b!important;color:var(--green)!important;}
+.fill-option.wrong{border-color:var(--red)!important;background:#450a0a!important;color:#f87171!important;}
+.fill-option.disabled{cursor:not-allowed;opacity:.7;}
+.fill-feedback{font-size:13px;font-weight:700;padding:10px 14px;border-radius:8px;margin:10px 0;display:none;}
+.fill-feedback.show.correct{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.4);color:var(--green);display:block;}
+.fill-feedback.show.wrong{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#f87171;display:block;}
+
+/* Word Scramble */
+.scramble-word{font-size:28px;font-weight:900;color:var(--gold);text-align:center;letter-spacing:6px;padding:20px;background:#0f172a;border-radius:12px;border:1px solid var(--border);margin-bottom:12px;}
+.scramble-hint{font-size:13px;color:var(--muted);text-align:center;margin-bottom:12px;font-style:italic;}
+.scramble-input{width:100%;background:#0f172a;border:2px solid var(--border);border-radius:8px;padding:12px 14px;color:var(--text);font-size:15px;font-weight:700;text-align:center;outline:none;letter-spacing:2px;}
+.scramble-input:focus{border-color:var(--accent);}
+.scramble-btn{width:100%;background:linear-gradient(135deg,var(--accent),#2563eb);color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;}
+.scramble-result{text-align:center;padding:10px;font-size:14px;font-weight:700;margin-top:8px;border-radius:8px;display:none;}
+.scramble-result.correct{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.4);display:block;}
+.scramble-result.wrong{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.3);display:block;}
+
+/* Score bar */
+.score-bar{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 16px;margin-bottom:14px;}
+.score-label{font-size:12px;color:var(--muted);}
+.score-num{font-size:20px;font-weight:800;color:var(--gold);}
+.next-btn{background:var(--highlight);color:var(--accent-light);border:1px solid var(--accent);border-radius:8px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;}
+.next-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+/* SPIN */
+.spin{display:inline-block;width:12px;height:12px;border:2px solid var(--border);border-top-color:var(--accent-light);border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:4px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* FOOTER */
+.footer{text-align:center;padding:24px 20px 40px;color:var(--muted);font-size:12px;border-top:1px solid var(--border);margin-top:20px;}
+.footer a{color:var(--accent-light);text-decoration:none;}
+
+/* PROGRESS DOTS */
+.topic-progress{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .2s;}
+.dot.done{background:var(--green);}
+.dot.active-dot{background:var(--accent);}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <span style="font-size:24px;">🎓</span>
+    <div>
+      <div class="header-title">Language Academy</div>
+      <div class="header-sub">Master 4 Languages — Beginner to Advanced</div>
+    </div>
+  </div>
+  <a href="index.html" class="back-btn">← Back to App</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Learn <span>Any Language</span> from Scratch</h1>
+  <p>Complete lessons with English explanations, translations, examples, and fun games to master French, Spanish, Arabic & Portuguese.</p>
+  <div class="lang-tabs">
+    <button class="lang-tab active" data-lang="fr" onclick="switchLang('fr',this)">🇫🇷 French</button>
+    <button class="lang-tab" data-lang="es" onclick="switchLang('es',this)">🇪🇸 Spanish</button>
+    <button class="lang-tab" data-lang="ar" onclick="switchLang('ar',this)">🇸🇦 Arabic</button>
+    <button class="lang-tab" data-lang="pt" onclick="switchLang('pt',this)">🇧🇷 Portuguese</button>
+  </div>
+</div>
+
+<!-- TOPIC NAV -->
+<div class="nav-pills" id="navPills"></div>
+
+<!-- MAIN CONTENT -->
+<div class="main" id="mainContent"></div>
+
+<!-- FOOTER -->
+<div class="footer">
+  Language Academy · Part of <a href="index.html">French Oral Master</a><br/>
+  <small style="color:#334155;">Learn at your own pace · All explanations in English 🌍</small>
+</div>
+
+<script>
+'use strict';
+
+/* ═══════════════════════
+   CURRICULUM DATA
+   ═══════════════════════ */
+const CURRICULUM = {
+  fr: {
+    name: 'French', flag: '🇫🇷', color: '#60a5fa', cssClass: 'fr',
+    topics: [
+      {
+        id: 'greetings', icon: '👋', title: 'Greetings & Introductions',
+        subtitle: 'How to say hello, goodbye, and introduce yourself',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '🗣️ Basic Greetings (Salutations)',
+            intro: 'These are the most important phrases you will use every day. Learn these first!',
+            headers: ['French 🇫🇷', 'English 🇬🇧', 'When to use it'],
+            rows: [
+              ['Bonjour', 'Good morning / Hello', 'Morning and daytime — most common!'],
+              ['Bonsoir', 'Good evening', 'After about 6 PM'],
+              ['Salut', 'Hi / Hey', 'Casual, with friends only'],
+              ['Bonne nuit', 'Good night', 'When going to bed'],
+              ['Au revoir', 'Goodbye', 'Formal goodbye'],
+              ['À bientôt', 'See you soon', 'When you expect to see them again'],
+              ['À demain', 'See you tomorrow', 'When you will meet tomorrow'],
+              ['Ciao', 'Bye (informal)', 'Very casual, young people']
+            ]
+          },
+          {
+            type: 'table', title: '👤 Introducing Yourself (Se Présenter)',
+            intro: 'How to tell people who you are:',
+            headers: ['French 🇫🇷', 'English meaning'],
+            rows: [
+              ['Je m\'appelle [name]', 'My name is [name]'],
+              ['Je m\'appelle Marie.', 'My name is Marie.'],
+              ['J\'ai [number] ans', 'I am [number] years old'],
+              ['J\'ai vingt ans.', 'I am twenty years old.'],
+              ['Je viens de Ghana / d\'Accra.', 'I am from Ghana / from Accra.'],
+              ['J\'habite à Accra.', 'I live in Accra.'],
+              ['Je suis étudiant(e).', 'I am a student. (add -e for female)'],
+              ['Enchanté(e)!', 'Nice to meet you!'],
+              ['Comment vous appelez-vous?', 'What is your name? (formal)'],
+              ['Comment tu t\'appelles?', 'What is your name? (informal/friendly)'],
+              ['Quel âge avez-vous?', 'How old are you? (formal)'],
+              ['D\'où venez-vous?', 'Where are you from? (formal)'],
+            ]
+          },
+          {
+            type: 'examples', title: '💬 Sample Conversation',
+            exchanges: [
+              {fr:'Bonjour! Je m\'appelle Kofi.',en:'Hello! My name is Kofi.'},
+              {fr:'Bonjour Kofi! Je m\'appelle Marie. Enchanté!',en:'Hello Kofi! My name is Marie. Nice to meet you!'},
+              {fr:'D\'où venez-vous?',en:'Where are you from?'},
+              {fr:'Je viens du Ghana. Et vous?',en:'I am from Ghana. And you?'},
+              {fr:'Je suis de France. Au revoir!',en:'I am from France. Goodbye!'},
+              {fr:'À bientôt!',en:'See you soon!'},
+            ]
+          },
+          {
+            type: 'tip', text: '💡 TIP: In French, "Bonjour" is used in the morning AND afternoon. Only switch to "Bonsoir" in the evening. "Salut" is like saying "Hey" — only use it with close friends, not teachers or strangers!'
+          }
+        ]
+      },
+      {
+        id: 'numbers', icon: '🔢', title: 'Numbers (Les Nombres)',
+        subtitle: 'Counting from 0 to 1000 in French',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '1️⃣ Numbers 1–20',
+            intro: 'French numbers 1-20 must be memorised — they are the building blocks of all bigger numbers:',
+            headers: ['Number', 'French', 'Pronunciation hint'],
+            rows: [
+              ['1','un / une','uhn (un=masc, une=fem)'],
+              ['2','deux','duh'],
+              ['3','trois','twah'],
+              ['4','quatre','katr'],
+              ['5','cinq','sank'],
+              ['6','six','sees'],
+              ['7','sept','set'],
+              ['8','huit','weet'],
+              ['9','neuf','nuhf'],
+              ['10','dix','dees'],
+              ['11','onze','onz'],
+              ['12','douze','dooz'],
+              ['13','treize','trez'],
+              ['14','quatorze','kah-torz'],
+              ['15','quinze','kanz'],
+              ['16','seize','sez'],
+              ['17','dix-sept','dee-set'],
+              ['18','dix-huit','dee-zweet'],
+              ['19','dix-neuf','dee-znuhf'],
+              ['20','vingt','van'],
+            ]
+          },
+          {
+            type: 'table', title: '🔟 Tens: 20 to 100',
+            intro: 'French tens are unique — especially 70, 80, and 90 which are tricky!',
+            headers: ['Number', 'French', 'Literal meaning (why it\'s tricky)'],
+            rows: [
+              ['20','vingt','twenty (normal)'],
+              ['30','trente','thirty (normal)'],
+              ['40','quarante','forty (normal)'],
+              ['50','cinquante','fifty (normal)'],
+              ['60','soixante','sixty (normal)'],
+              ['70','soixante-dix','sixty-ten ← TRICKY! (60+10)'],
+              ['71','soixante et onze','sixty-and-eleven'],
+              ['80','quatre-vingts','four-twenties ← TRICKY! (4×20)'],
+              ['90','quatre-vingt-dix','four-twenty-ten ← TRICKY! (4×20+10)'],
+              ['100','cent','hundred'],
+              ['1000','mille','thousand'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 TIP: 70 in French is literally "sixty-ten" (soixante-dix). 80 is "four-twenties" (quatre-vingts). 90 is "four-twenty-ten"! This confuses everyone — but once you understand the pattern, it clicks. Practice 70–99 the most!'
+          }
+        ]
+      },
+      {
+        id: 'conjugation', icon: '⚙️', title: 'Verb Conjugation (Les Conjugaisons)',
+        subtitle: 'How to change verbs to match who is doing the action',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'lesson-text', title: '📖 What is conjugation?',
+            text: 'In French (and all Romance languages), verbs CHANGE form depending on WHO is doing the action. In English we say "I eat / She eats" — only a small change. In French, the change is bigger. The verb endings tell you who is doing the action. Mastering conjugation is the #1 key to speaking French correctly!'
+          },
+          {
+            type: 'table', title: '👥 Subject Pronouns (Les Pronoms Sujets)',
+            intro: 'First, learn who each pronoun refers to:',
+            headers: ['French', 'English', 'Notes'],
+            rows: [
+              ['je','I','Always lowercase (except at start of sentence)'],
+              ['tu','you (1 person)','Informal — use with friends, family, children'],
+              ['il','he / it','For males and masculine things'],
+              ['elle','she / it','For females and feminine things'],
+              ['nous','we','We (group)'],
+              ['vous','you (plural or formal)','Plural OR formal singular'],
+              ['ils','they (male or mixed)','Group with at least 1 male'],
+              ['elles','they (all female)','Group of all females only'],
+            ]
+          },
+          {
+            type: 'table', title: '🔄 ÊTRE (to be) — Most Important Verb!',
+            intro: '"Être" = "to be". Learn this verb perfectly — you use it in almost every sentence:',
+            headers: ['French', 'English', 'Example sentence'],
+            rows: [
+              ['je suis','I am','Je suis étudiant. (I am a student.)'],
+              ['tu es','you are','Tu es intelligent. (You are smart.)'],
+              ['il/elle est','he/she is','Elle est professeure. (She is a teacher.)'],
+              ['nous sommes','we are','Nous sommes au Ghana. (We are in Ghana.)'],
+              ['vous êtes','you are (pl/formal)','Vous êtes médecin? (Are you a doctor?)'],
+              ['ils/elles sont','they are','Ils sont amis. (They are friends.)'],
+            ]
+          },
+          {
+            type: 'table', title: '🔄 AVOIR (to have) — 2nd Most Important!',
+            intro: '"Avoir" = "to have". Also used to express AGE in French!',
+            headers: ['French', 'English', 'Example sentence'],
+            rows: [
+              ['j\'ai','I have','J\'ai un livre. (I have a book.)'],
+              ['tu as','you have','Tu as quel âge? (How old are you? — lit. "You have what age?")'],
+              ['il/elle a','he/she has','Elle a vingt ans. (She is 20. — lit. "She has 20 years")'],
+              ['nous avons','we have','Nous avons trois cours. (We have 3 classes.)'],
+              ['vous avez','you have (pl/formal)','Vous avez raison. (You are right. — lit. "You have reason")'],
+              ['ils/elles ont','they have','Ils ont faim. (They are hungry. — lit. "They have hunger")'],
+            ]
+          },
+          {
+            type: 'table', title: '🔄 Regular -ER Verbs (PARLER = to speak)',
+            intro: 'Most French verbs end in -ER and follow THIS pattern. Learn this pattern and you can conjugate hundreds of verbs!',
+            headers: ['French', 'English', 'The -ER ending rule'],
+            rows: [
+              ['je parle','I speak','Remove -ER → parl + e'],
+              ['tu parles','you speak','Remove -ER → parl + es'],
+              ['il/elle parle','he/she speaks','Remove -ER → parl + e'],
+              ['nous parlons','we speak','Remove -ER → parl + ons'],
+              ['vous parlez','you speak','Remove -ER → parl + ez'],
+              ['ils/elles parlent','they speak','Remove -ER → parl + ent'],
+            ]
+          },
+          {
+            type: 'table', title: '📋 Common -ER Verbs to Practice With',
+            headers: ['Verb', 'Meaning', 'Example (je form)'],
+            rows: [
+              ['parler','to speak','Je parle français. (I speak French.)'],
+              ['manger','to eat','Je mange du pain. (I eat bread.)'],
+              ['habiter','to live','J\'habite à Accra. (I live in Accra.)'],
+              ['travailler','to work','Je travaille à l\'école. (I work at school.)'],
+              ['étudier','to study','J\'étudie le français. (I study French.)'],
+              ['aimer','to love/like','J\'aime le football. (I love football.)'],
+              ['écouter','to listen','J\'écoute la radio. (I listen to the radio.)'],
+              ['regarder','to watch','Je regarde la télé. (I watch TV.)'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 KEY INSIGHT: In French, the VERB ENDING tells you who is doing the action. Je parle / Tu parles / Il parle — they all sound the same when spoken! But they are written differently. This is why writing French is harder than speaking it.'
+          }
+        ]
+      },
+      {
+        id: 'gender', icon: '⚧️', title: 'Gender & Articles (Le Genre)',
+        subtitle: 'Every French noun is masculine or feminine — learn the rules',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'lesson-text', title: '📖 Why does gender matter in French?',
+            text: 'In French, EVERY noun (person, place, thing, idea) is either MASCULINE or FEMININE. This affects the words around it — especially "the" and "a". In English: "the dog" — same for all. In French: "le chien" (the dog, masculine) vs "la maison" (the house, feminine). You must learn each noun\'s gender!'
+          },
+          {
+            type: 'table', title: '📌 Articles (like "the" and "a" in English)',
+            headers: ['Type', 'Masculine', 'Feminine', 'Plural', 'English'],
+            rows: [
+              ['The (definite)','le','la','les','the'],
+              ['A / An (indefinite)','un','une','des','a / an / some'],
+              ['Some (partitive)','du (de+le)','de la','des','some (uncountable)'],
+            ]
+          },
+          {
+            type: 'table', title: '📋 Common Nouns With Their Gender',
+            intro: 'Always learn a noun WITH its article so you remember the gender:',
+            headers: ['Masculine (le / un)', 'Feminine (la / une)', 'Notes'],
+            rows: [
+              ['le garçon (the boy)','la fille (the girl)','People — logical gender'],
+              ['le père (the father)','la mère (the mother)','Family — logical gender'],
+              ['le livre (the book)','la table (the table)','Objects — must memorise!'],
+              ['le soleil (the sun)','la lune (the moon)','Nature — must memorise!'],
+              ['le pays (the country)','la ville (the city)','Places — must memorise!'],
+              ['le sport (the sport)','la musique (the music)','Activities — must memorise!'],
+              ['le bus (the bus)','la voiture (the car)','Transport — must memorise!'],
+            ]
+          },
+          {
+            type: 'table', title: '💡 Gender Clues (Endings that hint at gender)',
+            headers: ['If noun ends in…', 'It\'s usually…', 'Examples'],
+            rows: [
+              ['-tion, -sion, -ure',  'FEMININE', 'la nation, la maison, la voiture'],
+              ['-té, -tié',           'FEMININE', 'la liberté, la moitié'],
+              ['-ment, -age',         'MASCULINE','le moment, le voyage'],
+              ['-eau, -isme',         'MASCULINE','le tableau, le tourisme'],
+              ['Most words ending -e','FEMININE (often)','la table, la porte — but exceptions exist!'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 BEST STRATEGY: Never learn a noun alone. Always learn it with "le" or "la". Say "la maison" (not just "maison"). Over time, the gender becomes automatic!'
+          }
+        ]
+      },
+      {
+        id: 'tenses', icon: '⏰', title: 'Past & Future Tenses',
+        subtitle: 'How to talk about things that happened and things to come',
+        level: 'intermediate',
+        lessons: [
+          {
+            type: 'table', title: '⏪ Passé Composé (Past Tense) — How to form it',
+            intro: 'The most common past tense in spoken French. It uses AVOIR or ÊTRE + past participle:',
+            headers: ['Step', 'Explanation', 'Example'],
+            rows: [
+              ['1. Choose helper','Most verbs use AVOIR. Motion/state verbs use ÊTRE.','manger → use avoir'],
+              ['2. Conjugate helper','Conjugate avoir/être in present tense','j\'ai (I have)'],
+              ['3. Past participle','-ER verbs: remove -ER, add -É','parler → parlé'],
+              ['4. Combine','Helper + past participle','J\'ai parlé (I spoke / I have spoken)'],
+            ]
+          },
+          {
+            type: 'table', title: '⏪ Passé Composé Examples',
+            headers: ['French', 'English', 'Helper used'],
+            rows: [
+              ['J\'ai mangé du riz.','I ate rice.','avoir'],
+              ['Tu as fini tes devoirs?','Did you finish your homework?','avoir'],
+              ['Il a regardé la télé.','He watched TV.','avoir'],
+              ['Je suis allé(e) à l\'école.','I went to school.','être ← motion verb!'],
+              ['Elle est venue chez moi.','She came to my house.','être ← motion verb!'],
+              ['Nous sommes partis tôt.','We left early.','être ← motion verb!'],
+            ]
+          },
+          {
+            type: 'table', title: '⏩ Futur Simple (Simple Future) — Adding endings to infinitive',
+            intro: 'For the future tense, take the infinitive (full verb) and add these endings:',
+            headers: ['Pronoun', 'Ending', 'Example with PARLER', 'English'],
+            rows: [
+              ['je','-ai','je parlerai','I will speak'],
+              ['tu','-as','tu parleras','you will speak'],
+              ['il/elle','-a','il parlera','he/she will speak'],
+              ['nous','-ons','nous parlerons','we will speak'],
+              ['vous','-ez','vous parlerez','you will speak'],
+              ['ils/elles','-ont','ils parleront','they will speak'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 MOTION VERBS that use ÊTRE (remember "DR MRS VANDERTRAMP"): Devenir, Revenir, Monter, Rester, Sortir, Venir, Aller, Naître, Descendre, Entrer, Rentrer, Tomber, Retourner, Arriver, Mourir, Partir.'
+          }
+        ]
+      },
+      {
+        id: 'questions', icon: '❓', title: 'Asking Questions',
+        subtitle: 'How to form questions — the easy way and the formal way',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '❓ Question Words (Les mots interrogatifs)',
+            headers: ['French', 'English', 'Example question'],
+            rows: [
+              ['Qui','Who','Qui est-ce? (Who is this?)'],
+              ['Quoi / Que / Qu\'','What','Qu\'est-ce que c\'est? (What is this?)'],
+              ['Où','Where','Où habitez-vous? (Where do you live?)'],
+              ['Quand','When','Quand est ton examen? (When is your exam?)'],
+              ['Pourquoi','Why','Pourquoi tu pleures? (Why are you crying?)'],
+              ['Comment','How / What','Comment tu t\'appelles? (What is your name?)'],
+              ['Combien','How many/much','Combien ça coûte? (How much does it cost?)'],
+              ['Quel/Quelle','Which / What','Quelle heure est-il? (What time is it?)'],
+            ]
+          },
+          {
+            type: 'table', title: '3 Ways to Ask a Question in French',
+            headers: ['Method', 'How', 'Example', 'Register'],
+            rows: [
+              ['1. Rising intonation','Statement + raise your voice at end','Tu parles français? ↑','Very casual/spoken'],
+              ['2. Est-ce que...','Add "Est-ce que" before statement','Est-ce que tu parles français?','Normal/everyday'],
+              ['3. Inversion','Flip verb and subject','Parlez-vous français?','Formal/written'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 For your oral exam: Use "Est-ce que" method — it is always correct, works in any situation, and sounds natural. Inversion is for writing and very formal speech.'
+          }
+        ]
+      },
+      {
+        id: 'negation', icon: '🚫', title: 'Negation (Making Negatives)',
+        subtitle: 'How to say "not", "never", "nothing" in French',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '🚫 The Ne...Pas Rule',
+            intro: 'To make ANY French verb negative, put NE before it and PAS after it: NE + VERB + PAS. "Je parle" (I speak) → "Je ne parle pas" (I do not speak). Note: in spoken French, the "ne" is often dropped!',
+            headers: ['Positive', 'Negative', 'English'],
+            rows: [
+              ['Je parle français.','Je ne parle pas français.','I do not speak French.'],
+              ['Il mange.','Il ne mange pas.','He does not eat.'],
+              ['Nous aimons la musique.','Nous n\'aimons pas la musique.','We do not like music.'],
+              ['J\'ai un chien.','Je n\'ai pas de chien.','I do not have a dog.'],
+            ]
+          },
+          {
+            type: 'table', title: '🚫 Other Negative Expressions',
+            headers: ['French', 'English', 'Example'],
+            rows: [
+              ['ne...jamais','never','Je ne mange jamais de viande. (I never eat meat.)'],
+              ['ne...rien','nothing','Je ne comprends rien. (I understand nothing.)'],
+              ['ne...personne','nobody','Je ne vois personne. (I see nobody.)'],
+              ['ne...plus','no more / no longer','Je ne travaille plus. (I no longer work.)'],
+              ['ne...que','only','Je ne parle que français. (I only speak French.)'],
+            ]
+          }
+        ]
+      },
+      {
+        id: 'family', icon: '👨‍👩‍👧‍👦', title: 'Family & Relationships',
+        subtitle: 'Essential vocabulary for the most common exam topic',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '👪 Family Members (La Famille)',
+            headers: ['French', 'English', 'Plural'],
+            rows: [
+              ['le père','the father','les pères'],
+              ['la mère','the mother','les mères'],
+              ['le frère','the brother','les frères'],
+              ['la sœur','the sister','les sœurs'],
+              ['le fils','the son','les fils'],
+              ['la fille','the daughter','les filles'],
+              ['le grand-père','the grandfather','les grands-pères'],
+              ['la grand-mère','the grandmother','les grands-mères'],
+              ['l\'oncle','the uncle','les oncles'],
+              ['la tante','the aunt','les tantes'],
+              ['le cousin/la cousine','the cousin','les cousins/cousines'],
+              ['le mari/la femme','the husband/wife','les maris/femmes'],
+              ['les enfants','the children','—'],
+            ]
+          },
+          {
+            type: 'examples', title: '💬 Talking About Your Family',
+            exchanges: [
+              {fr:'J\'ai une grande famille.',en:'I have a big family.'},
+              {fr:'Mon père s\'appelle Kwame.',en:'My father\'s name is Kwame.'},
+              {fr:'Ma mère est infirmière.',en:'My mother is a nurse.'},
+              {fr:'J\'ai deux frères et une sœur.',en:'I have two brothers and one sister.'},
+              {fr:'Je suis fils unique.',en:'I am an only child (male).'},
+              {fr:'Nous habitons ensemble.',en:'We live together.'},
+            ]
+          }
+        ]
+      },
+      {
+        id: 'school', icon: '🏫', title: 'School & Education',
+        subtitle: 'Vocabulary and phrases for the school topic',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '📚 School Subjects (Les Matières)',
+            headers: ['French', 'English'],
+            rows: [
+              ['les mathématiques (les maths)','mathematics'],
+              ['le français','French'],
+              ['l\'anglais','English'],
+              ['l\'histoire','history'],
+              ['la géographie','geography'],
+              ['les sciences','science'],
+              ['la biologie','biology'],
+              ['la physique','physics'],
+              ['la chimie','chemistry'],
+              ['l\'éducation physique (l\'EPS)','physical education (PE)'],
+              ['l\'informatique','computer science / ICT'],
+              ['l\'économie','economics'],
+            ]
+          },
+          {
+            type: 'table', title: '🏫 School Vocabulary',
+            headers: ['French', 'English'],
+            rows: [
+              ['l\'école / le lycée','school / secondary school'],
+              ['l\'université','university'],
+              ['le professeur / le prof','teacher / prof'],
+              ['l\'élève / l\'étudiant(e)','pupil / student'],
+              ['la salle de classe','classroom'],
+              ['le tableau','blackboard / whiteboard'],
+              ['les devoirs','homework'],
+              ['l\'examen / le contrôle','exam / test'],
+              ['la note / la note','grade / mark'],
+              ['la récréation','break time'],
+              ['la bibliothèque','library'],
+              ['la cantine','school cafeteria'],
+            ]
+          }
+        ]
+      },
+      {
+        id: 'health', icon: '🏥', title: 'Health & Body',
+        subtitle: 'Talk about illness, the doctor, and staying healthy',
+        level: 'intermediate',
+        lessons: [
+          {
+            type: 'table', title: '🤒 Saying You Are Ill',
+            intro: 'French uses "avoir mal à" (to have pain in) to describe aches and pains:',
+            headers: ['French', 'English'],
+            rows: [
+              ['J\'ai mal à la tête.','I have a headache. (I have pain in the head.)'],
+              ['J\'ai mal à la gorge.','I have a sore throat.'],
+              ['J\'ai mal au ventre.','I have a stomachache.'],
+              ['J\'ai mal aux dents.','I have a toothache.'],
+              ['J\'ai de la fièvre.','I have a fever.'],
+              ['Je suis fatigué(e).','I am tired.'],
+              ['Je tousse.','I am coughing.'],
+              ['J\'ai un rhume.','I have a cold.'],
+              ['Je ne me sens pas bien.','I don\'t feel well.'],
+            ]
+          },
+          {
+            type: 'table', title: '🏃 Healthy Habits (La Bonne Santé)',
+            headers: ['French', 'English'],
+            rows: [
+              ['faire de l\'exercice','to exercise'],
+              ['manger sainement','to eat healthily'],
+              ['boire beaucoup d\'eau','to drink lots of water'],
+              ['dormir suffisamment','to sleep enough'],
+              ['éviter le sucre','to avoid sugar'],
+              ['ne pas fumer','not to smoke'],
+              ['aller chez le médecin','to go to the doctor'],
+              ['prendre des médicaments','to take medicine'],
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  es: {
+    name: 'Spanish', flag: '🇪🇸', color: '#34d399', cssClass: 'es',
+    topics: [
+      {
+        id: 'greetings', icon: '👋', title: 'Greetings & Introductions',
+        subtitle: 'Hola, cómo estás — the basics',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '🗣️ Basic Greetings (Saludos)',
+            headers: ['Spanish 🇪🇸', 'English 🇬🇧', 'When to use'],
+            rows: [
+              ['Hola','Hello / Hi','Any time — most universal!'],
+              ['Buenos días','Good morning','Until about midday'],
+              ['Buenas tardes','Good afternoon','Midday to about 8 PM'],
+              ['Buenas noches','Good evening / Good night','After 8 PM and for goodnight'],
+              ['¿Cómo estás?','How are you? (informal)','With friends and peers'],
+              ['¿Cómo está usted?','How are you? (formal)','With elders, strangers, bosses'],
+              ['Muy bien, gracias','Very well, thank you','Common response'],
+              ['Hasta luego','Goodbye','See you later'],
+              ['Hasta mañana','See you tomorrow','When meeting again tomorrow'],
+              ['Adiós','Goodbye (final)','When parting for longer'],
+            ]
+          },
+          {
+            type: 'table', title: '👤 Introducing Yourself',
+            headers: ['Spanish', 'English'],
+            rows: [
+              ['Me llamo [name].','My name is [name].'],
+              ['¿Cómo te llamas?','What is your name? (informal)'],
+              ['¿Cómo se llama usted?','What is your name? (formal)'],
+              ['Tengo [number] años.','I am [number] years old.'],
+              ['Soy de Ghana / de Accra.','I am from Ghana / from Accra.'],
+              ['Vivo en Accra.','I live in Accra.'],
+              ['Soy estudiante.','I am a student.'],
+              ['Mucho gusto.','Nice to meet you.'],
+              ['El gusto es mío.','The pleasure is mine.'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 KEY DIFFERENCE: Spanish has two words for "you" — "tú" (informal, with friends) and "usted" (formal, with elders/strangers). In exams, use "usted" with adults and authority figures!'
+          }
+        ]
+      },
+      {
+        id: 'conjugation', icon: '⚙️', title: 'Verb Conjugation (Conjugación)',
+        subtitle: 'How verbs change based on who is speaking',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '👥 Subject Pronouns (Pronombres Sujeto)',
+            headers: ['Spanish', 'English', 'Notes'],
+            rows: [
+              ['yo','I','—'],
+              ['tú','you (informal)','Friendly/casual'],
+              ['él / ella','he / she','—'],
+              ['usted (Ud.)','you (formal)','Polite form'],
+              ['nosotros/as','we','—'],
+              ['vosotros/as','you all (Spain)','Used in Spain only'],
+              ['ellos/ellas','they','—'],
+              ['ustedes (Uds.)','you all (formal/Latin America)','Used everywhere in Latin America'],
+            ]
+          },
+          {
+            type: 'table', title: '🔄 SER (to be — permanent) vs ESTAR (to be — temporary)',
+            intro: 'Spanish has TWO verbs for "to be" — this is one of the most important things to learn!',
+            headers: ['Pronoun', 'SER (permanent)', 'ESTAR (temporary/location)', 'Example'],
+            rows: [
+              ['yo','soy','estoy','Soy estudiante. / Estoy cansado.'],
+              ['tú','eres','estás','Eres inteligente. / Estás bien?'],
+              ['él/ella','es','está','Ella es médica. / Está enferma.'],
+              ['nosotros','somos','estamos','Somos de Ghana.'],
+              ['ellos','son','están','Son amigos. / Están aquí.'],
+            ]
+          },
+          {
+            type: 'table', title: '🔄 Regular -AR Verbs (HABLAR = to speak)',
+            headers: ['Spanish', 'English', 'Ending'],
+            rows: [
+              ['yo hablo','I speak','-o'],
+              ['tú hablas','you speak','-as'],
+              ['él/ella habla','he/she speaks','-a'],
+              ['nosotros hablamos','we speak','-amos'],
+              ['vosotros habláis','you all speak (Spain)','-áis'],
+              ['ellos hablan','they speak','-an'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 SER vs ESTAR: Use SER for permanent things (nationality, profession, personality). Use ESTAR for temporary things (feelings, health, location). "Soy de Ghana" (I am from Ghana — permanent) vs "Estoy en Ghana" (I am in Ghana — location/temporary).'
+          }
+        ]
+      },
+      {
+        id: 'numbers', icon: '🔢', title: 'Numbers (Los Números)',
+        subtitle: 'Counting and using numbers in Spanish',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '1️⃣ Numbers 1–20',
+            headers: ['Number', 'Spanish', 'Number', 'Spanish'],
+            rows: [
+              ['1','uno','11','once'],
+              ['2','dos','12','doce'],
+              ['3','tres','13','trece'],
+              ['4','cuatro','14','catorce'],
+              ['5','cinco','15','quince'],
+              ['6','seis','16','dieciséis'],
+              ['7','siete','17','diecisiete'],
+              ['8','ocho','18','dieciocho'],
+              ['9','nueve','19','diecinueve'],
+              ['10','diez','20','veinte'],
+            ]
+          },
+          {
+            type: 'table', title: '🔟 Tens and Hundreds',
+            headers: ['Number', 'Spanish', 'Notes'],
+            rows: [
+              ['30','treinta','—'],
+              ['40','cuarenta','—'],
+              ['50','cincuenta','—'],
+              ['60','sesenta','—'],
+              ['70','setenta','—'],
+              ['80','ochenta','—'],
+              ['90','noventa','—'],
+              ['100','cien','Use "cien" alone, "ciento" + more (e.g. ciento uno = 101)'],
+              ['1000','mil','—'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 Spanish numbers are MUCH easier than French! No "four-twenties" nonsense. 70 is "setenta" (not sixty-ten). 80 is "ochenta" (not four-twenties). Great news if you\'re learning both languages!'
+          }
+        ]
+      },
+      {
+        id: 'family', icon: '👨‍👩‍👧‍👦', title: 'Family & Relationships',
+        subtitle: 'La familia — core vocabulary',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '👪 Family Members (La Familia)',
+            headers: ['Spanish', 'English'],
+            rows: [
+              ['el padre / el papá','the father / dad'],
+              ['la madre / la mamá','the mother / mum'],
+              ['el hermano','the brother'],
+              ['la hermana','the sister'],
+              ['el hijo','the son'],
+              ['la hija','the daughter'],
+              ['el abuelo','the grandfather'],
+              ['la abuela','the grandmother'],
+              ['el tío','the uncle'],
+              ['la tía','the aunt'],
+              ['el primo / la prima','the cousin'],
+              ['el marido / la esposa','the husband / wife'],
+            ]
+          }
+        ]
+      },
+      {
+        id: 'environment', icon: '🌿', title: 'Environment & Climate',
+        subtitle: 'El medio ambiente — a key exam topic',
+        level: 'intermediate',
+        lessons: [
+          {
+            type: 'table', title: '🌍 Environment Vocabulary',
+            headers: ['Spanish', 'English'],
+            rows: [
+              ['el medio ambiente','the environment'],
+              ['el cambio climático','climate change'],
+              ['el calentamiento global','global warming'],
+              ['la contaminación','pollution'],
+              ['reciclar','to recycle'],
+              ['los residuos / la basura','waste / rubbish'],
+              ['las energías renovables','renewable energy'],
+              ['la deforestación','deforestation'],
+              ['proteger la naturaleza','to protect nature'],
+              ['el efecto invernadero','the greenhouse effect'],
+              ['la sequía','drought'],
+              ['las inundaciones','floods'],
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  ar: {
+    name: 'Arabic', flag: '🇸🇦', color: '#f472b6', cssClass: 'ar',
+    topics: [
+      {
+        id: 'alphabet', icon: '🔤', title: 'The Arabic Alphabet',
+        subtitle: 'Learn the 28 letters and how Arabic writing works',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'lesson-text', title: '📖 How Arabic Writing Works',
+            text: 'Arabic is written from RIGHT to LEFT. The alphabet has 28 letters. Most letters change shape depending on where they appear in a word (at the start, middle, or end). Arabic is mostly consonants — short vowels are shown with small marks above/below letters, but in most texts they are left out (you must know them from context).'
+          },
+          {
+            type: 'table', title: '📖 Core Arabic Letters (Al-Huruf al-Abjadiyyah)',
+            intro: 'Here are the most important letters with their sounds:',
+            headers: ['Letter', 'Name', 'Sound (like...)', 'Example word'],
+            rows: [
+              ['ا','Alif','A / long "aa"','أب (ab) = father'],
+              ['ب','Ba\'','B','بيت (bayt) = house'],
+              ['ت','Ta\'','T','تمر (tamr) = dates (fruit)'],
+              ['ث','Tha\'','Th (like "think")','ثلاثة (thalatha) = three'],
+              ['ج','Jim','J','جميل (jameel) = beautiful'],
+              ['ح','Ha\'','H (heavy, from throat)','حليب (haleeb) = milk'],
+              ['خ','Kha\'','KH (like "loch")','خبز (khubz) = bread'],
+              ['د','Dal','D','دار (dar) = house/home'],
+              ['ر','Ra\'','R (rolled)','رجل (rajul) = man'],
+              ['س','Sin','S','سلام (salam) = peace/hello'],
+              ['ش','Shin','SH','شمس (shams) = sun'],
+              ['ع','\'Ayn','Deep guttural (unique Arabic sound)','عربي (arabi) = Arabic'],
+              ['م','Mim','M','مدرسة (madrasa) = school'],
+              ['ن','Nun','N','نور (noor) = light'],
+              ['و','Waw','W / long "oo"','ولد (walad) = boy'],
+              ['ي','Ya\'','Y / long "ee"','يد (yad) = hand'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 TIP: Don\'t try to memorise all 28 letters at once. Start with the 16 above, then add the rest. The key is recognising patterns. Many Arabic words are built from 3-letter "roots" — once you know a root, you can understand many related words!'
+          }
+        ]
+      },
+      {
+        id: 'greetings', icon: '👋', title: 'Greetings & Introductions',
+        subtitle: 'Essential phrases to start any conversation',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '🗣️ Basic Greetings (التحيات)',
+            headers: ['Arabic', 'Pronunciation', 'English', 'Notes'],
+            rows: [
+              ['السلام عليكم','As-salamu alaykum','Peace be upon you','Universal Islamic greeting — use always!'],
+              ['وعليكم السلام','Wa alaykum as-salam','And upon you peace','Response to السلام عليكم'],
+              ['مرحبا','Marhaba','Hello / Hi','Informal, friendly'],
+              ['أهلاً وسهلاً','Ahlan wa sahlan','Welcome / Hello (warm)','Very welcoming greeting'],
+              ['صباح الخير','Sabah al-khayr','Good morning','Morning greeting'],
+              ['صباح النور','Sabah an-noor','Good morning (response)','Lit. "Morning of light"'],
+              ['مساء الخير','Masa\' al-khayr','Good evening','Evening greeting'],
+              ['مع السلامة','Ma\'a as-salama','Goodbye','Lit. "With safety/peace"'],
+              ['إلى اللقاء','Ila al-liqa\'','Goodbye / Until we meet','Formal goodbye'],
+            ]
+          },
+          {
+            type: 'table', title: '👤 Introducing Yourself (التقديم)',
+            headers: ['Arabic', 'Pronunciation', 'English'],
+            rows: [
+              ['اسمي [name]','Ismi [name]','My name is [name]'],
+              ['ما اسمك؟','Ma ismuk?','What is your name? (to male)'],
+              ['ما اسمكِ؟','Ma ismuki?','What is your name? (to female)'],
+              ['عمري [number] سنة','Umri [number] sana','I am [number] years old'],
+              ['أنا من غانا','Ana min Ghana','I am from Ghana'],
+              ['أنا طالب / طالبة','Ana talib / taliba','I am a student (male/female)'],
+              ['تشرفنا','Tasharrafna','Pleased to meet you (formal)'],
+              ['يسعدني لقاءك','Yus\'iduni liqa\'ak','Nice to meet you (lit. "It makes me happy to meet you")'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 IMPORTANT: Arabic has masculine and feminine forms for most words. When talking to a male, use one form; talking to a female, use another. This is shown in the table above (طالب male vs طالبة female).'
+          }
+        ]
+      },
+      {
+        id: 'numbers', icon: '🔢', title: 'Numbers (الأرقام)',
+        subtitle: 'Counting in Arabic from 1 to 1000',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '1️⃣ Numbers 1–10 (الأرقام من ١ إلى ١٠)',
+            headers: ['Arabic numeral', 'Arabic word', 'Pronunciation', 'English'],
+            rows: [
+              ['١','واحد','wahid','one'],
+              ['٢','اثنان','ithnan','two'],
+              ['٣','ثلاثة','thalatha','three'],
+              ['٤','أربعة','arba\'a','four'],
+              ['٥','خمسة','khamsa','five'],
+              ['٦','ستة','sitta','six'],
+              ['٧','سبعة','sab\'a','seven'],
+              ['٨','ثمانية','thamaniya','eight'],
+              ['٩','تسعة','tis\'a','nine'],
+              ['١٠','عشرة','ashara','ten'],
+            ]
+          },
+          {
+            type: 'table', title: '🔟 Tens (العشرات)',
+            headers: ['Arabic', 'Pronunciation', 'English'],
+            rows: [
+              ['عشرون','ishrun','twenty'],
+              ['ثلاثون','thalathun','thirty'],
+              ['أربعون','arba\'un','forty'],
+              ['خمسون','khamsun','fifty'],
+              ['ستون','sittun','sixty'],
+              ['سبعون','sab\'un','seventy'],
+              ['ثمانون','thamanun','eighty'],
+              ['تسعون','tis\'un','ninety'],
+              ['مئة','mi\'a','one hundred'],
+              ['ألف','alf','one thousand'],
+            ]
+          }
+        ]
+      },
+      {
+        id: 'family', icon: '👨‍👩‍👧‍👦', title: 'Family (العائلة)',
+        subtitle: 'Core family vocabulary in Arabic',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '👪 Family Members (أفراد العائلة)',
+            headers: ['Arabic', 'Pronunciation', 'English'],
+            rows: [
+              ['الأب','al-ab','the father'],
+              ['الأم','al-umm','the mother'],
+              ['الأخ','al-akh','the brother'],
+              ['الأخت','al-ukht','the sister'],
+              ['الابن','al-ibn','the son'],
+              ['البنت','al-bint','the daughter'],
+              ['الجد','al-jadd','the grandfather'],
+              ['الجدة','al-jadda','the grandmother'],
+              ['العم','al-amm','the uncle (father\'s brother)'],
+              ['الخال','al-khal','the uncle (mother\'s brother)'],
+              ['العمة','al-amma','the aunt (father\'s sister)'],
+              ['الخالة','al-khala','the aunt (mother\'s sister)'],
+              ['ابن العم / ابن الخال','ibn al-amm...','the cousin'],
+              ['الزوج / الزوجة','al-zawj / al-zawja','the husband / wife'],
+            ]
+          }
+        ]
+      },
+      {
+        id: 'school', icon: '🏫', title: 'School & Education (التعليم)',
+        subtitle: 'Education vocabulary in Arabic',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '📚 School Vocabulary (المفردات المدرسية)',
+            headers: ['Arabic', 'Pronunciation', 'English'],
+            rows: [
+              ['المدرسة','al-madrasa','the school'],
+              ['الفصل / الصف','al-fasl / as-saff','the classroom'],
+              ['المعلم / المعلمة','al-mu\'allim / al-mu\'allima','the teacher (m/f)'],
+              ['الطالب / الطالبة','al-talib / al-taliba','the student (m/f)'],
+              ['الكتاب','al-kitab','the book'],
+              ['الدفتر','al-daftar','the notebook'],
+              ['الواجب المنزلي','al-wajib al-manzili','homework'],
+              ['الامتحان','al-imtihan','the exam'],
+              ['المكتبة','al-maktaba','the library'],
+              ['الملعب','al-mal\'ab','the playground / sports field'],
+              ['الرياضيات','ar-riyadiyyat','mathematics'],
+              ['العلوم','al-ulum','science'],
+              ['التاريخ','at-tarikh','history'],
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  pt: {
+    name: 'Portuguese', flag: '🇧🇷', color: '#fbbf24', cssClass: 'pt',
+    topics: [
+      {
+        id: 'greetings', icon: '👋', title: 'Greetings & Introductions',
+        subtitle: 'Olá! — starting conversations in Portuguese',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '🗣️ Basic Greetings (Saudações)',
+            headers: ['Portuguese 🇧🇷', 'English', 'When to use'],
+            rows: [
+              ['Olá','Hello / Hi','Most versatile — use anytime!'],
+              ['Bom dia','Good morning','Until midday'],
+              ['Boa tarde','Good afternoon','Midday to evening'],
+              ['Boa noite','Good evening / Good night','Evening and bedtime'],
+              ['Oi','Hi (very casual)','Informal — Brazil especially'],
+              ['Tudo bem?','Everything OK? / How are you?','Very common Brazilian greeting'],
+              ['Tudo bom!','Everything good!','Response to "Tudo bem?"'],
+              ['Como vai?','How\'s it going?','Casual check-in'],
+              ['Até logo','See you later','Common goodbye'],
+              ['Até amanhã','See you tomorrow','When meeting again tomorrow'],
+              ['Tchau','Bye (casual)','Informal goodbye (from Italian "ciao")'],
+              ['Adeus','Goodbye (formal/final)','More permanent farewell'],
+            ]
+          },
+          {
+            type: 'table', title: '👤 Introducing Yourself (Apresentação)',
+            headers: ['Portuguese', 'English'],
+            rows: [
+              ['O meu nome é [name]. / Me chamo [name].','My name is [name].'],
+              ['Como se chama? / Como você se chama?','What is your name?'],
+              ['Tenho [number] anos.','I am [number] years old.'],
+              ['Sou do Gana / de Acra.','I am from Ghana / from Accra.'],
+              ['Moro em Acra.','I live in Accra.'],
+              ['Sou estudante.','I am a student.'],
+              ['Muito prazer!','Nice to meet you!'],
+              ['O prazer é meu!','The pleasure is mine!'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 EUROPEAN vs BRAZILIAN Portuguese: The app is designed for Brazilian Portuguese (most widely spoken). European Portuguese sounds different — more "closed" vowels. "Você" (you) is common in Brazil; Europeans often say "tu". Both are correct, but Brazilian is what you\'ll hear most!'
+          }
+        ]
+      },
+      {
+        id: 'conjugation', icon: '⚙️', title: 'Verb Conjugation (Conjugação)',
+        subtitle: 'How Portuguese verbs change based on the subject',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '👥 Subject Pronouns (Pronomes Sujeito)',
+            headers: ['Portuguese', 'English', 'Notes'],
+            rows: [
+              ['eu','I','—'],
+              ['tu','you (informal)','Common in Portugal, less in Brazil'],
+              ['você','you (Brazil/formal)','Most used in Brazil'],
+              ['ele / ela','he / she','—'],
+              ['nós','we','—'],
+              ['vocês','you all','Used everywhere'],
+              ['eles / elas','they (m/f)','—'],
+            ]
+          },
+          {
+            type: 'table', title: '🔄 SER (to be — permanent)',
+            headers: ['Portuguese', 'English', 'Example'],
+            rows: [
+              ['eu sou','I am','Eu sou estudante. (I am a student.)'],
+              ['tu és / você é','you are','Você é professor? (Are you a teacher?)'],
+              ['ele/ela é','he/she is','Ela é médica. (She is a doctor.)'],
+              ['nós somos','we are','Nós somos do Gana. (We are from Ghana.)'],
+              ['vocês são','you all are','Vocês são alunos? (Are you students?)'],
+              ['eles/elas são','they are','Eles são amigos. (They are friends.)'],
+            ]
+          },
+          {
+            type: 'table', title: '🔄 Regular -AR Verbs (FALAR = to speak)',
+            headers: ['Portuguese', 'English', 'Ending'],
+            rows: [
+              ['eu falo','I speak','-o'],
+              ['tu falas / você fala','you speak','-as / -a'],
+              ['ele/ela fala','he/she speaks','-a'],
+              ['nós falamos','we speak','-amos'],
+              ['vocês falam','you all speak','-am'],
+              ['eles/elas falam','they speak','-am'],
+            ]
+          }
+        ]
+      },
+      {
+        id: 'numbers', icon: '🔢', title: 'Numbers (Os Números)',
+        subtitle: 'Counting in Portuguese',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '1️⃣ Numbers 1–20',
+            headers: ['Number', 'Portuguese', 'Number', 'Portuguese'],
+            rows: [
+              ['1','um / uma','11','onze'],
+              ['2','dois / duas','12','doze'],
+              ['3','três','13','treze'],
+              ['4','quatro','14','catorze / quatorze'],
+              ['5','cinco','15','quinze'],
+              ['6','seis','16','dezesseis'],
+              ['7','sete','17','dezessete'],
+              ['8','oito','18','dezoito'],
+              ['9','nove','19','dezenove'],
+              ['10','dez','20','vinte'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 Portuguese numbers 1 and 2 have masculine (um, dois) and feminine (uma, duas) forms. Use the feminine form with feminine nouns: "uma casa" (one house), "dois livros" (two books, masculine), "duas mesas" (two tables, feminine).'
+          }
+        ]
+      },
+      {
+        id: 'family', icon: '👨‍👩‍👧‍👦', title: 'Family (A Família)',
+        subtitle: 'Core family vocabulary in Portuguese',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '👪 Family Members (Membros da Família)',
+            headers: ['Portuguese', 'English'],
+            rows: [
+              ['o pai / o papá(i)','the father / dad'],
+              ['a mãe / a mamã(e)','the mother / mum'],
+              ['o irmão','the brother'],
+              ['a irmã','the sister'],
+              ['o filho','the son'],
+              ['a filha','the daughter'],
+              ['o avô','the grandfather'],
+              ['a avó','the grandmother'],
+              ['o tio','the uncle'],
+              ['a tia','the aunt'],
+              ['o primo / a prima','the cousin'],
+              ['o marido / a esposa','the husband / wife'],
+              ['os filhos','the children'],
+            ]
+          }
+        ]
+      },
+      {
+        id: 'environment', icon: '🌿', title: 'Environment (O Meio Ambiente)',
+        subtitle: 'Essential environmental vocabulary',
+        level: 'intermediate',
+        lessons: [
+          {
+            type: 'table', title: '🌍 Environment Vocabulary',
+            headers: ['Portuguese', 'English'],
+            rows: [
+              ['o meio ambiente','the environment'],
+              ['as alterações climáticas','climate change'],
+              ['o aquecimento global','global warming'],
+              ['a poluição','pollution'],
+              ['reciclar','to recycle'],
+              ['o lixo','rubbish / waste'],
+              ['as energias renováveis','renewable energy'],
+              ['a desflorestação','deforestation'],
+              ['proteger a natureza','to protect nature'],
+              ['o efeito de estufa','the greenhouse effect'],
+              ['a seca','drought'],
+              ['as inundações','floods'],
+            ]
+          }
+        ]
+      }
+    ]
+  }
+};
+
+/* ══════════════════════════════
+   GAME DATA
+   ══════════════════════════════ */
+const GAME_DATA = {
+  fr: {
+    match: [
+      {target:'Bonjour',match:'Hello'},
+      {target:'Merci',match:'Thank you'},
+      {target:'Au revoir',match:'Goodbye'},
+      {target:'S\'il vous plaît',match:'Please'},
+      {target:'Oui',match:'Yes'},
+      {target:'Non',match:'No'},
+      {target:'La maison',match:'The house'},
+      {target:'Le livre',match:'The book'},
+    ],
+    fill: [
+      {q:'Je ___ étudiant. (I am a student.)',options:['suis','es','est','sommes'],ans:0,hint:'Use the "je" (I) form of ÊTRE.'},
+      {q:'Tu ___ quel âge? (How old are you? — lit. you have what age?)',options:['as','a','ai','avez'],ans:0,hint:'Use the "tu" form of AVOIR.'},
+      {q:'Nous ___ français. (We speak French.)',options:['parlons','parle','parles','parlez'],ans:0,hint:'Use the "nous" form of PARLER.'},
+      {q:'Il ___ à Paris. (He lives in Paris.)',options:['habite','habites','habitons','habitez'],ans:0,hint:'Use the "il" form of HABITER.'},
+      {q:'___ vous appelez-vous? (What is your name?)',options:['Comment','Où','Pourquoi','Quand'],ans:0,hint:'Which question word means "how/what"?'},
+      {q:'Je ne parle ___ anglais. (I do not speak English.)',options:['pas','plus','rien','jamais'],ans:0,hint:'Simple negation — NE...?'},
+      {q:'La fille ___ intelligente. (The girl is intelligent.)',options:['est','es','suis','êtes'],ans:0,hint:'"La fille" = she. Use "elle/il" form of ÊTRE.'},
+      {q:'___ mangeons du riz. (We are eating rice.)',options:['Nous','Je','Tu','Vous'],ans:0,hint:'Which pronoun means "we"?'},
+    ],
+    scramble: [
+      {scrambled:'RUJNOOB',word:'BONJOUR',hint:'Greeting — means Hello'},
+      {scrambled:'RCIME',word:'MERCI',hint:'Means Thank you'},
+      {scrambled:'RICEVO',word:'VOICER',hint:'Au ___ = Goodbye'},
+      {scrambled:'AISMON',word:'MAISON',hint:'Means house (la ___)'},
+      {scrambled:'VERIL',word:'LIVRE',hint:'Means book (le ___)'},
+    ]
+  },
+  es: {
+    match: [
+      {target:'Hola',match:'Hello'},
+      {target:'Gracias',match:'Thank you'},
+      {target:'Por favor',match:'Please'},
+      {target:'La escuela',match:'The school'},
+      {target:'El libro',match:'The book'},
+      {target:'La familia',match:'The family'},
+      {target:'Hablar',match:'To speak'},
+      {target:'Buenos días',match:'Good morning'},
+    ],
+    fill: [
+      {q:'Yo ___ estudiante. (I am a student.) — permanent state',options:['soy','estoy','es','somos'],ans:0,hint:'Permanent state → use SER, yo form.'},
+      {q:'¿Cómo te ___? (What is your name?)',options:['llamas','llamo','llama','llamamos'],ans:0,hint:'The verb is LLAMARSE. Use "tú" form.'},
+      {q:'Ella ___ en Madrid. (She lives in Madrid.)',options:['vive','vivo','vivimos','viven'],ans:0,hint:'Use the "ella" form of VIVIR (-IR verb).'},
+      {q:'Nosotros ___ de Ghana. (We are from Ghana.)',options:['somos','estamos','soy','son'],ans:0,hint:'Origin → SER. Nosotros form.'},
+      {q:'¿Cuántos años ___? (How old are you?)',options:['tienes','tiene','tengo','tenemos'],ans:0,hint:'Use "tú" form of TENER.'},
+    ],
+    scramble: [
+      {scrambled:'ALOH',word:'HOLA',hint:'Universal Spanish greeting'},
+      {scrambled:'IGARACS',word:'GRACIAS',hint:'Means Thank you'},
+      {scrambled:'LAFRIMI',word:'FAMILIA',hint:'Means family (la ___)'},
+      {scrambled:'LHAABR',word:'HABLAR',hint:'Means to speak'},
+    ]
+  },
+  ar: {
+    match: [
+      {target:'مرحبا (Marhaba)',match:'Hello'},
+      {target:'شكرا (Shukran)',match:'Thank you'},
+      {target:'نعم (Na\'am)',match:'Yes'},
+      {target:'لا (La)',match:'No'},
+      {target:'الأب (al-ab)',match:'The father'},
+      {target:'المدرسة (al-madrasa)',match:'The school'},
+      {target:'الكتاب (al-kitab)',match:'The book'},
+      {target:'طالب (talib)',match:'Student (male)'},
+    ],
+    fill: [
+      {q:'اسمي ___. (My name is Kofi.)',options:['كوفي','مدرسة','كتاب','أسرة'],ans:0,hint:'اسمي = My name is. What would your name be in Arabic script?'},
+      {q:'أنا ___ غانا. (I am from Ghana.)',options:['من','في','إلى','على'],ans:0,hint:'من = from. Which preposition fits?'},
+      {q:'___ الخير. (Good morning)',options:['صباح','مساء','ليلة','بكرة'],ans:0,hint:'صباح = morning. Which word completes the phrase?'},
+      {q:'عمري ___ سنة. (I am 20 years old.)',options:['عشرون','عشرة','مئة','ألف'],ans:0,hint:'عشرون = 20. Which number is needed?'},
+    ],
+    scramble: [
+      {scrambled:'ABLRAHMA',word:'MARHABA',hint:'Arabic for Hello (romanized)'},
+      {scrambled:'NKRAUSH',word:'SHUKRAN',hint:'Arabic for Thank you (romanized)'},
+      {scrambled:'ALBAYTIK',word:'KITABAL',hint:'Romanization of الكتاب (the book)'},
+    ]
+  },
+  pt: {
+    match: [
+      {target:'Olá',match:'Hello'},
+      {target:'Obrigado/a',match:'Thank you'},
+      {target:'Por favor',match:'Please'},
+      {target:'A escola',match:'The school'},
+      {target:'O livro',match:'The book'},
+      {target:'A família',match:'The family'},
+      {target:'Falar',match:'To speak'},
+      {target:'Bom dia',match:'Good morning'},
+    ],
+    fill: [
+      {q:'Eu ___ estudante. (I am a student.)',options:['sou','estou','é','somos'],ans:0,hint:'Use SER, eu form. Permanent state.'},
+      {q:'Como você se ___? (What is your name?)',options:['chama','chamo','chamam','chamamos'],ans:0,hint:'The verb is CHAMAR-SE. "Você" form.'},
+      {q:'Ela ___ no Brasil. (She lives in Brazil.)',options:['mora','moro','moramos','moram'],ans:0,hint:'MORAR = to live. "Ela" form.'},
+      {q:'Nós ___ do Gana. (We are from Ghana.)',options:['somos','estamos','sou','são'],ans:0,hint:'Origin → SER. Nós form.'},
+      {q:'___ anos você tem? (How old are you?)',options:['Quantos','Como','Onde','Quando'],ans:0,hint:'Which question word means "how many"?'},
+    ],
+    scramble: [
+      {scrambled:'LÓOA',word:'OLÁ',hint:'Portuguese for Hello'},
+      {scrambled:'CAIRBOGOD',word:'OBRIGADO',hint:'Thank you (male speaker)'},
+      {scrambled:'LIAMÍFA',word:'FAMÍLIA',hint:'Means family (a ___)'},
+      {scrambled:'RLFAA',word:'FALAR',hint:'Means to speak'},
+    ]
+  }
+};
+
+/* ══════════════════
+   STATE
+   ══════════════════ */
+let currentLang = 'fr';
+let currentTopic = 0;
+let gameMode = 'match';
+let gameScore = 0;
+let gameLang = 'fr';
+// Match game state
+let matchSelected = null;
+let matchPairs = [];
+let matchMatched = [];
+// Fill state
+let fillIdx = 0;
+let fillScore = 0;
+let fillAnswered = false;
+// Scramble state
+let scrambleIdx = 0;
+let scrambleData = [];
+// Topics completed
+let topicsDone = {};
+
+/* ══════════════════
+   RENDER ENGINE
+   ══════════════════ */
+function switchLang(lang, btn) {
+  currentLang = lang;
+  gameLang = lang;
+  currentTopic = 0;
+  document.querySelectorAll('.lang-tab').forEach(function(b){b.classList.toggle('active',b===btn);});
+  buildNav();
+  buildContent();
+}
+
+function buildNav() {
+  var curriculum = CURRICULUM[currentLang];
+  var pills = document.getElementById('navPills');
+  pills.innerHTML = curriculum.topics.map(function(t,i){
+    return '<button class="nav-pill'+(i===currentTopic?' active':'')+'" onclick="selectTopic('+i+')">'+t.icon+' '+t.title+'</button>';
+  }).join('') + '<button class="nav-pill" style="border-color:rgba(139,92,246,.4);color:#a78bfa;" onclick="scrollToGame()">🎮 Play Game</button>';
+}
+
+function selectTopic(idx) {
+  currentTopic = idx;
+  document.querySelectorAll('.nav-pill').forEach(function(p,i){p.classList.toggle('active',i===idx);});
+  buildContent();
+  document.getElementById('mainContent').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function scrollToGame() {
+  var el = document.getElementById('gameSection');
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function buildContent() {
+  var curriculum = CURRICULUM[currentLang];
+  var topic = curriculum.topics[currentTopic];
+  var color = curriculum.color;
+  var mc = document.getElementById('mainContent');
+
+  var html = '';
+
+  // Topic header
+  html += '<div class="section-card active">';
+  html += '<div class="section-title" style="color:'+color+'">'+topic.icon+' '+topic.title+'</div>';
+  html += '<div class="section-subtitle">'+topic.subtitle+'</div>';
+  html += '<span class="badge-pill badge-'+topic.level+'">'+topic.level.charAt(0).toUpperCase()+topic.level.slice(1)+'</span>';
+  html += '<div style="height:14px;"></div>';
+
+  // Lessons
+  topic.lessons.forEach(function(lesson) {
+    if(lesson.type === 'table') {
+      html += renderTable(lesson, curriculum.cssClass, color);
+    } else if(lesson.type === 'examples') {
+      html += renderExamples(lesson, curriculum.cssClass, color);
+    } else if(lesson.type === 'tip') {
+      html += '<div class="tip-box">'+lesson.text+'</div>';
+    } else if(lesson.type === 'lesson-text') {
+      html += '<div class="lesson-block" style="border-left-color:'+color+'">';
+      html += '<div class="lesson-title" style="color:'+color+'">'+lesson.title+'</div>';
+      html += '<p style="font-size:13px;color:#cbd5e1;line-height:1.7;">'+lesson.text+'</p>';
+      html += '</div>';
+    }
+  });
+
+  html += '<div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;">';
+  if(currentTopic < curriculum.topics.length - 1) {
+    html += '<button onclick="selectTopic('+(currentTopic+1)+')" style="background:'+color+';color:#000;border:none;border-radius:8px;padding:10px 20px;font-size:13px;font-weight:800;cursor:pointer;">Next Topic: '+curriculum.topics[currentTopic+1].title+' →</button>';
+  }
+  html += '<button onclick="scrollToGame()" style="background:rgba(139,92,246,.2);color:#a78bfa;border:1px solid rgba(139,92,246,.4);border-radius:8px;padding:10px 20px;font-size:13px;font-weight:800;cursor:pointer;">🎮 Play Game</button>';
+  html += '</div>';
+
+  html += '</div>'; // section-card
+
+  // GAME SECTION
+  html += buildGameSection();
+
+  mc.innerHTML = html;
+
+  // Init game
+  initGame('match');
+}
+
+function renderTable(lesson, cssClass, color) {
+  var html = '<div class="lesson-block" style="border-left-color:'+color+'">';
+  html += '<div class="lesson-title" style="color:'+color+'">'+lesson.title+'</div>';
+  if(lesson.intro) html += '<p style="font-size:12px;color:#94a3b8;margin-bottom:10px;">'+lesson.intro+'</p>';
+  html += '<div style="overflow-x:auto;"><table class="learn-table"><thead><tr>';
+  lesson.headers.forEach(function(h){html += '<th>'+h+'</th>';});
+  html += '</tr></thead><tbody>';
+  lesson.rows.forEach(function(row){
+    html += '<tr>';
+    row.forEach(function(cell, ci){
+      var cl = ci === 0 ? cssClass : (ci === 1 && cssClass !== 'en' ? 'en' : '');
+      html += '<td class="'+cl+'">'+cell+'</td>';
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table></div>';
+  html += '</div>';
+  return html;
+}
+
+function renderExamples(lesson, cssClass, color) {
+  var html = '<div class="lesson-block green">';
+  html += '<div class="lesson-title" style="color:'+color+'">'+lesson.title+'</div>';
+  lesson.exchanges.forEach(function(ex){
+    html += '<div class="example-box">';
+    html += '<span class="target '+cssClass+'-color">'+ex.fr+'</span>';
+    html += '<span class="en">'+ex.en+'</span>';
+    html += '</div>';
+  });
+  html += '</div>';
+  return html;
+}
+
+/* ══════════════════
+   GAME SECTION HTML
+   ══════════════════ */
+function buildGameSection() {
+  return '<div class="game-card" id="gameSection">'+
+    '<div class="game-title">🎮 Language Practice Game</div>'+
+    '<div class="game-sub">Test what you\'ve learned! Choose a game mode and practice '+CURRICULUM[currentLang].name+'.</div>'+
+    '<div class="score-bar"><div><div class="score-label">Score</div><div class="score-num" id="gameScore">0</div></div>'+
+    '<div style="display:flex;gap:6px;align-items:center;"><span style="font-size:12px;color:var(--muted);" id="gameStreakLabel"></span></div></div>'+
+    '<div class="game-modes">'+
+      '<button id="modeMatch" class="game-mode-btn active" onclick="initGame(\'match\')">🔗 Word Match</button>'+
+      '<button id="modeFill" class="game-mode-btn" onclick="initGame(\'fill\')">✏️ Fill the Gap</button>'+
+      '<button id="modeScramble" class="game-mode-btn" onclick="initGame(\'scramble\')">🔀 Word Scramble</button>'+
+    '</div>'+
+    '<div id="gameArea"></div>'+
+  '</div>';
+}
+
+/* ══════════════════
+   GAME LOGIC
+   ══════════════════ */
+function initGame(mode) {
+  gameMode = mode;
+  gameScore = 0;
+  updateScore();
+  document.querySelectorAll('.game-mode-btn').forEach(function(b){b.classList.remove('active');});
+  var modeMap = {match:'modeMatch',fill:'modeFill',scramble:'modeScramble'};
+  var el = document.getElementById(modeMap[mode]);
+  if(el) el.classList.add('active');
+
+  if(mode === 'match') buildMatchGame();
+  else if(mode === 'fill') { fillIdx=0; fillScore=0; buildFillGame(); }
+  else if(mode === 'scramble') { scrambleIdx=0; buildScrambleGame(); }
+}
+
+function updateScore() {
+  var el = document.getElementById('gameScore');
+  if(el) el.textContent = gameScore;
+}
+
+/* MATCH GAME */
+function buildMatchGame() {
+  var data = GAME_DATA[currentLang].match;
+  var pairs = data.slice().sort(function(){return Math.random()-.5;}).slice(0,6);
+  matchMatched = [];
+  matchSelected = null;
+
+  var targets = pairs.map(function(p){return {text:p.target,type:'target'};});
+  var matches  = pairs.map(function(p){return {text:p.match,type:'match'};});
+  var allCards = targets.concat(matches).sort(function(){return Math.random()-.5;});
+
+  var html = '<p style="font-size:12px;color:var(--muted);margin-bottom:10px;">Match each word with its English translation. Tap a word, then tap its match!</p>';
+  html += '<div class="match-grid">';
+  allCards.forEach(function(card,i){
+    html += '<div class="match-item" id="mc'+i+'" data-text="'+esc(card.text)+'" data-type="'+card.type+'" onclick="matchClick('+i+',this)">'+esc(card.text)+'</div>';
+  });
+  html += '</div>';
+  html += '<div id="matchFeedback" style="font-size:13px;font-weight:700;min-height:20px;text-align:center;"></div>';
+  html += '<button onclick="initGame(\'match\')" style="background:var(--highlight);color:var(--accent-light);border:1px solid var(--accent);border-radius:8px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;margin-top:12px;width:100%;">🔄 New Game</button>';
+
+  document.getElementById('gameArea').innerHTML = html;
+  // Store pairs for checking
+  window._matchPairs = pairs;
+}
+
+function matchClick(idx, el) {
+  if(el.classList.contains('correct') || el.classList.contains('disabled')) return;
+
+  if(!matchSelected) {
+    // First selection
+    if(el.classList.contains('selected')) { el.classList.remove('selected'); return; }
+    document.querySelectorAll('.match-item').forEach(function(i){i.classList.remove('selected');});
+    el.classList.add('selected');
+    matchSelected = {idx:idx, el:el, text:el.dataset.text, type:el.dataset.type};
+  } else {
+    if(matchSelected.idx === idx) { el.classList.remove('selected'); matchSelected=null; return; }
+    if(matchSelected.type === el.dataset.type) {
+      // Same type — reselect
+      document.querySelectorAll('.match-item').forEach(function(i){i.classList.remove('selected');});
+      el.classList.add('selected');
+      matchSelected = {idx:idx, el:el, text:el.dataset.text, type:el.dataset.type};
+      return;
+    }
+
+    // Check if pair matches
+    var target = matchSelected.type === 'target' ? matchSelected.text : el.dataset.text;
+    var match  = matchSelected.type === 'match'  ? matchSelected.text : el.dataset.text;
+    var pair = window._matchPairs.find(function(p){return p.target===target && p.match===match;});
+
+    if(pair) {
+      matchSelected.el.classList.remove('selected'); matchSelected.el.classList.add('correct');
+      el.classList.add('correct');
+      gameScore += 10;
+      updateScore();
+      var fb = document.getElementById('matchFeedback');
+      if(fb){fb.style.color='var(--green)';fb.textContent='✅ Correct! +10 points';}
+      matchMatched.push(pair);
+      if(matchMatched.length === window._matchPairs.length) {
+        setTimeout(function(){
+          var fb2=document.getElementById('matchFeedback');
+          if(fb2){fb2.style.color='var(--gold)';fb2.textContent='🏆 All matched! Excellent work!';}
+        },400);
+      }
+    } else {
+      matchSelected.el.classList.add('wrong');
+      el.classList.add('wrong');
+      var fb3=document.getElementById('matchFeedback');
+      if(fb3){fb3.style.color='var(--red)';fb3.textContent='❌ Not a match. Try again!';}
+      setTimeout(function(){
+        matchSelected.el.classList.remove('wrong');
+        el.classList.remove('wrong');
+        var fb4=document.getElementById('matchFeedback');
+        if(fb4) fb4.textContent='';
+      }, 1000);
+    }
+    matchSelected.el.classList.remove('selected');
+    matchSelected = null;
+  }
+}
+
+/* FILL GAME */
+function buildFillGame() {
+  var data = GAME_DATA[currentLang].fill;
+  if(!data || !data.length){
+    document.getElementById('gameArea').innerHTML='<p style="color:var(--muted);font-size:13px;">Fill-in game not available for this language yet.</p>';
+    return;
+  }
+  var q = data[fillIdx % data.length];
+  fillAnswered = false;
+  var letters = ['A','B','C','D'];
+
+  var html = '<div class="fill-question">';
+  html += '<div class="fill-q-num">Question '+(fillIdx+1)+' of '+data.length+'</div>';
+  html += '<div class="fill-q-text">'+esc(q.q)+'</div>';
+  html += '<div class="fill-hint">💡 Hint: '+esc(q.hint)+'</div>';
+  html += '<div class="fill-options">';
+  q.options.forEach(function(opt,i){
+    html += '<button class="fill-option" id="fo'+i+'" onclick="answerFill('+i+','+q.ans+')">';
+    html += '<span style="width:22px;height:22px;border-radius:50%;background:var(--highlight);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--accent-light);">'+letters[i]+'</span>';
+    html += esc(opt)+'</button>';
+  });
+  html += '</div>';
+  html += '<div class="fill-feedback" id="fillFb"></div>';
+  html += '</div>';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">';
+  html += '<span style="font-size:12px;color:var(--muted);">Score: <strong style="color:var(--gold);">'+fillScore+'</strong> / '+(fillIdx > 0 ? fillIdx : 0)+'</span>';
+  html += '<button class="next-btn" id="fillNext" onclick="nextFill()" disabled>Next →</button>';
+  html += '</div>';
+
+  document.getElementById('gameArea').innerHTML = html;
+}
+
+function answerFill(chosen, correct) {
+  if(fillAnswered) return;
+  fillAnswered = true;
+  var letters=['A','B','C','D'];
+  var data = GAME_DATA[currentLang].fill;
+  var q = data[fillIdx % data.length];
+
+  for(var i=0;i<q.options.length;i++){
+    var btn=document.getElementById('fo'+i);
+    if(!btn) continue;
+    btn.disabled=true; btn.classList.add('disabled');
+    if(i===correct) btn.classList.add('correct');
+    else if(i===chosen && chosen!==correct) btn.classList.add('wrong');
+  }
+
+  var fb = document.getElementById('fillFb');
+  if(chosen===correct){
+    fillScore++; gameScore+=10; updateScore();
+    fb.className='fill-feedback show correct';
+    fb.textContent='✅ Correct! The answer is "'+q.options[correct]+'".';
+  } else {
+    fb.className='fill-feedback show wrong';
+    fb.textContent='❌ Wrong. The correct answer was '+letters[correct]+': "'+q.options[correct]+'".';
+  }
+  var nb=document.getElementById('fillNext');
+  if(nb) nb.disabled=false;
+}
+
+function nextFill() {
+  fillIdx++;
+  var data = GAME_DATA[currentLang].fill;
+  if(fillIdx >= data.length) {
+    // Show completion
+    var pct = Math.round((fillScore/data.length)*100);
+    var emoji = pct>=80?'🏆':pct>=60?'🎉':'📚';
+    document.getElementById('gameArea').innerHTML =
+      '<div style="text-align:center;padding:24px;background:#0f172a;border-radius:12px;border:1px solid var(--border);">'+
+      '<div style="font-size:44px;">'+emoji+'</div>'+
+      '<div style="font-size:18px;font-weight:800;color:#fff;margin:8px 0;">'+
+      (pct>=80?'Excellent!':pct>=60?'Well done!':'Keep practicing!')+'</div>'+
+      '<div style="font-size:32px;font-weight:900;color:var(--gold);margin:8px 0;">'+fillScore+' / '+data.length+'</div>'+
+      '<div style="font-size:13px;color:var(--muted);margin-bottom:16px;">'+pct+'% correct</div>'+
+      '<button onclick="initGame(\'fill\')" style="background:linear-gradient(135deg,var(--gold),#f97316);color:#000;border:none;border-radius:8px;padding:11px 24px;font-size:14px;font-weight:800;cursor:pointer;">🔄 Play Again</button>'+
+      '</div>';
+  } else {
+    buildFillGame();
+  }
+}
+
+/* SCRAMBLE GAME */
+function buildScrambleGame() {
+  var data = GAME_DATA[currentLang].scramble;
+  if(!data||!data.length){
+    document.getElementById('gameArea').innerHTML='<p style="color:var(--muted);font-size:13px;">Scramble game not available for this language yet.</p>';
+    return;
+  }
+  var q = data[scrambleIdx % data.length];
+
+  var html = '<p style="font-size:12px;color:var(--muted);margin-bottom:8px;">Unscramble the letters to find the word!</p>';
+  html += '<div class="scramble-word" id="scrambleWord">'+esc(q.scrambled)+'</div>';
+  html += '<div class="scramble-hint">💡 Hint: '+esc(q.hint)+'</div>';
+  html += '<input type="text" id="scrambleInput" class="scramble-input" placeholder="Type your answer..." oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key===\'Enter\')checkScramble()"/>';
+  html += '<button class="scramble-btn" onclick="checkScramble()">Check Answer ✓</button>';
+  html += '<div class="scramble-result" id="scrambleResult"></div>';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;">';
+  html += '<span style="font-size:12px;color:var(--muted);">Word '+(scrambleIdx+1)+' of '+data.length+'</span>';
+  html += '<button class="next-btn" id="scrambleNext" onclick="nextScramble()" disabled>Next Word →</button>';
+  html += '</div>';
+
+  document.getElementById('gameArea').innerHTML = html;
+  var inp = document.getElementById('scrambleInput');
+  if(inp) inp.focus();
+}
+
+function checkScramble() {
+  var data = GAME_DATA[currentLang].scramble;
+  var q = data[scrambleIdx % data.length];
+  var inp = document.getElementById('scrambleInput');
+  var res = document.getElementById('scrambleResult');
+  var nb  = document.getElementById('scrambleNext');
+  if(!inp) return;
+  var answer = inp.value.trim().toUpperCase();
+  if(!answer){alert('Please type your answer!');return;}
+  inp.disabled=true;
+  if(answer === q.word.toUpperCase()) {
+    gameScore+=15; updateScore();
+    res.className='scramble-result correct';
+    res.textContent='✅ Correct! The word is "'+q.word+'"!';
+  } else {
+    res.className='scramble-result wrong';
+    res.textContent='❌ Not quite. The answer was "'+q.word+'". Keep practicing!';
+  }
+  if(nb) nb.disabled=false;
+}
+
+function nextScramble() {
+  scrambleIdx++;
+  var data = GAME_DATA[currentLang].scramble;
+  if(scrambleIdx >= data.length) {
+    document.getElementById('gameArea').innerHTML=
+      '<div style="text-align:center;padding:24px;background:#0f172a;border-radius:12px;border:1px solid var(--border);">'+
+      '<div style="font-size:44px;">🎉</div>'+
+      '<div style="font-size:18px;font-weight:800;color:#fff;margin:8px 0;">All words done!</div>'+
+      '<div style="font-size:13px;color:var(--muted);margin-bottom:16px;">Total score: <strong style="color:var(--gold);">'+gameScore+'</strong></div>'+
+      '<button onclick="initGame(\'scramble\')" style="background:linear-gradient(135deg,var(--gold),#f97316);color:#000;border:none;border-radius:8px;padding:11px 24px;font-size:14px;font-weight:800;cursor:pointer;">🔄 Play Again</button>'+
+      '</div>';
+  } else {
+    buildScrambleGame();
+  }
+}
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+
+/* INIT */
+buildNav();
+buildContent();
+</script>
+</body>
+</html>
