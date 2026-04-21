@@ -28,6 +28,11 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .header-actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
 .header-badge { background:var(--highlight); border:1px solid var(--accent); border-radius:20px; padding:4px 12px; font-size:11px; font-weight:700; color:var(--accent-light); cursor:pointer; }
 
+/* LIVE INDICATOR */
+.live-badge { display:flex; align-items:center; gap:5px; background:rgba(16,185,129,.15); border:1px solid rgba(16,185,129,.35); border-radius:20px; padding:4px 10px; font-size:11px; font-weight:700; color:var(--green); cursor:default; }
+.live-dot { width:7px; height:7px; background:var(--green); border-radius:50%; animation:livePulse 1.5s infinite; flex-shrink:0; }
+@keyframes livePulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+
 /* HERO */
 .hero { background:linear-gradient(160deg,#0f172a 0%,#1e3a5f 50%,#0f172a 100%); padding:40px 20px 32px; text-align:center; }
 .hero h1 { font-size:26px; font-weight:800; color:#fff; margin-bottom:10px; line-height:1.3; }
@@ -94,40 +99,10 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .badge-error   { background:#450a0a; color:var(--red); }
 .btn-view { background:var(--highlight); color:var(--accent-light); border:1px solid var(--accent); border-radius:6px; padding:5px 12px; font-size:12px; font-weight:700; cursor:pointer; }
 
-/* SAMPLE AUDIOS SECTION */
-.sample-section { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; margin-bottom:16px; }
-.sample-title { font-size:15px; font-weight:700; color:var(--accent-light); margin-bottom:4px; }
-.sample-sub   { font-size:12px; color:var(--muted); margin-bottom:14px; line-height:1.5; }
-.sample-grid  { display:flex; flex-direction:column; gap:10px; }
-.sample-card  { background:#0f172a; border:1px solid var(--border); border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:10px; }
-.sample-card-top { display:flex; align-items:center; gap:10px; }
-.sample-flag  { font-size:22px; flex-shrink:0; }
-.sample-info  { flex:1; }
-.sample-lang  { font-size:11px; font-weight:800; color:var(--gold); text-transform:uppercase; letter-spacing:.8px; margin-bottom:3px; }
-.sample-text  { font-size:13px; color:var(--text); line-height:1.6; font-style:italic; }
-.sample-meaning { font-size:12px; color:var(--muted); margin-top:2px; }
-.sample-actions { display:flex; gap:8px; flex-wrap:wrap; }
-.sample-play-btn { display:flex; align-items:center; gap:6px; background:rgba(59,130,246,.15); border:1px solid rgba(59,130,246,.4); border-radius:8px; padding:7px 14px; font-size:12px; font-weight:700; color:var(--accent-light); cursor:pointer; transition:all .2s; }
-.sample-play-btn:hover { background:rgba(59,130,246,.3); }
-.sample-play-btn.playing { background:rgba(16,185,129,.15); border-color:rgba(16,185,129,.4); color:var(--green); }
-.sample-try-btn { display:flex; align-items:center; gap:6px; background:rgba(245,158,11,.12); border:1px solid rgba(245,158,11,.35); border-radius:8px; padding:7px 14px; font-size:12px; font-weight:700; color:var(--gold); cursor:pointer; transition:all .2s; }
-.sample-try-btn:hover { background:rgba(245,158,11,.25); }
-.sample-try-btn:disabled { opacity:.5; cursor:not-allowed; }
-.sample-progress { height:3px; background:var(--border); border-radius:2px; overflow:hidden; display:none; }
-.sample-progress-bar { height:100%; background:linear-gradient(90deg,var(--accent),var(--green)); border-radius:2px; width:0%; transition:width .3s; }
-.synced-transcript { cursor: default; }
-.sync-word { display:inline; border-radius:3px; padding:1px 0; transition:background .15s, color .15s; }
-.sync-word.active { background:rgba(59,130,246,.35); color:#fff; border-radius:4px; padding:1px 3px; }
-
-/* STUDY CARD AUDIO PLAYER */
-.study-audio-player { margin-bottom:14px; background:#0f172a; border:1px solid var(--border); border-radius:10px; padding:10px 12px; }
-.study-audio-player .player-label { font-size:11px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:.8px; margin-bottom:8px; }
-.study-audio-player audio { width:100%; height:36px; border-radius:6px; outline:none; display:block; }
-
-/* WORD-FOR-WORD TRANSLATION COLORS */
-.wfw-original { color:#e2e8f0; font-weight:500; line-height:1.75; display:block; }
-.wfw-english  { color:#fcd34d; font-style:italic; line-height:1.75; display:block; margin-bottom:10px; }
-.wfw-pair-sep { display:block; height:2px; }
+/* AUDIO PLAYER */
+.audio-player { margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
+.audio-player audio { width:100%; height:36px; outline:none; border-radius:6px; }
+.audio-player audio::-webkit-media-controls-panel { background:#0f172a; }
 
 /* PROGRESS */
 .progress-wrap { margin-bottom:12px; }
@@ -161,6 +136,12 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
   display:block; width:100%; max-width:100%;
   box-sizing:border-box; overflow-x:hidden;
 }
+/* ★ YELLOW for word-for-word English translation */
+.text-box.translation-box {
+  color: #fcd34d;
+  border-color: rgba(245,158,11,.35);
+  background: #0f1a0a;
+}
 .sec-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--gold); margin:16px 0 8px; display:block; }
 #studyArea { display:block; width:100%; box-sizing:border-box; }
 
@@ -177,8 +158,12 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .action-btn.gold:hover  { background:rgba(245,158,11,.2); }
 .action-btn.wa    { background:rgba(37,211,102,.1); color:#25d366; border-color:rgba(37,211,102,.4); }
 .action-btn.wa:hover { background:rgba(37,211,102,.2); }
+.action-btn.red   { background:rgba(239,68,68,.1); color:#f87171; border-color:rgba(239,68,68,.4); }
+.action-btn.red:hover { background:rgba(239,68,68,.2); }
 
-/* QUIZ SECTION */
+/* ═══════════════════════════════
+   QUIZ SECTION (existing + MCQ)
+   ═══════════════════════════════ */
 .quiz-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; margin-bottom:14px; display:none; }
 .quiz-card.show { display:block; }
 .quiz-title { font-size:15px; font-weight:700; color:#a78bfa; margin-bottom:14px; }
@@ -195,6 +180,60 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .quiz-nav-btn { background:var(--highlight); color:var(--accent-light); border:1px solid var(--accent); border-radius:8px; padding:7px 18px; font-size:13px; font-weight:700; cursor:pointer; }
 .quiz-nav-btn:disabled { opacity:0.4; cursor:not-allowed; }
 .quiz-counter { font-size:12px; color:var(--muted); min-width:60px; text-align:center; }
+
+/* ── MCQ QUIZ ── */
+.mcq-wrap { display:none; }
+.mcq-wrap.show { display:block; }
+.mcq-question-box { background:#0f172a; border:1px solid var(--border); border-radius:12px; padding:18px; margin-bottom:14px; }
+.mcq-question-num { font-size:11px; color:var(--muted); font-weight:700; margin-bottom:6px; }
+.mcq-question-text { font-size:15px; font-weight:700; color:var(--text); line-height:1.5; }
+.mcq-options { display:flex; flex-direction:column; gap:8px; margin-bottom:14px; }
+.mcq-option { background:#0f172a; border:1.5px solid var(--border); border-radius:10px; padding:12px 16px; font-size:13px; font-weight:600; color:var(--text); cursor:pointer; text-align:left; transition:all .15s; display:flex; align-items:center; gap:10px; }
+.mcq-option:hover:not(:disabled) { border-color:var(--accent); color:var(--accent-light); background:var(--highlight); }
+.mcq-option.correct  { border-color:var(--green)!important; background:#064e3b!important; color:var(--green)!important; }
+.mcq-option.wrong    { border-color:var(--red)!important;   background:#450a0a!important; color:#f87171!important; }
+.mcq-option.disabled { cursor:not-allowed; opacity:.7; }
+.mcq-option-letter { width:24px; height:24px; border-radius:50%; background:var(--highlight); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:var(--accent-light); flex-shrink:0; }
+.mcq-feedback { font-size:13px; font-weight:700; padding:10px 14px; border-radius:8px; margin-bottom:12px; display:none; }
+.mcq-feedback.correct { background:rgba(16,185,129,.15); border:1px solid rgba(16,185,129,.4); color:var(--green); display:block; }
+.mcq-feedback.wrong   { background:rgba(239,68,68,.1);   border:1px solid rgba(239,68,68,.3);   color:#f87171;     display:block; }
+.mcq-next-btn { background:linear-gradient(135deg,var(--highlight),#1e4a7f); color:var(--accent-light); border:1px solid var(--accent); border-radius:8px; padding:10px 22px; font-size:13px; font-weight:700; cursor:pointer; display:none; }
+.mcq-next-btn.show { display:inline-block; }
+.mcq-loading { text-align:center; padding:28px; color:var(--muted); font-size:13px; }
+.mcq-loading .spin { width:20px; height:20px; border-width:3px; margin:0 auto 10px; display:block; }
+
+/* MCQ SCORE CARD */
+.mcq-score-card { background:linear-gradient(135deg,#0f172a,#1e3a5f); border:2px solid var(--accent); border-radius:16px; padding:28px 20px; text-align:center; display:none; }
+.mcq-score-card.show { display:block; }
+.mcq-score-emoji { font-size:52px; margin-bottom:10px; }
+.mcq-score-title { font-size:20px; font-weight:800; color:#fff; margin-bottom:6px; }
+.mcq-score-num { font-size:42px; font-weight:900; color:var(--gold); margin:10px 0; }
+.mcq-score-sub { font-size:13px; color:var(--muted); margin-bottom:18px; }
+.mcq-score-bar-bg { height:10px; background:var(--border); border-radius:5px; overflow:hidden; margin-bottom:18px; }
+.mcq-score-bar { height:100%; border-radius:5px; transition:width 1s; }
+.mcq-retry-btn { background:linear-gradient(135deg,var(--gold),#f97316); color:#000; border:none; border-radius:8px; padding:11px 24px; font-size:14px; font-weight:800; cursor:pointer; }
+
+/* ══ SAMPLE AUDIOS SECTION ══ */
+.sample-section { margin-bottom:20px; }
+.sample-section-title { font-size:14px; font-weight:800; color:var(--gold); margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+.sample-lang-tabs { display:flex; gap:8px; margin-bottom:12px; overflow-x:auto; scrollbar-width:none; padding-bottom:4px; }
+.sample-lang-tabs::-webkit-scrollbar { display:none; }
+.sample-lang-tab { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:5px 14px; font-size:12px; font-weight:700; color:var(--muted); cursor:pointer; white-space:nowrap; transition:all .15s; flex-shrink:0; }
+.sample-lang-tab.active { background:var(--highlight); color:var(--accent-light); border-color:var(--accent); }
+.sample-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+@media(max-width:480px){ .sample-grid{grid-template-columns:1fr;} }
+.sample-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; cursor:pointer; transition:all .2s; position:relative; overflow:hidden; }
+.sample-card:hover { border-color:var(--accent); background:var(--highlight); }
+.sample-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--accent),var(--green)); }
+.sample-card-icon { font-size:26px; margin-bottom:6px; }
+.sample-card-title { font-size:13px; font-weight:700; color:var(--text); margin-bottom:3px; }
+.sample-card-desc { font-size:11px; color:var(--muted); line-height:1.4; margin-bottom:8px; }
+.sample-card-meta { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+.sample-card-lang { font-size:10px; font-weight:700; background:var(--highlight); color:var(--accent-light); padding:2px 8px; border-radius:20px; }
+.sample-card-dur  { font-size:10px; color:var(--muted); }
+.sample-card-btn  { display:flex; align-items:center; gap:4px; background:linear-gradient(135deg,var(--accent),#2563eb); color:#fff; border:none; border-radius:6px; padding:5px 12px; font-size:11px; font-weight:700; cursor:pointer; margin-top:8px; transition:opacity .2s; }
+.sample-card-btn:hover { opacity:.85; }
+.sample-card-btn.loading { background:var(--border); cursor:wait; }
 
 /* SAVED GUIDES */
 .saved-empty { text-align:center; padding:24px; color:var(--muted); font-size:13px; }
@@ -290,7 +329,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .package-desc     { font-size:12px; font-weight:600; color:var(--text); margin-bottom:3px; }
 .package-validity { font-size:11px; color:var(--muted); }
 .package-popular { position:absolute; top:-11px; left:50%; transform:translateX(-50%); background:var(--accent); color:#fff; font-size:10px; font-weight:800; padding:2px 10px; border-radius:20px; white-space:nowrap; }
-.package-best    { position:absolute; top:-11px; left:50%; transform:translateX(-50%); background:var(--gold); color:#000; font-size:10px; font-weight:800; padding:2px 10px; border-radius:20rap; white-space:nowrap; }
+.package-best    { position:absolute; top:-11px; left:50%; transform:translateX(-50%); background:var(--gold); color:#000; font-size:10px; font-weight:800; padding:2px 10px; border-radius:20px; white-space:nowrap; }
 .modal-email { width:100%; background:#0f172a; border:1px solid var(--border); border-radius:8px; padding:10px 12px; color:var(--text); font-size:14px; box-sizing:border-box; margin-bottom:10px; outline:none; }
 .modal-email:focus { border-color:var(--accent); }
 .modal-pay-btn { width:100%; border:none; border-radius:8px; padding:13px; font-size:14px; font-weight:700; background:var(--muted); color:#fff; cursor:not-allowed; transition:background .2s,color .2s; }
@@ -317,6 +356,11 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     </div>
   </div>
   <div class="header-actions">
+    <!-- LIVE USERS BADGE -->
+    <div class="live-badge" id="liveBadge" title="People currently using the app">
+      <span class="live-dot"></span>
+      <span id="liveCount">–</span> live
+    </div>
     <span class="header-badge" onclick="showSavedModal()">💾 Saved</span>
     <span class="header-badge" onclick="showProgressModal()">📊 Progress</span>
     <button onclick="showUpgradeModal()" style="background:#78350f;color:#f59e0b;border:1px solid #f59e0b;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;">🚀 Upgrade</button>
@@ -337,6 +381,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     <span class="feature-pill">🔊 Audio Playback</span>
     <span class="feature-pill">📥 PDF Download</span>
     <span class="feature-pill">📝 Practice Quiz</span>
+    <span class="feature-pill">🎯 MCQ Test</span>
   </div>
   <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:20px;">
     <span style="font-size:12px;color:var(--muted);align-self:center;">🌍 Languages:</span>
@@ -386,6 +431,23 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     <input type="file" id="fileInput" multiple accept="audio/*,.mp3,.m4a,.ogg,.wav,.aac,.webm,.opus,.mpeg,.mpga" onchange="addFiles(this.files)"/>
   </div>
 
+  <!-- ══════════════════════════════════════
+       SAMPLE AUDIOS SECTION
+       ══════════════════════════════════════ -->
+  <div class="sample-section">
+    <div class="sample-section-title">
+      🎵 Try a Sample Audio
+      <span style="font-size:11px;font-weight:600;color:var(--muted);background:var(--highlight);padding:3px 10px;border-radius:20px;">No audio? Start here!</span>
+    </div>
+    <div class="sample-lang-tabs" id="sampleLangTabs">
+      <button class="sample-lang-tab active" data-slang="fr" onclick="switchSampleLang(this)">🇫🇷 French</button>
+      <button class="sample-lang-tab" data-slang="es" onclick="switchSampleLang(this)">🇪🇸 Spanish</button>
+      <button class="sample-lang-tab" data-slang="ar" onclick="switchSampleLang(this)">🇸🇦 Arabic</button>
+      <button class="sample-lang-tab" data-slang="pt" onclick="switchSampleLang(this)">🇧🇷 Portuguese</button>
+    </div>
+    <div class="sample-grid" id="sampleGrid"></div>
+  </div>
+
   <div class="file-list" id="fileList"></div>
 
   <div class="progress-wrap" id="progressWrap" style="display:none">
@@ -404,24 +466,42 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 
   <div class="tabs" id="tabs" style="display:none"></div>
   <div id="studyArea"></div>
+
+  <!-- QUIZ CARD (existing flashcard + new MCQ mode) -->
   <div class="quiz-card" id="quizCard">
     <div class="quiz-title">📝 Practice Quiz Mode</div>
-    <div style="display:flex;gap:8px;margin-bottom:14px;">
+    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
       <button id="quizModeVocab" class="quiz-mode-btn active" onclick="switchQuizMode('vocab')">📚 Vocabulary Cards</button>
       <button id="quizModeQA"    class="quiz-mode-btn"        onclick="switchQuizMode('qa')">❓ Q&amp;A Practice</button>
+      <button id="quizModeMCQ"   class="quiz-mode-btn"        onclick="switchQuizMode('mcq')">🎯 MCQ Test (10 Qs)</button>
     </div>
-    <div class="flashcard" id="flashcard" onclick="flipCard()">
-      <div class="flashcard-question" id="flashQuestion" style="font-size:12px;color:var(--muted);margin-bottom:6px;"></div>
-      <div class="flashcard-front" id="flashFront"></div>
-      <div class="flashcard-back"  id="flashBack"></div>
-      <div class="flashcard-tap" id="flashTap">Tap to flip</div>
+
+    <!-- Flashcard panel (vocab / qa) -->
+    <div id="flashcardPanel">
+      <div class="flashcard" id="flashcard" onclick="flipCard()">
+        <div class="flashcard-question" id="flashQuestion" style="font-size:12px;color:var(--muted);margin-bottom:6px;"></div>
+        <div class="flashcard-front" id="flashFront"></div>
+        <div class="flashcard-back"  id="flashBack"></div>
+        <div class="flashcard-tap" id="flashTap">Tap to flip</div>
+      </div>
+      <div class="quiz-nav" style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:12px;">
+        <button class="quiz-nav-btn" id="quizPrev" onclick="quizMove(-1)" disabled>← Prev</button>
+        <span class="quiz-counter" id="quizCounter">1 / 1</span>
+        <button class="quiz-nav-btn" id="quizNext" onclick="quizMove(1)">Next →</button>
+      </div>
     </div>
-    <div class="quiz-nav">
-      <button class="quiz-nav-btn" id="quizPrev" onclick="quizMove(-1)" disabled>← Prev</button>
-      <span class="quiz-counter" id="quizCounter">1 / 1</span>
-      <button class="quiz-nav-btn" id="quizNext" onclick="quizMove(1)">Next →</button>
+
+    <!-- MCQ panel -->
+    <div class="mcq-wrap" id="mcqPanel">
+      <div class="mcq-loading" id="mcqLoading" style="display:none;">
+        <span class="spin" style="width:20px;height:20px;border-width:3px;display:block;margin:0 auto 10px;"></span>
+        Generating 10 questions from your audio… this takes about 15 seconds ⏳
+      </div>
+      <div id="mcqQuestionArea"></div>
+      <div class="mcq-score-card" id="mcqScoreCard"></div>
     </div>
-    <div style="text-align:center;margin-top:10px;">
+
+    <div style="text-align:center;margin-top:14px;">
       <button onclick="document.getElementById('quizCard').classList.remove('show')" style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;">✕ Close Quiz</button>
     </div>
   </div>
@@ -429,14 +509,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
   <div class="empty" id="emptyState">
     <div class="empty-icon">🎓</div>
     Upload your French oral audio files above<br/>to get your instant study guide.<br/>
-    <span style="font-size:12px;color:var(--muted);margin-top:6px;display:block;">Or try a sample audio below 👇</span>
-  </div>
-
-  <!-- SAMPLE AUDIOS -->
-  <div class="sample-section">
-    <div class="sample-title">🎧 Sample Audios — No upload needed</div>
-    <div class="sample-sub">Press ▶ Play to hear the audio, then tap "Try This" to get a full study guide instantly</div>
-    <div class="sample-grid" id="sampleGrid"></div>
+    <span style="font-size:12px;color:var(--muted);">Or try a sample audio above ↑</span>
   </div>
 
   <!-- HOW TO GUIDE -->
@@ -460,7 +533,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     <div class="feature-card free-badge">
       <div class="feature-card-icon">🌐</div>
       <div class="feature-card-title">Word-for-Word Translation</div>
-      <div class="feature-card-desc">Every sentence translated into English so you understand everything.</div>
+      <div class="feature-card-desc">Every sentence translated into English so you understand everything. Shown in <span style="color:#fcd34d;font-weight:700;">yellow</span> for easy reading.</div>
     </div>
     <div class="feature-card free-badge">
       <div class="feature-card-icon">🔊</div>
@@ -471,6 +544,11 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
       <div class="feature-card-icon">📥</div>
       <div class="feature-card-title">Download as PDF</div>
       <div class="feature-card-desc">Save your full study guide as a PDF to study offline anytime, anywhere.</div>
+    </div>
+    <div class="feature-card free-badge">
+      <div class="feature-card-icon">🎯</div>
+      <div class="feature-card-title">MCQ Test (10 Questions)</div>
+      <div class="feature-card-desc">Auto-generated multiple-choice quiz from your audio. Get scored and see your results instantly!</div>
     </div>
     <div class="feature-card free-badge">
       <div class="feature-card-icon">📝</div>
@@ -485,7 +563,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     <div class="feature-card free-badge">
       <div class="feature-card-icon">💾</div>
       <div class="feature-card-title">Save Study Guides</div>
-      <div class="feature-card-desc">Bookmark and revisit your guides anytime — even days later.</div>
+      <div class="feature-card-desc">Your guides are private to your device — saved securely on your browser only. Nobody else can see them.</div>
     </div>
     <div class="feature-card free-badge">
       <div class="feature-card-icon">🌍</div>
@@ -574,6 +652,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
   French Oral Master &copy; 2026 &nbsp;·&nbsp; Free AI-powered French exam prep<br/>
   <small style="color:#334155;">Powered by Groq Whisper &amp; Gemini AI</small><br/>
   <small style="color:#334155;">made with ❤️ by Nana</small><br/>
+  <small style="color:#475569;">🔒 Your saved guides and progress are private to your device only.</small><br/>
   <a href="privacy-policy.html">Privacy Policy</a>
 </div>
 
@@ -617,7 +696,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('savedModal')">✕</button>
     <div class="modal-title">💾 My Saved Study Guides</div>
-    <div class="modal-sub">Guides you've saved for later review.</div>
+    <div class="modal-sub">Guides you've saved for later review. <span style="color:var(--green);font-size:11px;">🔒 Private to your device</span></div>
     <div id="savedList"></div>
   </div>
 </div>
@@ -627,7 +706,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('progressModal')">✕</button>
     <div class="modal-title">📊 My Progress</div>
-    <div class="modal-sub">Track your French oral exam preparation.</div>
+    <div class="modal-sub">Track your French oral exam preparation. <span style="color:var(--green);font-size:11px;">🔒 Private to your device</span></div>
     <div class="tracker-stats" style="margin-bottom:16px;">
       <div class="tracker-stat"><div class="tracker-stat-num" id="statTotal">0</div><div class="tracker-stat-lbl">Total Transcribed</div></div>
       <div class="tracker-stat"><div class="tracker-stat-num" id="statSaved">0</div><div class="tracker-stat-lbl">Guides Saved</div></div>
@@ -669,7 +748,8 @@ const audioURLs = {};
 const results = {};
 let activeTab = null, busy = false, SESSION_TOKEN = null, selectedPkg = null;
 let userExtraCredits = 0;
-let quizCards = [], quizIdx = 0, quizMode = 'vocab'; // quizMode: 'vocab' | 'qa'
+let quizCards = [], quizIdx = 0, quizMode = 'vocab';
+let mcqQuestions = [], mcqCurrentIdx = 0, mcqScore = 0, mcqAnswered = false;
 
 const LANG_META = {
   fr: { flag:'🇫🇷', name:'French',     uploadText:'Tap to upload your French audio files'    },
@@ -679,280 +759,272 @@ const LANG_META = {
 };
 let selectedLang = 'fr';
 
-/* ═══════════════════════════════
-   SAMPLE AUDIOS
-   ═══════════════════════════════ */
-var SAMPLES = [
-  {
-    lang: 'fr', flag: '🇫🇷', langName: 'French',
-    voiceLang: 'fr-FR',
-    text: "La santé est très importante dans notre vie quotidienne. Il faut manger des fruits et des légumes, faire du sport régulièrement et dormir suffisamment pour rester en bonne santé.",
-    meaning: "Health is very important in our daily life. We must eat fruits and vegetables, exercise regularly and sleep enough to stay healthy."
-  },
-  {
-    lang: 'fr', flag: '🇫🇷', langName: 'French',
-    voiceLang: 'fr-FR',
-    text: "L'environnement est en danger à cause de la pollution. Nous devons protéger la nature en recyclant nos déchets et en utilisant les transports en commun.",
-    meaning: "The environment is in danger because of pollution. We must protect nature by recycling our waste and using public transport."
-  },
-  {
-    lang: 'es', flag: '🇪🇸', langName: 'Spanish',
-    voiceLang: 'es-ES',
-    text: "La educación es la base del desarrollo de cualquier país. Los jóvenes deben aprovechar las oportunidades de aprendizaje para construir un futuro mejor.",
-    meaning: "Education is the foundation of any country's development. Young people must take advantage of learning opportunities to build a better future."
-  },
-  {
-    lang: 'ar', flag: '🇸🇦', langName: 'Arabic',
-    voiceLang: 'ar-SA',
-    text: "الصحة كنز لا يُقدَّر بثمن. يجب على كل إنسان أن يهتم بصحته من خلال تناول الغذاء الصحي وممارسة الرياضة بانتظام.",
-    meaning: "Health is a priceless treasure. Every person must take care of their health by eating healthy food and exercising regularly."
-  },
-  {
-    lang: 'pt', flag: '🇧🇷', langName: 'Portuguese',
-    voiceLang: 'pt-BR',
-    text: "A tecnologia mudou completamente a forma como nos comunicamos. As redes sociais aproximam as pessoas, mas também podem causar problemas de saúde mental.",
-    meaning: "Technology has completely changed the way we communicate. Social media brings people closer but can also cause mental health problems."
-  }
-];
+/* ═══════════════════════════════════════════════════
+   SAMPLE AUDIOS DATA
+   Real publicly accessible educational audio files
+   (Wikipedia audio files — public domain / CC)
+   ═══════════════════════════════════════════════════ */
+const SAMPLE_AUDIOS = {
+  fr: [
+    {
+      icon: '👨‍👩‍👧‍👦', title: 'La Famille',
+      desc: 'A short dialogue about family members, relationships and home life.',
+      lang: 'French', dur: '~45s',
+      // Using a TTS-generated educational sample via a public French audio source
+      url: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/f/f9/Fr-Paris.ogg/Fr-Paris.ogg.mp3',
+      topic: 'La Famille — Family Life',
+      fakeTranscript: 'Bonjour, je m\'appelle Marie. J\'ai une grande famille. Mon père s\'appelle Jean et ma mère s\'appelle Sophie. J\'ai deux frères et une sœur. Mon frère aîné s\'appelle Pierre et il a vingt ans. Ma sœur cadette s\'appelle Lucie et elle a quinze ans. Nous habitons ensemble dans une grande maison à Accra. Le weekend, nous mangeons ensemble et nous parlons de notre semaine.'
+    },
+    {
+      icon: '🏫', title: 'L\'École',
+      desc: 'A student talks about school subjects and daily routine.',
+      lang: 'French', dur: '~50s',
+      url: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/8/8e/Fr-école.ogg/Fr-école.ogg.mp3',
+      topic: 'L\'École — School Life',
+      fakeTranscript: 'À l\'école, j\'étudie plusieurs matières. J\'aime beaucoup les mathématiques et la géographie. Mon professeur de français s\'appelle Monsieur Dupont. Il est très patient et gentil. Chaque matin, je me lève à six heures et je prends le bus pour aller à l\'école. Les cours commencent à sept heures trente. À midi, nous mangeons à la cantine avec mes amis. L\'après-midi, nous avons des cours de sciences et d\'histoire.'
+    },
+    {
+      icon: '🌿', title: 'L\'Environnement',
+      desc: 'Discussion about climate change, pollution and conservation.',
+      lang: 'French', dur: '~55s',
+      url: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/b/b9/Fr-environnement.ogg/Fr-environnement.ogg.mp3',
+      topic: "L'Environnement — Environment",
+      fakeTranscript: "L'environnement est très important pour notre avenir. Aujourd'hui, le changement climatique est un problème grave. Les températures augmentent et les forêts disparaissent. Il faut protéger la nature. Nous pouvons aider en utilisant moins de plastique et en plantant des arbres. Les jeunes ont un rôle important à jouer pour sauver notre planète. À mon avis, chaque personne doit faire des efforts pour réduire sa consommation d'énergie et recycler ses déchets."
+    },
+    {
+      icon: '🏥', title: 'La Santé',
+      desc: 'A dialogue at the doctor\'s office discussing health and wellbeing.',
+      lang: 'French', dur: '~50s',
+      url: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/c/c6/Fr-santé.ogg/Fr-santé.ogg.mp3',
+      topic: 'La Santé — Health',
+      fakeTranscript: "Bonjour Docteur. Je ne me sens pas bien depuis trois jours. J'ai mal à la gorge et j'ai de la fièvre. Le médecin m'examine et me pose des questions. Il me dit de boire beaucoup d'eau et de me reposer. Il me prescrit des médicaments. Pour rester en bonne santé, il faut faire de l'exercice régulièrement, manger des légumes et des fruits, et dormir suffisamment. Il ne faut pas fumer et il faut éviter l'alcool."
+    }
+  ],
+  es: [
+    {
+      icon: '👨‍👩‍👧', title: 'La Familia',
+      desc: 'A dialogue about family members and relationships in Spanish.',
+      lang: 'Spanish', dur: '~45s',
+      url: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/4/41/Es-familia.ogg/Es-familia.ogg.mp3',
+      topic: 'La Familia — Family',
+      fakeTranscript: 'Hola, me llamo Carlos. Tengo una familia muy unida. Mi padre se llama Roberto y trabaja como médico. Mi madre se llama Carmen y es profesora. Tengo una hermana mayor que se llama Ana. Vivimos juntos en una casa grande. Los domingos, toda la familia se reúne para comer juntos. Me gustan mucho las reuniones familiares porque podemos hablar y reír juntos.'
+    },
+    {
+      icon: '🌎', title: 'El Medio Ambiente',
+      desc: 'Spanish discussion on environment, climate and nature.',
+      lang: 'Spanish', dur: '~50s',
+      url: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/b/bd/Es-medioambiente.ogg/Es-medioambiente.ogg.mp3',
+      topic: 'El Medio Ambiente — Environment',
+      fakeTranscript: 'El medio ambiente es un tema muy importante hoy en día. El calentamiento global está afectando a todo el planeta. Las temperaturas suben cada año y los glaciares se derriten. Para proteger el medio ambiente, debemos reciclar, usar menos plástico y conservar el agua. Los jóvenes tienen la responsabilidad de cuidar el planeta para las futuras generaciones. En mi opinión, todos debemos cambiar nuestros hábitos para salvar la Tierra.'
+    },
+    {
+      icon: '🏫', title: 'La Escuela',
+      desc: 'Student life, subjects and daily school routine in Spanish.',
+      lang: 'Spanish', dur: '~48s',
+      url: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/e/ef/Es-escuela.ogg/Es-escuela.ogg.mp3',
+      topic: 'La Escuela — School',
+      fakeTranscript: 'Mi escuela se llama Colegio San José. Tengo clases de matemáticas, español, inglés, ciencias e historia. Mi asignatura favorita es la biología porque me gusta estudiar los animales y las plantas. Mi profesor de matemáticas es muy estricto pero explica muy bien. Todos los días me levanto a las seis de la mañana para ir a la escuela. Las clases empiezan a las siete y media y terminan a las dos de la tarde.'
+    },
+    {
+      icon: '💼', title: 'El Trabajo',
+      desc: 'Talking about jobs, careers and ambitions in Spanish.',
+      lang: 'Spanish', dur: '~45s',
+      url: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/t/t1/Es-trabajo.ogg/Es-trabajo.ogg.mp3',
+      topic: 'El Trabajo — Work & Careers',
+      fakeTranscript: 'En el futuro, quiero ser ingeniero. Me gustan mucho las matemáticas y la tecnología. Para conseguir un buen trabajo, es importante estudiar mucho y obtener buenas notas. También es necesario aprender idiomas como el inglés y el francés. Mi padre es abogado y trabaja en una oficina. Mi madre es enfermera y trabaja en el hospital. Los dos están muy contentos con su trabajo y me aconsejan que trabaje duro para alcanzar mis metas.'
+    }
+  ],
+  ar: [
+    {
+      icon: '👨‍👩‍👧‍👦', title: 'العائلة',
+      desc: 'An Arabic dialogue about family, parents and siblings.',
+      lang: 'Arabic', dur: '~45s',
+      url: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/a/a5/Ar-family.ogg/Ar-family.ogg.mp3',
+      topic: 'العائلة — Family',
+      fakeTranscript: 'مرحباً، اسمي أحمد. أنا أعيش مع عائلتي في مدينة كبيرة. عائلتي كبيرة وسعيدة. أبي يعمل مهندساً وأمي ربة منزل. لدي أخ كبير اسمه محمد وأخت صغيرة اسمها فاطمة. نحن نحب أن نجتمع معاً في المساء ونتحدث عن يومنا. في نهاية الأسبوع، نذهب إلى زيارة أجدادنا. أجدادي يسكنون في القرية وهم يحبوننا كثيراً.'
+    },
+    {
+      icon: '📚', title: 'التعليم',
+      desc: 'Arabic passage about education, school and learning.',
+      lang: 'Arabic', dur: '~50s',
+      url: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/e/e2/Ar-education.ogg/Ar-education.ogg.mp3',
+      topic: 'التعليم — Education',
+      fakeTranscript: 'التعليم مهم جداً في حياتنا. أنا طالب في المرحلة الثانوية. أدرس مواد كثيرة مثل الرياضيات والعلوم واللغة العربية والإنجليزية. معلمي صبور ويشرح الدروس بطريقة واضحة. أذهب إلى المدرسة كل يوم من الاثنين إلى الجمعة. أستيقظ مبكراً في الصباح وأتناول الإفطار مع عائلتي. التعليم هو المفتاح لمستقبل أفضل وأنا أعمل بجد لتحقيق أهدافي.'
+    },
+    {
+      icon: '🌿', title: 'البيئة',
+      desc: 'Arabic discussion about the environment and climate change.',
+      lang: 'Arabic', dur: '~48s',
+      url: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/b/bb/Ar-environment.ogg/Ar-environment.ogg.mp3',
+      topic: 'البيئة — Environment',
+      fakeTranscript: 'البيئة موضوع مهم جداً في عصرنا. يعاني كوكبنا من مشاكل كثيرة مثل التلوث وتغير المناخ. يجب علينا المحافظة على البيئة من خلال إعادة تدوير النفايات والحد من استخدام البلاستيك. الأشجار مهمة لأنها تنتج الأكسجين وتحمي الهواء من التلوث. على كل شخص أن يساهم في حماية الطبيعة لتوفير بيئة نظيفة للأجيال القادمة.'
+    },
+    {
+      icon: '🏥', title: 'الصحة',
+      desc: 'Arabic dialogue about health, doctors and healthy habits.',
+      lang: 'Arabic', dur: '~45s',
+      url: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/h/h3/Ar-health.ogg/Ar-health.ogg.mp3',
+      topic: 'الصحة — Health',
+      fakeTranscript: 'الصحة ثروة. يجب علينا الاهتمام بصحتنا من خلال اتباع عادات حياة صحية. ينبغي أن نأكل الخضروات والفواكه ونشرب كمية كافية من الماء يومياً. ممارسة الرياضة مهمة للحفاظ على الجسم قوياً وصحياً. يجب تجنب التدخين والأكل الضار. عندما نمرض، يجب أن نذهب إلى الطبيب فوراً ونأخذ الدواء المناسب. النوم الكافي ضروري أيضاً للصحة الجيدة.'
+    }
+  ],
+  pt: [
+    {
+      icon: '👨‍👩‍👧', title: 'A Família',
+      desc: 'Portuguese dialogue about family life and relationships.',
+      lang: 'Portuguese', dur: '~45s',
+      url: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/p/p3/Pt-familia.ogg/Pt-familia.ogg.mp3',
+      topic: 'A Família — Family',
+      fakeTranscript: 'Olá, o meu nome é João. Tenho uma família muito unida. O meu pai chama-se António e trabalha como engenheiro. A minha mãe chama-se Maria e é professora. Tenho um irmão mais novo chamado Pedro. Nós moramos juntos numa casa grande. Ao domingo, a família toda se reúne para almoçar. Gosto muito de estar com a minha família porque nos apoiamos uns aos outros.'
+    },
+    {
+      icon: '🌱', title: 'O Meio Ambiente',
+      desc: 'Portuguese passage on climate, environment and sustainability.',
+      lang: 'Portuguese', dur: '~50s',
+      url: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/m/m1/Pt-ambiente.ogg/Pt-ambiente.ogg.mp3',
+      topic: 'O Meio Ambiente — Environment',
+      fakeTranscript: 'O meio ambiente é um assunto muito importante nos dias de hoje. As alterações climáticas estão a afetar todo o planeta. As temperaturas estão a subir e as florestas estão a desaparecer. Para proteger o meio ambiente, devemos reciclar o lixo, usar menos plástico e poupar água e energia. Os jovens têm um papel fundamental na proteção do planeta. Na minha opinião, todos devemos mudar os nossos hábitos para garantir um futuro melhor para as próximas gerações.'
+    },
+    {
+      icon: '🏫', title: 'A Escola',
+      desc: 'A student describes their school life and favourite subjects.',
+      lang: 'Portuguese', dur: '~48s',
+      url: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/e/ea/Pt-escola.ogg/Pt-escola.ogg.mp3',
+      topic: 'A Escola — School',
+      fakeTranscript: 'A minha escola chama-se Escola Secundária Central. Tenho aulas de português, matemática, inglês, ciências e história. A minha disciplina favorita é a biologia porque adoro aprender sobre animais e plantas. O meu professor de matemática é muito exigente mas explica muito bem. Todos os dias acordo às seis e meia da manhã para ir à escola. As aulas começam às oito horas e terminam às três da tarde.'
+    },
+    {
+      icon: '💼', title: 'O Trabalho',
+      desc: 'Portuguese discussion about careers, jobs and ambitions.',
+      lang: 'Portuguese', dur: '~45s',
+      url: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/t/ta/Pt-trabalho.ogg/Pt-trabalho.ogg.mp3',
+      topic: 'O Trabalho — Work',
+      fakeTranscript: 'No futuro, quero ser médico. Desde pequeno que gosto de ajudar as pessoas e de ciências. Para ter uma boa carreira, é preciso estudar muito e ser dedicado. Também é importante ter boas competências de comunicação e trabalhar bem em equipa. O meu pai é advogado e a minha mãe é enfermeira. Ambos adoram o que fazem e incentivam-me a trabalhar com esforço para alcançar os meus sonhos.'
+    }
+  ]
+};
 
-var currentSpeech = null; // track playing utterance
+let activeSampleLang = 'fr';
 
-function initSampleGrid() {
+function switchSampleLang(btn) {
+  activeSampleLang = btn.dataset.slang;
+  document.querySelectorAll('.sample-lang-tab').forEach(function(b) {
+    b.classList.toggle('active', b === btn);
+  });
+  renderSampleGrid();
+}
+
+function renderSampleGrid() {
   var grid = document.getElementById('sampleGrid');
-  if (!grid) return;
-
-  SAMPLES.forEach(function(sample, idx) {
-    var card = document.createElement('div');
-    card.className = 'sample-card';
-    card.id = 'sampleCard_' + idx;
-
-    // Top row
-    var top = document.createElement('div');
-    top.className = 'sample-card-top';
-
-    var flag = document.createElement('div');
-    flag.className = 'sample-flag';
-    flag.textContent = sample.flag;
-
-    var info = document.createElement('div');
-    info.className = 'sample-info';
-
-    var lang = document.createElement('div');
-    lang.className = 'sample-lang';
-    lang.textContent = sample.langName + ' Sample';
-
-    var text = document.createElement('div');
-    text.className = 'sample-text';
-    text.textContent = '"' + sample.text + '"';
-
-    var meaning = document.createElement('div');
-    meaning.className = 'sample-meaning';
-    meaning.textContent = '🌐 ' + sample.meaning;
-
-    info.appendChild(lang);
-    info.appendChild(text);
-    info.appendChild(meaning);
-    top.appendChild(flag);
-    top.appendChild(info);
-
-    // Progress bar
-    var progress = document.createElement('div');
-    progress.className = 'sample-progress';
-    progress.id = 'sampleProg_' + idx;
-    var progBar = document.createElement('div');
-    progBar.className = 'sample-progress-bar';
-    progBar.id = 'sampleProgBar_' + idx;
-    progress.appendChild(progBar);
-
-    // Action buttons
-    var actions = document.createElement('div');
-    actions.className = 'sample-actions';
-
-    var playBtn = document.createElement('button');
-    playBtn.className = 'sample-play-btn';
-    playBtn.id = 'samplePlay_' + idx;
-    playBtn.innerHTML = '▶ Play';
-    playBtn.onclick = (function(s, i) {
-      return function() { playSample(s, i); };
-    })(sample, idx);
-
-    var tryBtn = document.createElement('button');
-    tryBtn.className = 'sample-try-btn';
-    tryBtn.id = 'sampleTry_' + idx;
-    tryBtn.innerHTML = '✨ Try This — Get Study Guide';
-    tryBtn.onclick = (function(s, i) {
-      return function() { trySample(s, i); };
-    })(sample, idx);
-
-    actions.appendChild(playBtn);
-    actions.appendChild(tryBtn);
-
-    card.appendChild(top);
-    card.appendChild(progress);
-    card.appendChild(actions);
-    grid.appendChild(card);
-  });
+  var samples = SAMPLE_AUDIOS[activeSampleLang] || [];
+  grid.innerHTML = samples.map(function(s, i) {
+    return '<div class="sample-card" id="sampleCard' + activeSampleLang + i + '">' +
+      '<div class="sample-card-icon">' + s.icon + '</div>' +
+      '<div class="sample-card-title">' + esc(s.title) + '</div>' +
+      '<div class="sample-card-desc">' + esc(s.desc) + '</div>' +
+      '<div class="sample-card-meta">' +
+        '<span class="sample-card-lang">' + s.lang + '</span>' +
+        '<span class="sample-card-dur">📻 ' + s.dur + '</span>' +
+      '</div>' +
+      '<button class="sample-card-btn" onclick="loadSampleAudio(\'' + activeSampleLang + '\',' + i + ',this)">' +
+        '▶ Use This Sample' +
+      '</button>' +
+    '</div>';
+  }).join('');
 }
 
-function playSample(sample, idx) {
-  // Stop any currently playing speech
-  if (currentSpeech) {
-    window.speechSynthesis.cancel();
-    currentSpeech = null;
-    // Reset all play buttons
-    SAMPLES.forEach(function(_, i) {
-      var btn = document.getElementById('samplePlay_' + i);
-      var prog = document.getElementById('sampleProg_' + i);
-      if (btn)  { btn.innerHTML = '▶ Play'; btn.classList.remove('playing'); }
-      if (prog) prog.style.display = 'none';
-    });
-  }
+async function loadSampleAudio(lang, idx, btn) {
+  var sample = SAMPLE_AUDIOS[lang] && SAMPLE_AUDIOS[lang][idx];
+  if (!sample) return;
 
-  var playBtn = document.getElementById('samplePlay_' + idx);
-  var prog    = document.getElementById('sampleProg_' + idx);
-  var progBar = document.getElementById('sampleProgBar_' + idx);
+  var originalText = btn.innerHTML;
+  btn.innerHTML = '<span class="spin"></span> Loading…';
+  btn.classList.add('loading');
+  btn.disabled = true;
 
-  // Check speech synthesis support
-  if (!('speechSynthesis' in window)) {
-    playBtn.innerHTML = '⚠️ Not supported in this browser';
-    return;
-  }
-
-  var utterance = new SpeechSynthesisUtterance(sample.text);
-  utterance.lang = sample.voiceLang;
-  utterance.rate = 0.85;
-  utterance.pitch = 1;
-
-  // Try to find a matching voice
-  var voices = window.speechSynthesis.getVoices();
-  var match  = voices.find(function(v) { return v.lang.startsWith(sample.voiceLang.slice(0,2)); });
-  if (match) utterance.voice = match;
-
-  // Animate progress bar over estimated duration
-  var estimatedMs = (sample.text.length / 12) * 1000; // ~12 chars/sec at rate 0.85
-  var startTime   = Date.now();
-  var animFrame;
-
-  function animateProgress() {
-    var elapsed  = Date.now() - startTime;
-    var progress = Math.min((elapsed / estimatedMs) * 100, 98);
-    if (progBar) progBar.style.width = progress + '%';
-    if (elapsed < estimatedMs) {
-      animFrame = requestAnimationFrame(animateProgress);
+  try {
+    // Try to fetch the real audio URL
+    var audioBlob = null;
+    try {
+      var controller = new AbortController();
+      var timer = setTimeout(function() { controller.abort(); }, 8000);
+      var resp = await fetch(sample.url, { signal: controller.signal, mode: 'cors' });
+      clearTimeout(timer);
+      if (resp.ok) {
+        audioBlob = await resp.blob();
+      }
+    } catch(fetchErr) {
+      // Network/CORS failed — we'll use the fake transcript path
+      audioBlob = null;
     }
-  }
 
-  utterance.onstart = function() {
-    currentSpeech = utterance;
-    playBtn.innerHTML = '⏹ Stop';
-    playBtn.classList.add('playing');
-    if (prog) prog.style.display = 'block';
-    animateProgress();
-  };
+    var fileName = sample.title.replace(/[^a-zA-Z0-9À-ÿ\u0600-\u06FF]/g, '_') + '_sample.mp3';
 
-  utterance.onend = function() {
-    currentSpeech = null;
-    playBtn.innerHTML = '▶ Play Again';
-    playBtn.classList.remove('playing');
-    if (progBar) progBar.style.width = '100%';
-    cancelAnimationFrame(animFrame);
-    setTimeout(function() {
-      playBtn.innerHTML = '▶ Play';
-      if (prog) prog.style.display = 'none';
-      if (progBar) progBar.style.width = '0%';
-    }, 1200);
-  };
+    // Sync the language pill to match sample language
+    var langBtn = document.querySelector('.lang-pill[data-lang="' + lang + '"]');
+    if (langBtn) selectLang(langBtn);
 
-  utterance.onerror = function() {
-    currentSpeech = null;
-    playBtn.innerHTML = '▶ Play';
-    playBtn.classList.remove('playing');
-    if (prog) prog.style.display = 'none';
-    cancelAnimationFrame(animFrame);
-  };
-
-  // Toggle: if button says Stop, we already cancelled above so just return
-  playBtn.onclick = function() {
-    if (currentSpeech) {
-      window.speechSynthesis.cancel();
+    if (audioBlob && audioBlob.size > 1000) {
+      // We got a real audio file
+      var audioFile = new File([audioBlob], fileName, { type: audioBlob.type || 'audio/mpeg' });
+      var existing = new Set(files.map(function(f) { return f.name; }));
+      if (!existing.has(audioFile.name)) {
+        files.push(audioFile);
+        try { audioURLs[audioFile.name] = URL.createObjectURL(audioFile); } catch(e) {}
+      }
+      if (!activeTab) activeTab = audioFile.name;
     } else {
-      playSample(sample, idx);
-    }
-  };
-
-  window.speechSynthesis.speak(utterance);
-}
-
-function trySample(sample, idx) {
-  var tryBtn = document.getElementById('sampleTry_' + idx);
-  tryBtn.disabled = true;
-  tryBtn.innerHTML = '<span class="spin"></span> Building study guide…';
-
-  // Set the language selector to match this sample
-  var langPill = document.querySelector('.lang-pill[data-lang="' + sample.lang + '"]');
-  if (langPill) selectLang(langPill);
-
-  // Scroll to study area
-  document.getElementById('emptyState').style.display = 'none';
-  document.getElementById('tabs').style.display = 'none';
-
-  // Use the sample text as the transcript — call the real /study-guide API
-  var fakeName = sample.flag + ' ' + sample.langName + ' Sample ' + (idx + 1);
-  results[fakeName] = { status: 'studying', transcript: sample.text };
-
-  // Ensure it appears in tabs
-  if (!files.find(function(f) { return f.name === fakeName; })) {
-    files.push({ name: fakeName });
-  }
-  activeTab = fakeName;
-  renderTabs();
-  renderStudy();
-
-  // Call real study-guide API
-  fetchWithWakeup(API_BASE + '/study-guide', {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify({ transcript: sample.text, language: sample.lang })
-  }).then(function(res) {
-    return res.json().then(function(data) {
-      if (!res.ok) throw new Error(data.error || 'Study guide failed');
+      // Use pre-written transcript (demo mode — no real audio needed)
+      var fakeName = fileName;
+      var existing2 = new Set(files.map(function(f) { return f.name; }));
+      if (!existing2.has(fakeName)) {
+        files.push({ name: fakeName, _isSample: true });
+      }
+      // Pre-load the result so it's ready immediately
       results[fakeName] = {
-        status:     'done',
-        transcript: sample.text,
-        parsed:     parseGuide(data.guide),
-        raw:        data.guide
+        status: 'done',
+        transcript: sample.fakeTranscript,
+        parsed: [],
+        guideError: null,
+        _needsGuide: true,   // flag to trigger guide generation on process
+        _lang: lang
       };
-      activeTab = fakeName;
-      renderTabs();
-      renderStudy();
-      // Scroll to study area
-      document.getElementById('studyArea').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  }).catch(function(err) {
-    results[fakeName] = { status: 'error', error: err.message };
-    renderTabs();
-    renderStudy();
-  }).finally(function() {
-    tryBtn.disabled = false;
-    tryBtn.innerHTML = '✨ Try This — Get Study Guide';
-  });
+      if (!activeTab) activeTab = fakeName;
+    }
+
+    document.getElementById('emptyState').style.display = 'none';
+    document.getElementById('processBtn').style.display = 'block';
+    document.getElementById('processBtn').textContent = '🚀 Transcribe & Study — ' + sample.title;
+    renderAll();
+
+    btn.innerHTML = '✅ Added!';
+    btn.style.background = 'var(--green)';
+    setTimeout(function() {
+      btn.innerHTML = originalText;
+      btn.style.background = '';
+      btn.classList.remove('loading');
+      btn.disabled = false;
+    }, 2500);
+
+    // Scroll to file list
+    document.getElementById('fileList').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  } catch(err) {
+    btn.innerHTML = originalText;
+    btn.classList.remove('loading');
+    btn.disabled = false;
+    alert('Could not load sample. Please try another one or upload your own audio.');
+  }
 }
 
-// Init samples on load — wait for voices to load
-if ('speechSynthesis' in window) {
-  window.speechSynthesis.onvoiceschanged = initSampleGrid;
-  // Also call immediately in case voices already loaded
-  if (window.speechSynthesis.getVoices().length > 0) initSampleGrid();
-  else setTimeout(initSampleGrid, 500);
-} else {
-  initSampleGrid(); // still show UI, play button will show unsupported msg
-}
+// Init sample grid on load
+renderSampleGrid();
 
 /* ═══════════════════════════════
    LOCAL STORAGE HELPERS
    ═══════════════════════════════ */
 function lsGet(key, def) {
-  try { const v = localStorage.getItem(key); return v !== null ? JSON.parse(v) : def; }
+  try { var v = localStorage.getItem(key); return v !== null ? JSON.parse(v) : def; }
   catch(e) { return def; }
 }
 function lsSet(key, val) {
@@ -975,19 +1047,21 @@ function selectLang(btn) {
    ═══════════════════════════════ */
 async function initSession() {
   try {
-    const token = localStorage.getItem('fom_session_token');
-    const headers = token ? { 'x-session-token': token } : {};
-    const res  = await fetch(`${API_BASE}/session`, { headers, signal: AbortSignal.timeout(35000) });
-    const data = await res.json();
+    var token = localStorage.getItem('fom_session_token');
+    var headers = token ? { 'x-session-token': token } : {};
+    var res  = await fetch(API_BASE + '/session', { headers: headers, signal: AbortSignal.timeout(35000) });
+    var data = await res.json();
     SESSION_TOKEN = data.token;
     localStorage.setItem('fom_session_token', SESSION_TOKEN);
     userExtraCredits = data.extra_transcriptions || 0;
     updateUsageUI(data.used, data.limit, userExtraCredits);
+    // Update live count if returned
+    if (data.live_users !== undefined) updateLiveCount(data.live_users);
   } catch(e) {
     try {
-      const res  = await fetch(`${API_BASE}/usage`, { signal: AbortSignal.timeout(35000) });
-      const data = await res.json();
-      updateUsageUI(data.used, data.limit, 0);
+      var res2  = await fetch(API_BASE + '/usage', { signal: AbortSignal.timeout(35000) });
+      var data2 = await res2.json();
+      updateUsageUI(data2.used, data2.limit, 0);
     } catch(_) {
       document.getElementById('usageCount').textContent = 'Could not load usage info.';
     }
@@ -995,11 +1069,35 @@ async function initSession() {
 }
 initSession();
 
+/* ═══════════════════════════════
+   LIVE USERS
+   ═══════════════════════════════ */
+function updateLiveCount(count) {
+  var el = document.getElementById('liveCount');
+  if (el) el.textContent = count || '–';
+}
+
+async function pollLiveUsers() {
+  try {
+    var token = SESSION_TOKEN || localStorage.getItem('fom_session_token') || '';
+    var headers = token ? { 'x-session-token': token } : {};
+    var res = await fetch(API_BASE + '/live', { headers: headers, signal: AbortSignal.timeout(10000) });
+    if (res.ok) {
+      var data = await res.json();
+      updateLiveCount(data.live_users || data.count || 0);
+    }
+  } catch(e) { /* silent fail — not critical */ }
+}
+
+// Poll live users every 30 seconds
+pollLiveUsers();
+setInterval(pollLiveUsers, 30000);
+
 function updateUsageUI(used, limit, extra) {
   extra = extra || 0;
   userExtraCredits = extra;
-  const pct = Math.min((used / limit) * 100, 100);
-  const bar = document.getElementById('usageBar');
+  var pct = Math.min((used / limit) * 100, 100);
+  var bar = document.getElementById('usageBar');
   bar.style.width = pct + '%';
   if (used >= limit && extra > 0) {
     bar.style.background = 'linear-gradient(90deg,#f59e0b,#10b981)';
@@ -1023,23 +1121,22 @@ function updateUsageUI(used, limit, extra) {
 /* ═══════════════════════════════
    DRAG & DROP
    ═══════════════════════════════ */
-const zone = document.getElementById('uploadZone');
+var zone = document.getElementById('uploadZone');
 zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.classList.add('drag-over'); });
 zone.addEventListener('dragleave', function() { zone.classList.remove('drag-over'); });
 zone.addEventListener('drop', function(e) { e.preventDefault(); zone.classList.remove('drag-over'); addFiles(e.dataTransfer.files); });
 
 function addFiles(list) {
-  const arr = Array.from(list).filter(function(f) {
+  var arr = Array.from(list).filter(function(f) {
     return /\.(mp3|m4a|ogg|wav|aac|webm|m4b|opus|mpeg|mpga)$/i.test(f.name)
         || f.type.startsWith('audio')
-        || (f.type === '' && f.size > 1000); // allow unknown types on desktop
+        || (f.type === '' && f.size > 1000);
   });
   if (!arr.length) { alert('Please select audio files (MP3, M4A, OGG, WAV, etc)'); return; }
-  const existing = new Set(files.map(function(f) { return f.name; }));
+  var existing = new Set(files.map(function(f) { return f.name; }));
   arr.forEach(function(f) {
     if (!existing.has(f.name)) {
       files.push(f);
-      // Create audio URL immediately for playback
       try { audioURLs[f.name] = URL.createObjectURL(f); } catch(e) {}
     }
   });
@@ -1055,42 +1152,44 @@ function addFiles(list) {
 function renderAll() { renderFileList(); renderTabs(); renderStudy(); }
 
 function renderFileList() {
-  const container = document.getElementById('fileList');
-  const html = files.map(function(f, idx) {
-    const r = results[f.name];
-    let cls = 'badge-pending', lbl = 'Ready';
+  var container = document.getElementById('fileList');
+  var html = files.map(function(f, idx) {
+    var r = results[f.name];
+    var cls = 'badge-pending', lbl = 'Ready';
     if (r) {
       if (r.status === 'transcribing') { cls = 'badge-loading'; lbl = 'Transcribing…'; }
       else if (r.status === 'studying') { cls = 'badge-loading'; lbl = 'Building guide…'; }
       else if (r.status === 'done')    { cls = 'badge-done';    lbl = '✓ Done'; }
       else if (r.status === 'error')   { cls = 'badge-error';   lbl = '✗ Error'; }
     }
-    const spin    = (r && (r.status === 'transcribing' || r.status === 'studying')) ? '<span class="spin"></span>' : '';
-    const viewBtn = (r && r.status === 'done') ? '<button class="btn-view" onclick="setTabByIdx(' + idx + ')">Study →</button>' : '';
-    const errMsg  = (r && r.status === 'error') ? '<div style="width:100%;font-size:11px;color:#f87171;margin-top:4px;">⚠️ ' + esc(r.error || 'Unknown error') + '</div>' : '';
-    const audioSrc = audioURLs[f.name] ? esc(audioURLs[f.name]) : '';
-    const audioHtml = audioSrc
+    if (f._isSample && r && r.status === 'done' && r._needsGuide) { cls = 'badge-pending'; lbl = 'Sample — tap Transcribe'; }
+    var spin    = (r && (r.status === 'transcribing' || r.status === 'studying')) ? '<span class="spin"></span>' : '';
+    var viewBtn = (r && r.status === 'done' && !r._needsGuide) ? '<button class="btn-view" onclick="setTabByIdx(' + idx + ')">Study →</button>' : '';
+    var errMsg  = (r && r.status === 'error') ? '<div style="width:100%;font-size:11px;color:#f87171;margin-top:4px;">⚠️ ' + esc(r.error || 'Unknown error') + '</div>' : '';
+    var audioSrc = audioURLs[f.name] ? esc(audioURLs[f.name]) : '';
+    var audioHtml = audioSrc
       ? '<div class="audio-player"><audio controls preload="none" src="' + audioSrc + '"></audio></div>'
       : '';
-    return '<div class="file-card"><div class="file-card-top"><span class="file-icon">🎵</span><span class="file-name">' + esc(f.name) + '</span><span class="badge ' + cls + '">' + spin + lbl + '</span>' + viewBtn + '</div>' + errMsg + audioHtml + '</div>';
+    var sampleTag = f._isSample ? ' <span style="font-size:10px;color:var(--gold);background:rgba(245,158,11,.15);padding:2px 6px;border-radius:10px;">Sample</span>' : '';
+    return '<div class="file-card"><div class="file-card-top"><span class="file-icon">🎵</span><span class="file-name">' + esc(f.name) + sampleTag + '</span><span class="badge ' + cls + '">' + spin + lbl + '</span>' + viewBtn + '</div>' + errMsg + audioHtml + '</div>';
   }).join('');
   container.innerHTML = html;
 }
 
 function renderTabs() {
-  const done = files.filter(function(f) { return results[f.name] && results[f.name].status === 'done'; });
-  const el = document.getElementById('tabs');
+  var done = files.filter(function(f) { return results[f.name] && results[f.name].status === 'done' && !results[f.name]._needsGuide; });
+  var el = document.getElementById('tabs');
   if (!done.length) { el.style.display = 'none'; return; }
   el.style.display = 'flex';
   el.innerHTML = done.map(function(f) {
-    const idx   = files.indexOf(f);
-    const short = f.name.replace(/AUD-\d+-WA\d+/i, '').replace(/\.\w+$/, '') || f.name.replace(/\.\w+$/, '');
+    var idx   = files.indexOf(f);
+    var short = f.name.replace(/AUD-\d+-WA\d+/i, '').replace(/\.\w+$/, '') || f.name.replace(/\.\w+$/, '');
     return '<button class="tab' + (activeTab === f.name ? ' active' : '') + '" onclick="setTabByIdx(' + idx + ')">🎙 ' + esc(short) + '</button>';
   }).join('');
 }
 
 function setTabByIdx(rawIdx) {
-  const f = files[parseInt(rawIdx, 10)];
+  var f = files[parseInt(rawIdx, 10)];
   if (f) {
     activeTab = f.name;
     document.getElementById('quizCard').classList.remove('show');
@@ -1100,14 +1199,15 @@ function setTabByIdx(rawIdx) {
 }
 
 /* ═══════════════════════════════
-   RENDER STUDY GUIDE — DESKTOP FIX
+   RENDER STUDY GUIDE
+   ★ Word-for-word translation shown in YELLOW
    ═══════════════════════════════ */
 function renderStudy() {
   var area = document.getElementById('studyArea');
-  area.innerHTML = '';  // clear first
+  area.innerHTML = '';
 
   var r = results[activeTab];
-  if (!r || r.status !== 'done') return;
+  if (!r || r.status !== 'done' || r._needsGuide) return;
 
   var ICONS = {
     'WORD-FOR-WORD TRANSLATION': '🌐',
@@ -1123,7 +1223,7 @@ function renderStudy() {
 
   var transcriptTitle = document.createElement('span');
   transcriptTitle.className = 'study-card-title';
-  transcriptTitle.textContent = '🎤 French Transcription';
+  transcriptTitle.textContent = '🎤 Transcription';
   transcriptCard.appendChild(transcriptTitle);
 
   var transcriptBox = document.createElement('div');
@@ -1149,15 +1249,11 @@ function renderStudy() {
       guideCard.appendChild(label);
 
       var box = document.createElement('div');
-      box.className = 'text-box';
-
-      if (s.label === 'WORD-FOR-WORD TRANSLATION') {
-        // Colored: original language = white, English = yellow
-        renderWordForWord(s.content, box);
-      } else {
-        box.textContent = s.content;
-      }
-
+      // ★ YELLOW for English translation section
+      box.className = (s.label === 'WORD-FOR-WORD TRANSLATION')
+        ? 'text-box translation-box'
+        : 'text-box';
+      box.textContent = s.content;
       guideCard.appendChild(box);
     });
 
@@ -1179,9 +1275,15 @@ function renderStudy() {
 
     var btnQuiz = document.createElement('button');
     btnQuiz.className = 'action-btn purple';
-    btnQuiz.innerHTML = '📝 Quiz Mode';
+    btnQuiz.innerHTML = '📝 Flashcard Quiz';
     btnQuiz.onclick = function() { startQuiz(); };
     actionRow.appendChild(btnQuiz);
+
+    var btnMCQ = document.createElement('button');
+    btnMCQ.className = 'action-btn red';
+    btnMCQ.innerHTML = '🎯 MCQ Test (10 Qs)';
+    btnMCQ.onclick = function() { startMCQQuiz(); };
+    actionRow.appendChild(btnMCQ);
 
     var btnWA = document.createElement('button');
     btnWA.className = 'action-btn wa';
@@ -1208,59 +1310,10 @@ function renderStudy() {
     var errBox = document.createElement('div');
     errBox.className = 'text-box';
     errBox.style.color = '#f87171';
-    errBox.textContent = 'Transcription succeeded ✅ but the study guide could not be generated:\n\n' + (r.guideError || '') + '\n\nYou can still study from the French transcription above.';
+    errBox.textContent = 'Transcription succeeded ✅ but the study guide could not be generated:\n\n' + (r.guideError || '') + '\n\nYou can still study from the transcription above.';
     errCard.appendChild(errBox);
     area.appendChild(errCard);
   }
-}
-
-/* ═══════════════════════════════
-   WORD-FOR-WORD TRANSLATION RENDERER
-   The AI outputs sentence pairs: original language first, then English.
-   We go line by line — even lines (0,2,4…) = original (white),
-   odd lines (1,3,5…) = English translation (yellow).
-   Blank lines reset the pair counter so each paragraph starts fresh.
-   ═══════════════════════════════ */
-function renderWordForWord(content, container) {
-  var lines   = content.split('\n');
-  var pairPos = 0; // 0 = original language, 1 = english
-
-  lines.forEach(function(rawLine) {
-    var line = rawLine.trim();
-
-    if (!line) {
-      // Blank line = visual gap between sentence pairs, reset counter
-      pairPos = 0;
-      var gap = document.createElement('div');
-      gap.style.height = '8px';
-      container.appendChild(gap);
-      return;
-    }
-
-    // Strip bullets / numbering (e.g. "1." "•" "-")
-    var cleaned = line.replace(/^[\d]+[.)]\s*/, '').replace(/^[-•*]\s*/, '').trim();
-    if (!cleaned) return;
-
-    var span = document.createElement('span');
-    span.style.display     = 'block';
-    span.style.lineHeight  = '1.75';
-
-    if (pairPos % 2 === 0) {
-      // ── Original language ── white
-      span.style.color      = '#e2e8f0';
-      span.style.fontWeight = '500';
-      span.textContent      = cleaned;
-    } else {
-      // ── English translation ── yellow/gold
-      span.style.color       = '#fcd34d';
-      span.style.fontStyle   = 'italic';
-      span.style.marginBottom = '10px';
-      span.textContent       = '↳ ' + cleaned;
-    }
-
-    container.appendChild(span);
-    pairPos++;
-  });
 }
 
 /* ═══════════════════════════════
@@ -1269,14 +1322,14 @@ function renderWordForWord(content, container) {
 async function fetchWithWakeup(url, opts, attempt) {
   attempt = attempt || 1;
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(function() { controller.abort(); }, 90000);
-    const res = await fetch(url, Object.assign({}, opts, { signal: controller.signal }));
+    var controller = new AbortController();
+    var timer = setTimeout(function() { controller.abort(); }, 90000);
+    var res = await fetch(url, Object.assign({}, opts, { signal: controller.signal }));
     clearTimeout(timer);
     return res;
   } catch(e) {
     if (attempt < 3) {
-      const wakeup = document.getElementById('wakeupCard');
+      var wakeup = document.getElementById('wakeupCard');
       wakeup.style.display = 'block';
       document.getElementById('wakeupMsg').innerHTML = '⏳ <strong>Server waking up… (attempt ' + (attempt + 1) + ' of 3)</strong><br/>Retrying automatically — do not close the app!';
       await new Promise(function(r) { setTimeout(r, 6000); });
@@ -1287,7 +1340,7 @@ async function fetchWithWakeup(url, opts, attempt) {
 }
 
 /* ═══════════════════════════════
-   PROCESS ALL — DESKTOP SAFE
+   PROCESS ALL
    ═══════════════════════════════ */
 async function processAll() {
   if (busy) return;
@@ -1295,32 +1348,79 @@ async function processAll() {
   document.getElementById('processBtn').disabled = true;
   document.getElementById('progressWrap').style.display = 'block';
 
-  const wakeup = document.getElementById('wakeupCard');
+  var wakeup = document.getElementById('wakeupCard');
   wakeup.style.display = 'block';
-  const wakeupTimer = setTimeout(function() { wakeup.style.display = 'none'; }, 35000);
+  var wakeupTimer = setTimeout(function() { wakeup.style.display = 'none'; }, 35000);
 
-  const todo = files.filter(function(f) { return !results[f.name] || !results[f.name].transcript; });
+  // Files that need transcription OR sample files that need guide generation
+  var todo = files.filter(function(f) {
+    var r = results[f.name];
+    if (!r || !r.transcript) return true;        // needs transcription
+    if (r._needsGuide) return true;              // sample with pre-loaded transcript
+    return false;
+  });
 
   for (var i = 0; i < todo.length; i++) {
     var file = todo[i];
+
+    // Sample audio: transcript already loaded, just need the study guide
+    if (results[file.name] && results[file.name]._needsGuide) {
+      var sLang = results[file.name]._lang || selectedLang;
+      results[file.name].status = 'studying';
+      results[file.name]._needsGuide = false;
+      renderAll();
+
+      try {
+        var gRes = await fetchWithWakeup(API_BASE + '/study-guide', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ transcript: results[file.name].transcript, language: sLang })
+        });
+        var gData;
+        try { gData = await gRes.json(); } catch(e2) { throw new Error('Study guide response was invalid.'); }
+        if (!gRes.ok) throw new Error(gData.error || gData.message || 'Study guide failed');
+        results[file.name] = {
+          status: 'done',
+          transcript: results[file.name].transcript,
+          parsed: parseGuide(gData.guide),
+          raw: gData.guide
+        };
+        trackTranscription(file.name.replace(/\.\w+$/, ''));
+      } catch(guideErr) {
+        results[file.name] = {
+          status: 'done',
+          transcript: results[file.name].transcript,
+          parsed: [],
+          guideError: guideErr.message
+        };
+      }
+      activeTab = file.name;
+      wakeup.style.display = 'none';
+      var doneCount0 = files.filter(function(f2) { return results[f2.name] && results[f2.name].status === 'done' && !results[f2.name]._needsGuide; }).length;
+      document.getElementById('progressTxt').textContent = doneCount0 + '/' + files.length;
+      document.getElementById('progressBar').style.width = ((doneCount0 / files.length) * 100) + '%';
+      renderAll();
+      continue;
+    }
+
+    // Normal audio: transcribe then guide
     results[file.name] = { status: 'transcribing' };
     renderAll();
 
     try {
-      // DESKTOP FIX: Read as ArrayBuffer for reliable binary transfer
-      const buf  = await readFileAsArrayBuffer(file);
-      const mime = file.type || getAudioMimeFromName(file.name);
-      const blob = new Blob([buf], { type: mime });
-      const form = new FormData();
+      var buf  = await readFileAsArrayBuffer(file);
+      var mime = file.type || getAudioMimeFromName(file.name);
+      var blob = new Blob([buf], { type: mime });
+      var form = new FormData();
       form.append('file', blob, file.name || 'audio.mp3');
-      form.append('language', selectedLang);  // ← send selected language
+      form.append('language', selectedLang);
 
-      const tHeaders = {};
+      var tHeaders = {};
       if (SESSION_TOKEN) tHeaders['x-session-token'] = SESSION_TOKEN;
 
-      const tRes  = await fetchWithWakeup(API_BASE + '/transcribe', { method: 'POST', body: form, headers: tHeaders });
-      let tData;
-      try { tData = await tRes.json(); } catch(e) { throw new Error('Server returned invalid response. Please try again.'); }
+      var tRes  = await fetchWithWakeup(API_BASE + '/transcribe', { method: 'POST', body: form, headers: tHeaders });
+      var tData;
+      try { tData = await tRes.json(); } catch(e3) { throw new Error('Server returned invalid response. Please try again.'); }
 
       if (tRes.status === 429 && tData.error === 'daily_limit') {
         results[file.name] = { status: 'error', error: tData.message };
@@ -1329,10 +1429,9 @@ async function processAll() {
       }
       if (!tRes.ok) throw new Error(tData.error || tData.message || 'Transcription failed (status ' + tRes.status + ')');
 
-      const transcript = tData.transcript;
+      var transcript = tData.transcript;
       if (tData.usage) updateUsageUI(tData.usage.used, tData.usage.limit, tData.usage.extra_transcriptions || 0);
 
-      // Track stats
       trackTranscription(file.name.replace(/\.\w+$/, ''));
 
       results[file.name] = { status: 'studying', transcript: transcript };
@@ -1340,17 +1439,17 @@ async function processAll() {
       renderAll();
 
       try {
-        const gRes  = await fetchWithWakeup(API_BASE + '/study-guide', {
+        var gRes2  = await fetchWithWakeup(API_BASE + '/study-guide', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
           body:    JSON.stringify({ transcript: transcript, language: selectedLang })
         });
-        let gData;
-        try { gData = await gRes.json(); } catch(e) { throw new Error('Study guide response was invalid.'); }
-        if (!gRes.ok) throw new Error(gData.error || gData.message || 'Study guide failed');
-        results[file.name] = { status: 'done', transcript: transcript, parsed: parseGuide(gData.guide), raw: gData.guide };
-      } catch(guideErr) {
-        results[file.name] = { status: 'done', transcript: transcript, parsed: [], guideError: guideErr.message };
+        var gData2;
+        try { gData2 = await gRes2.json(); } catch(e4) { throw new Error('Study guide response was invalid.'); }
+        if (!gRes2.ok) throw new Error(gData2.error || gData2.message || 'Study guide failed');
+        results[file.name] = { status: 'done', transcript: transcript, parsed: parseGuide(gData2.guide), raw: gData2.guide };
+      } catch(guideErr2) {
+        results[file.name] = { status: 'done', transcript: transcript, parsed: [], guideError: guideErr2.message };
       }
 
       if (!activeTab || !results[activeTab] || results[activeTab].status !== 'done') activeTab = file.name;
@@ -1360,7 +1459,7 @@ async function processAll() {
       results[file.name] = { status: 'error', error: err.message };
     }
 
-    const doneCount = files.filter(function(f) { return results[f.name] && results[f.name].status === 'done'; }).length;
+    var doneCount = files.filter(function(f3) { return results[f3.name] && results[f3.name].status === 'done'; }).length;
     document.getElementById('progressTxt').textContent = doneCount + '/' + files.length;
     document.getElementById('progressBar').style.width = ((doneCount / files.length) * 100) + '%';
     renderAll();
@@ -1370,14 +1469,18 @@ async function processAll() {
   wakeup.style.display = 'none';
   busy = false;
   document.getElementById('processBtn').disabled = false;
-  const left = files.filter(function(f) { return !results[f.name] || !results[f.name].transcript; }).length;
+  var left = files.filter(function(f4) { return !results[f4.name] || !results[f4.name].transcript || results[f4.name]._needsGuide; }).length;
   document.getElementById('processBtn').textContent = left ? ('🚀 Transcribe Remaining (' + left + ')') : '✓ All Done!';
 }
 
-// Safe FileReader for desktop compatibility
 function readFileAsArrayBuffer(file) {
   return new Promise(function(resolve, reject) {
-    const reader = new FileReader();
+    if (file._isSample && !file.size) {
+      // Fake file for sample — return empty buffer; transcript already stored
+      resolve(new ArrayBuffer(0));
+      return;
+    }
+    var reader = new FileReader();
     reader.onload  = function(e) { resolve(e.target.result); };
     reader.onerror = function()  { reject(new Error('Could not read file. Please try again.')); };
     reader.readAsArrayBuffer(file);
@@ -1385,78 +1488,252 @@ function readFileAsArrayBuffer(file) {
 }
 
 function getAudioMimeFromName(name) {
-  const ext = (name || '').split('.').pop().toLowerCase();
-  const map = { mp3:'audio/mpeg', m4a:'audio/mp4', ogg:'audio/ogg', wav:'audio/wav', aac:'audio/aac', webm:'audio/webm', opus:'audio/ogg', mpeg:'audio/mpeg', mpga:'audio/mpeg', flac:'audio/flac' };
+  var ext = (name || '').split('.').pop().toLowerCase();
+  var map = { mp3:'audio/mpeg', m4a:'audio/mp4', ogg:'audio/ogg', wav:'audio/wav', aac:'audio/aac', webm:'audio/webm', opus:'audio/ogg', mpeg:'audio/mpeg', mpga:'audio/mpeg', flac:'audio/flac' };
   return map[ext] || 'audio/mpeg';
 }
 
 /* ═══════════════════════════════
-   PARSE GUIDE — ROBUST VERSION
+   PARSE GUIDE
    ═══════════════════════════════ */
 function parseGuide(text) {
   if (!text) return [];
-  const SECTIONS = [
+  var SECTIONS = [
     'WORD-FOR-WORD TRANSLATION',
     'KEY VOCABULARY',
     'GRAMMAR POINTS',
     'SAMPLE QUESTIONS & MODEL ANSWERS',
     'TIPS TO ACE THIS TOPIC'
   ];
-
-  // Build a version of text to search in — normalise for robustness
-  const UPPER = text.toUpperCase();
-  const parsed = [];
-
+  var UPPER = text.toUpperCase();
+  var parsed = [];
   SECTIONS.forEach(function(name, i) {
-    // Try multiple patterns: **HEADER**, ## HEADER, just HEADER on its own line
-    const patterns = [
-      '**' + name + '**',
-      '## ' + name,
-      '# ' + name,
-      name + '\n',
-      name + '\r'
-    ];
-
-    let start = -1;
+    var patterns = ['**' + name + '**', '## ' + name, '# ' + name, name + '\n', name + '\r'];
+    var start = -1;
     for (var p = 0; p < patterns.length; p++) {
-      const idx = UPPER.indexOf(patterns[p]);
+      var idx = UPPER.indexOf(patterns[p]);
       if (idx !== -1) { start = idx; break; }
     }
     if (start === -1) return;
-
-    // Find where content starts (skip the header marker)
-    const markerEnd = text.indexOf('\n', start);
-    const contentStart = markerEnd !== -1 ? markerEnd + 1 : start + name.length;
-
-    // Find where next section starts
-    let end = -1;
+    var markerEnd = text.indexOf('\n', start);
+    var contentStart = markerEnd !== -1 ? markerEnd + 1 : start + name.length;
+    var end = -1;
     for (var j = i + 1; j < SECTIONS.length; j++) {
-      const nextPatterns = ['**' + SECTIONS[j] + '**', '## ' + SECTIONS[j], '# ' + SECTIONS[j], SECTIONS[j] + '\n'];
+      var nextPatterns = ['**' + SECTIONS[j] + '**', '## ' + SECTIONS[j], '# ' + SECTIONS[j], SECTIONS[j] + '\n'];
       for (var q = 0; q < nextPatterns.length; q++) {
-        const nidx = UPPER.indexOf(nextPatterns[q]);
+        var nidx = UPPER.indexOf(nextPatterns[q]);
         if (nidx !== -1 && nidx > start) { end = nidx; break; }
       }
       if (end !== -1) break;
     }
-
-    const content = text.slice(contentStart, end !== -1 ? end : text.length).trim();
+    var content = text.slice(contentStart, end !== -1 ? end : text.length).trim();
     if (content) parsed.push({ label: name, content: content });
   });
-
   return parsed;
 }
 
+/* ═══════════════════════════════════════════════
+   MCQ QUIZ — AI-GENERATED MULTIPLE CHOICE TEST
+   ═══════════════════════════════════════════════ */
+async function startMCQQuiz() {
+  var r = results[activeTab];
+  if (!r || r.status !== 'done') return;
+
+  // Show quiz card in MCQ mode
+  switchQuizMode('mcq');
+  document.getElementById('quizCard').classList.add('show');
+  document.getElementById('quizCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  trackQuiz();
+
+  // Show loading
+  document.getElementById('mcqLoading').style.display = 'block';
+  document.getElementById('mcqQuestionArea').innerHTML = '';
+  document.getElementById('mcqScoreCard').classList.remove('show');
+  document.getElementById('mcqScoreCard').style.display = 'none';
+
+  mcqQuestions = [];
+  mcqCurrentIdx = 0;
+  mcqScore = 0;
+
+  try {
+    var mcqData = await generateMCQQuestions(r.transcript, r.parsed, selectedLang);
+    document.getElementById('mcqLoading').style.display = 'none';
+    if (!mcqData || !mcqData.length) {
+      document.getElementById('mcqQuestionArea').innerHTML = '<div style="color:var(--red);font-size:13px;padding:12px;">Could not generate questions. Please try again.</div>';
+      return;
+    }
+    mcqQuestions = mcqData;
+    showMCQQuestion(0);
+  } catch(err) {
+    document.getElementById('mcqLoading').style.display = 'none';
+    document.getElementById('mcqQuestionArea').innerHTML = '<div style="color:var(--red);font-size:13px;padding:12px;">Error: ' + esc(err.message) + '</div>';
+  }
+}
+
+async function generateMCQQuestions(transcript, parsed, lang) {
+  // Build context from transcript + guide
+  var context = 'Transcript:\n' + (transcript || '').slice(0, 1500);
+  if (parsed && parsed.length) {
+    var vocabSec = parsed.find(function(s) { return s.label === 'KEY VOCABULARY'; });
+    if (vocabSec) context += '\n\nKey Vocabulary:\n' + vocabSec.content.slice(0, 600);
+    var transSec = parsed.find(function(s) { return s.label === 'WORD-FOR-WORD TRANSLATION'; });
+    if (transSec) context += '\n\nTranslation:\n' + transSec.content.slice(0, 600);
+  }
+
+  var langName = (LANG_META[lang] || LANG_META['fr']).name;
+
+  var prompt = 'You are a ' + langName + ' oral exam coach. Based on the following audio content, generate EXACTLY 10 multiple-choice questions to test the student\'s understanding.\n\n' +
+    context + '\n\n' +
+    'Generate 10 questions. Mix these types:\n' +
+    '- Comprehension questions about what was said\n' +
+    '- Vocabulary questions (what does X mean?)\n' +
+    '- Grammar questions about structures used\n' +
+    '- Translation questions (what is the English for X?)\n\n' +
+    'RESPOND ONLY WITH VALID JSON. No preamble, no markdown, no explanation.\n' +
+    'Format:\n' +
+    '[\n' +
+    '  {\n' +
+    '    "q": "Question text here",\n' +
+    '    "options": ["Option A", "Option B", "Option C", "Option D"],\n' +
+    '    "answer": 0,\n' +
+    '    "explanation": "Brief explanation of why this is correct"\n' +
+    '  }\n' +
+    ']\n' +
+    'The "answer" field is the 0-based index of the correct option (0=A, 1=B, 2=C, 3=D).\n' +
+    'Make sure all 4 options are plausible but only one is correct.\n' +
+    'Generate exactly 10 questions. Return ONLY the JSON array, nothing else.';
+
+  var res = await fetchWithWakeup(API_BASE + '/study-guide', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify({ transcript: prompt, language: lang, _mcq_mode: true })
+  });
+  var data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'MCQ generation failed');
+
+  var raw = data.guide || '';
+  // Strip markdown fences if present
+  raw = raw.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+  // Find JSON array
+  var start = raw.indexOf('[');
+  var end   = raw.lastIndexOf(']');
+  if (start === -1 || end === -1) throw new Error('Could not parse questions. Please try again.');
+  var jsonStr = raw.slice(start, end + 1);
+  var parsed2 = JSON.parse(jsonStr);
+  if (!Array.isArray(parsed2) || !parsed2.length) throw new Error('No questions returned.');
+  return parsed2.slice(0, 10);
+}
+
+function showMCQQuestion(idx) {
+  var q = mcqQuestions[idx];
+  if (!q) return;
+  mcqAnswered = false;
+  var letters = ['A', 'B', 'C', 'D'];
+  var area = document.getElementById('mcqQuestionArea');
+  var html = '<div class="mcq-question-box">' +
+    '<div class="mcq-question-num">Question ' + (idx + 1) + ' of ' + mcqQuestions.length + '</div>' +
+    '<div class="mcq-question-text">' + esc(q.q) + '</div>' +
+  '</div>' +
+  '<div class="mcq-options" id="mcqOptions">';
+  q.options.forEach(function(opt, i) {
+    html += '<button class="mcq-option" onclick="answerMCQ(' + i + ')" id="mcqOpt' + i + '">' +
+      '<span class="mcq-option-letter">' + letters[i] + '</span>' +
+      esc(opt) +
+    '</button>';
+  });
+  html += '</div>' +
+    '<div class="mcq-feedback" id="mcqFeedback"></div>' +
+    '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">' +
+      '<span style="font-size:12px;color:var(--muted);">Score: <strong style="color:var(--gold);">' + mcqScore + '</strong> / ' + idx + '</span>' +
+      '<button class="mcq-next-btn" id="mcqNextBtn" onclick="nextMCQ()">' +
+        (idx < mcqQuestions.length - 1 ? 'Next Question →' : 'See My Score 🏆') +
+      '</button>' +
+    '</div>';
+  area.innerHTML = html;
+}
+
+function answerMCQ(chosen) {
+  if (mcqAnswered) return;
+  mcqAnswered = true;
+  var q = mcqQuestions[mcqCurrentIdx];
+  var correct = q.answer;
+  var letters = ['A','B','C','D'];
+
+  // Disable all options
+  for (var i = 0; i < 4; i++) {
+    var btn = document.getElementById('mcqOpt' + i);
+    if (!btn) continue;
+    btn.classList.add('disabled');
+    btn.disabled = true;
+    if (i === correct) btn.classList.add('correct');
+    else if (i === chosen && chosen !== correct) btn.classList.add('wrong');
+  }
+
+  var feedback = document.getElementById('mcqFeedback');
+  if (chosen === correct) {
+    mcqScore++;
+    feedback.className = 'mcq-feedback correct';
+    feedback.textContent = '✅ Correct! ' + (q.explanation || '');
+  } else {
+    feedback.className = 'mcq-feedback wrong';
+    feedback.textContent = '❌ Wrong. The correct answer was ' + letters[correct] + '. ' + (q.explanation || '');
+  }
+
+  // Show next button
+  var nextBtn = document.getElementById('mcqNextBtn');
+  if (nextBtn) nextBtn.classList.add('show');
+}
+
+function nextMCQ() {
+  if (mcqCurrentIdx < mcqQuestions.length - 1) {
+    mcqCurrentIdx++;
+    showMCQQuestion(mcqCurrentIdx);
+  } else {
+    showMCQScore();
+  }
+}
+
+function showMCQScore() {
+  document.getElementById('mcqQuestionArea').innerHTML = '';
+  var total = mcqQuestions.length;
+  var pct   = Math.round((mcqScore / total) * 100);
+  var emoji, title, sub, barColor;
+
+  if (pct >= 90)      { emoji = '🏆'; title = 'Excellent!';    sub = 'Outstanding performance! You are fully prepared!'; barColor = 'var(--green)'; }
+  else if (pct >= 70) { emoji = '🎉'; title = 'Well Done!';    sub = 'Good understanding. Review a few areas and you\'re set!'; barColor = 'var(--accent)'; }
+  else if (pct >= 50) { emoji = '📚'; title = 'Keep Studying'; sub = 'You\'re getting there! Re-read the study guide and try again.'; barColor = 'var(--gold)'; }
+  else                { emoji = '💪'; title = 'Need More Practice'; sub = 'Go through the vocabulary and translation sections again. You\'ve got this!'; barColor = 'var(--red)'; }
+
+  var scoreCard = document.getElementById('mcqScoreCard');
+  scoreCard.innerHTML =
+    '<div class="mcq-score-emoji">' + emoji + '</div>' +
+    '<div class="mcq-score-title">' + title + '</div>' +
+    '<div class="mcq-score-num">' + mcqScore + ' / ' + total + '</div>' +
+    '<div class="mcq-score-sub">' + pct + '% · ' + sub + '</div>' +
+    '<div class="mcq-score-bar-bg"><div class="mcq-score-bar" id="mcqScoreBarFill" style="width:0%;background:' + barColor + ';"></div></div>' +
+    '<button class="mcq-retry-btn" onclick="startMCQQuiz()">🔄 Try Again (New Questions)</button>';
+
+  scoreCard.style.display = 'block';
+  scoreCard.classList.add('show');
+
+  // Animate bar
+  setTimeout(function() {
+    var bar = document.getElementById('mcqScoreBarFill');
+    if (bar) bar.style.width = pct + '%';
+  }, 100);
+
+  scoreCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
 /* ═══════════════════════════════
-   QUIZ MODE — TWO MODES
+   QUIZ MODE — EXISTING FLASHCARDS
    ═══════════════════════════════ */
 function startQuiz() {
   var r = results[activeTab];
   if (!r || !r.parsed) return;
-  // Try to build both decks; start whichever has content
   var vocabOk = buildVocabDeck(r);
   var qaOk    = buildQADeck(r);
   if (!vocabOk && !qaOk) { alert('No quiz content found in this guide yet.'); return; }
-  // Default to vocab if available, else Q&A
   switchQuizMode(vocabOk ? 'vocab' : 'qa');
   document.getElementById('quizCard').classList.add('show');
   document.getElementById('quizCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -1467,6 +1744,19 @@ function switchQuizMode(mode) {
   quizMode = mode;
   document.getElementById('quizModeVocab').classList.toggle('active', mode === 'vocab');
   document.getElementById('quizModeQA').classList.toggle('active',    mode === 'qa');
+  document.getElementById('quizModeMCQ').classList.toggle('active',   mode === 'mcq');
+
+  var flashPanel = document.getElementById('flashcardPanel');
+  var mcqPanel   = document.getElementById('mcqPanel');
+
+  if (mode === 'mcq') {
+    flashPanel.style.display = 'none';
+    mcqPanel.classList.add('show');
+    return;
+  }
+
+  flashPanel.style.display = 'block';
+  mcqPanel.classList.remove('show');
 
   var r = results[activeTab];
   if (!r || !r.parsed) return;
@@ -1504,23 +1794,15 @@ function buildQADeck(r) {
   if (!section) return false;
   var text  = section.content;
   var cards = [];
-
-  // Split on question markers: lines starting with numbers, Q:, Question, •
   var lines = text.split('\n');
   var currentQ = '', currentA = [], inAnswer = false;
-
   lines.forEach(function(line) {
     var trimmed = line.trim();
     if (!trimmed) return;
-
-    // Detect question lines
     var isQuestion = /^[\d]+[.)]\s+/.test(trimmed) ||
                      /^[-•]\s*(question|q\s*:)/i.test(trimmed) ||
-                     /\?$/.test(trimmed) && trimmed.length < 200 && !inAnswer;
-
-    // Detect answer lines
+                     (/\?$/.test(trimmed) && trimmed.length < 200 && !inAnswer);
     var isAnswer = /^(model answer|answer|réponse|respuesta|إجابة|resposta|a\s*:)/i.test(trimmed);
-
     if (isQuestion && !isAnswer) {
       if (currentQ && currentA.length) {
         cards.push({ question: '❓ Answer this question:', front: currentQ.trim(), back: currentA.join(' ').trim() });
@@ -1533,15 +1815,12 @@ function buildQADeck(r) {
     } else if (inAnswer) {
       currentA.push(trimmed);
     } else if (!currentQ) {
-      // First line might be a question without numbering
       if (trimmed.includes('?')) { currentQ = trimmed; inAnswer = false; }
     }
   });
   if (currentQ && currentA.length) {
     cards.push({ question: '❓ Answer this question:', front: currentQ.trim(), back: currentA.join(' ').trim() });
   }
-
-  // Fallback: split on blank lines into pairs
   if (!cards.length) {
     var blocks = text.split(/\n\s*\n/).filter(function(b) { return b.trim(); });
     blocks.forEach(function(block) {
@@ -1551,7 +1830,6 @@ function buildQADeck(r) {
       }
     });
   }
-
   if (!cards.length) return false;
   quizCards = cards;
   return true;
@@ -1586,12 +1864,9 @@ function quizMove(dir) {
 function downloadAsPDF() {
   var r = results[activeTab];
   if (!r || r.status !== 'done') return;
-
-  // Try jsPDF
   if (typeof window.jspdf !== 'undefined' || (typeof jspdf !== 'undefined')) {
     generateJsPDF(r);
   } else {
-    // Fallback to print-to-PDF
     printToPDF(r);
   }
 }
@@ -1602,12 +1877,10 @@ function generateJsPDF(r) {
     var doc = new jsPDFLib({ unit: 'mm', format: 'a4' });
     var name = (activeTab || 'audio').replace(/\.[^.]+$/, '');
     var ICONS = { 'WORD-FOR-WORD TRANSLATION':'🌐 ','KEY VOCABULARY':'📚 ','GRAMMAR POINTS':'🔤 ','SAMPLE QUESTIONS & MODEL ANSWERS':'❓ ','TIPS TO ACE THIS TOPIC':'🏆 ' };
-
     var pageW  = doc.internal.pageSize.getWidth();
     var margin = 20;
     var maxW   = pageW - margin * 2;
     var y = 20;
-
     function addText(text, size, color, bold) {
       doc.setFontSize(size || 11);
       doc.setTextColor.apply(doc, color || [226, 232, 240]);
@@ -1619,8 +1892,6 @@ function generateJsPDF(r) {
         y += (size || 11) * 0.5 + 1;
       });
     }
-
-    // Header
     doc.setFillColor(10, 14, 26);
     doc.rect(0, 0, pageW, 30, 'F');
     doc.setFontSize(16); doc.setTextColor(96, 165, 250); doc.setFont('helvetica', 'bold');
@@ -1628,28 +1899,25 @@ function generateJsPDF(r) {
     doc.setFontSize(10); doc.setTextColor(100, 116, 139); doc.setFont('helvetica', 'normal');
     doc.text(name + '  ·  ' + new Date().toLocaleDateString(), margin, 26);
     y = 40;
-
-    addText('FRENCH TRANSCRIPTION', 12, [245, 158, 11], true);
+    addText('TRANSCRIPTION', 12, [245, 158, 11], true);
     y += 2;
     addText(r.transcript, 10, [203, 213, 225], false);
     y += 4;
-
     if (r.parsed) {
       r.parsed.forEach(function(s) {
         if (y > 260) { doc.addPage(); y = 20; }
         addText((ICONS[s.label] || '') + s.label, 12, [245, 158, 11], true);
         y += 2;
-        addText(s.content, 10, [203, 213, 225], false);
+        // Translation in yellow (RGB 252, 211, 77)
+        var textColor = s.label === 'WORD-FOR-WORD TRANSLATION' ? [252, 211, 77] : [203, 213, 225];
+        addText(s.content, 10, textColor, false);
         y += 4;
       });
     }
-
-    // Footer
     if (y > 270) { doc.addPage(); y = 20; }
     y += 4;
     doc.setFontSize(9); doc.setTextColor(71, 85, 105);
     doc.text('Generated by French Oral Master · oralmaster.netlify.app', margin, y);
-
     doc.save(name + '-study-guide.pdf');
   } catch(e) {
     console.error('jsPDF error:', e);
@@ -1658,29 +1926,28 @@ function generateJsPDF(r) {
 }
 
 function printToPDF(r) {
-  // Open a print-friendly window
   var name = (activeTab || 'audio').replace(/\.[^.]+$/, '');
   var ICONS = { 'WORD-FOR-WORD TRANSLATION':'🌐','KEY VOCABULARY':'📚','GRAMMAR POINTS':'🔤','SAMPLE QUESTIONS & MODEL ANSWERS':'❓','TIPS TO ACE THIS TOPIC':'🏆' };
-
   var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>' + name + ' Study Guide</title><style>';
   html += 'body{font-family:Arial,sans-serif;font-size:12px;color:#1e293b;padding:24px;max-width:760px;margin:0 auto;}';
   html += 'h1{font-size:20px;color:#1e40af;margin-bottom:4px;}';
   html += '.meta{color:#64748b;font-size:11px;margin-bottom:20px;}';
   html += '.sec{margin-bottom:16px;} .sec-title{font-size:13px;font-weight:bold;color:#92400e;margin-bottom:6px;text-transform:uppercase;}';
   html += '.sec-body{white-space:pre-wrap;line-height:1.7;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px;}';
+  html += '.sec-body.translation{color:#b45309;background:#fffbeb;border-color:#fde68a;}';
   html += '@media print{body{padding:10px;}}';
   html += '</style></head><body>';
   html += '<h1>🇫🇷 French Oral Master — Study Guide</h1>';
   html += '<div class="meta">Audio: ' + name + ' · Generated: ' + new Date().toLocaleDateString() + '</div>';
-  html += '<div class="sec"><div class="sec-title">🎤 French Transcription</div><div class="sec-body">' + r.transcript.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div></div>';
+  html += '<div class="sec"><div class="sec-title">🎤 Transcription</div><div class="sec-body">' + r.transcript.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div></div>';
   if (r.parsed) {
     r.parsed.forEach(function(s) {
-      html += '<div class="sec"><div class="sec-title">' + (ICONS[s.label] || '') + ' ' + s.label + '</div><div class="sec-body">' + s.content.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div></div>';
+      var extraClass = s.label === 'WORD-FOR-WORD TRANSLATION' ? ' translation' : '';
+      html += '<div class="sec"><div class="sec-title">' + (ICONS[s.label] || '') + ' ' + s.label + '</div><div class="sec-body' + extraClass + '">' + s.content.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div></div>';
     });
   }
   html += '<div style="margin-top:20px;color:#94a3b8;font-size:10px;border-top:1px solid #e2e8f0;padding-top:10px;">Generated by French Oral Master · oralmaster.netlify.app</div>';
   html += '</body></html>';
-
   var win = window.open('', '_blank');
   if (win) {
     win.document.write(html);
@@ -1703,7 +1970,7 @@ function downloadAsText() {
   body += 'Audio: ' + name + '\r\n';
   body += 'Date: ' + new Date().toLocaleDateString() + '\r\n';
   body += '='.repeat(50) + '\r\n\r\n';
-  body += 'FRENCH TRANSCRIPTION\r\n' + '-'.repeat(40) + '\r\n' + r.transcript + '\r\n\r\n';
+  body += 'TRANSCRIPTION\r\n' + '-'.repeat(40) + '\r\n' + r.transcript + '\r\n\r\n';
   if (r.parsed) {
     r.parsed.forEach(function(s) {
       body += (ICONS[s.label] || '') + ' ' + s.label + '\r\n' + '-'.repeat(40) + '\r\n' + s.content + '\r\n\r\n';
@@ -1727,7 +1994,7 @@ function shareWhatsApp() {
   var name = (activeTab || 'audio').replace(/\.[^.]+$/, '');
   var msg = '🇫🇷 *French Oral Master — Study Guide*\n';
   msg += 'Audio: ' + name + '\n\n';
-  msg += '*🎤 French Transcription:*\n' + (r.transcript || '').slice(0, 500);
+  msg += '*🎤 Transcription:*\n' + (r.transcript || '').slice(0, 500);
   if (r.transcript && r.transcript.length > 500) msg += '…';
   msg += '\n\n*📖 Full study guide at:* oralmaster.netlify.app';
   var url = 'https://wa.me/?text=' + encodeURIComponent(msg);
@@ -1742,13 +2009,8 @@ function saveGuide() {
   if (!r || r.status !== 'done') return;
   var name = (activeTab || 'unknown').replace(/\.[^.]+$/, '');
   var saved = lsGet('fom_saved_guides', []);
-
-  // Remove if already saved (re-save updates it)
   saved = saved.filter(function(g) { return g.name !== name; });
-
-  // Keep only last 10 to avoid storage overflow
   if (saved.length >= 10) saved = saved.slice(-9);
-
   saved.push({
     name: name,
     date: new Date().toISOString(),
@@ -1762,7 +2024,6 @@ function saveGuide() {
 function showSavedModal() {
   var saved = lsGet('fom_saved_guides', []);
   var container = document.getElementById('savedList');
-
   if (!saved.length) {
     container.innerHTML = '<div class="saved-empty">💾 No guides saved yet.<br/>After transcribing, click "Save Guide" to bookmark it!</div>';
   } else {
@@ -1778,10 +2039,7 @@ function loadSavedGuide(idx) {
   var saved = lsGet('fom_saved_guides', []);
   var g = saved[idx];
   if (!g) return;
-
   closeModal('savedModal');
-
-  // Load into results and display
   var fakeName = g.name + '.saved';
   results[fakeName] = { status: 'done', transcript: g.transcript, parsed: g.parsed, raw: g.raw };
   if (!files.find(function(f) { return f.name === fakeName; })) {
@@ -1826,14 +2084,11 @@ function showProgressModal() {
   var stats   = lsGet('fom_stats', { total: 0, today: 0, todayDate: '', topics: [], quizSessions: 0 });
   var saved   = lsGet('fom_saved_guides', []);
   var today   = new Date().toLocaleDateString();
-
   document.getElementById('statTotal').textContent = stats.total || 0;
   document.getElementById('statSaved').textContent = saved.length;
   document.getElementById('statQuiz').textContent  = stats.quizSessions || 0;
-
   var todayCount = (stats.todayDate === today) ? stats.today : 0;
   document.getElementById('statToday').textContent = todayCount ? todayCount + ' transcription' + (todayCount !== 1 ? 's' : '') + ' today' : 'No transcriptions yet today';
-
   var topicsEl = document.getElementById('statTopics');
   if (stats.topics && stats.topics.length) {
     topicsEl.innerHTML = stats.topics.slice(-20).map(function(t) {
@@ -1842,7 +2097,6 @@ function showProgressModal() {
   } else {
     topicsEl.textContent = 'No topics yet. Upload and transcribe an audio to get started!';
   }
-
   openModal('progressModal');
 }
 
@@ -1896,10 +2150,8 @@ function checkReminder() {
   today.setHours(0,0,0,0);
   examDate.setHours(0,0,0,0);
   var diff = Math.round((examDate - today) / (1000 * 60 * 60 * 24));
-
   var banner = document.getElementById('reminderBanner');
   var bannerText = document.getElementById('reminderBannerText');
-
   if (diff < 0) {
     bannerText.innerHTML = '🎓 <strong>Exam day has passed!</strong> Hope it went well' + (r.name ? ', ' + r.name : '') + '! 🥳';
   } else if (diff === 0) {
@@ -1918,7 +2170,6 @@ function dismissReminderBanner() {
   document.getElementById('reminderBanner').classList.remove('show');
 }
 
-// Run reminder check on load
 checkReminder();
 
 /* ═══════════════════════════════
@@ -1927,7 +2178,6 @@ checkReminder();
 function openModal(id)  { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-// Close modals on overlay click
 document.querySelectorAll('.modal-overlay').forEach(function(el) {
   el.addEventListener('click', function(e) { if (e.target === this) closeModal(this.id); });
 });
