@@ -5,7 +5,2035 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content="Free AI tool to transcribe French oral exam audios and generate instant study guides. Used by students in Ghana and West Africa."/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#0a0e1a"/><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="Transcribe and master your French oral exam audios instantly. Free AI-powered transcription, vocabulary, grammar, and study guides."/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="theme-color" content="#0a0e1a"/>
+<title>French Oral Master — AI Transcription & Study Guide</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0a0e1a; --card: #111827; --border: #1e2d45;
+  --accent: #3b82f6; --accent-light: #60a5fa;
+  --gold: #f59e0b; --green: #10b981; --red: #ef4444;
+  --text: #e2e8f0; --muted: #64748b; --highlight: #1e3a5f;
+  --purple: #8b5cf6; --pink: #ec4899;
+}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
+
+/* HEADER */
+.header { background: linear-gradient(135deg,#0f172a,#1e2d45); border-bottom:1px solid var(--border); padding:16px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+.header-left { display:flex; align-items:center; gap:12px; }
+.header-flag { font-size:26px; }
+.header-title { font-size:17px; font-weight:800; color:var(--accent-light); }
+.header-sub { font-size:11px; color:var(--muted); margin-top:2px; }
+.header-actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.header-badge { background:var(--highlight); border:1px solid var(--accent); border-radius:20px; padding:4px 12px; font-size:11px; font-weight:700; color:var(--accent-light); cursor:pointer; }
+
+/* HERO */
+.hero { background:linear-gradient(160deg,#0f172a 0%,#1e3a5f 50%,#0f172a 100%); padding:40px 20px 32px; text-align:center; }
+.hero h1 { font-size:26px; font-weight:800; color:#fff; margin-bottom:10px; line-height:1.3; }
+.hero h1 span { color:var(--accent-light); }
+.hero p { font-size:14px; color:var(--muted); max-width:400px; margin:0 auto 20px; line-height:1.6; }
+.hero-features { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-bottom:24px; }
+.feature-pill { background:rgba(59,130,246,.15); border:1px solid rgba(59,130,246,.3); border-radius:20px; padding:5px 12px; font-size:12px; color:var(--accent-light); font-weight:600; }
+.lang-pill { background:rgba(30,58,95,.4); border:1px solid rgba(59,130,246,.25); border-radius:20px; padding:6px 14px; font-size:13px; font-weight:700; color:var(--muted); cursor:pointer; transition:all .2s; }
+.lang-pill.active { background:var(--highlight); border-color:var(--accent); color:var(--accent-light); }
+.lang-pill:hover:not(.active) { border-color:rgba(59,130,246,.5); color:var(--text); }
+.hero-free { background:rgba(16,185,129,.15); border:1px solid rgba(16,185,129,.3); border-radius:10px; padding:10px 16px; display:inline-block; font-size:13px; color:var(--green); font-weight:700; }
+
+/* REMINDER BANNER */
+.reminder-banner { background:linear-gradient(135deg,#1c1408,#1c0a1a); border:1px solid var(--gold); border-radius:12px; padding:12px 16px; margin:0 16px 12px; display:none; align-items:center; gap:10px; }
+.reminder-banner.show { display:flex; }
+.reminder-text { flex:1; font-size:13px; color:#fcd34d; }
+.reminder-dismiss { background:none; border:none; color:var(--muted); font-size:18px; cursor:pointer; flex-shrink:0; }
+
+/* MAIN */
+.main { padding:16px; max-width:700px; margin:0 auto; }
+
+/* WAKEUP */
+.wakeup-card { background:#1c1a08; border:1px solid var(--gold); border-radius:12px; padding:14px 16px; margin-bottom:16px; display:none; }
+.wakeup-card p { color:#fcd34d; font-size:13px; line-height:1.6; }
+.wakeup-bar-bg { height:5px; background:var(--border); border-radius:3px; overflow:hidden; margin-top:8px; }
+.wakeup-bar { height:100%; background:linear-gradient(90deg,var(--gold),var(--green)); border-radius:3px; animation:wakeup 25s linear forwards; }
+@keyframes wakeup { from{width:5%}to{width:100%} }
+
+/* USAGE */
+.usage-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px; margin-bottom:16px; }
+.usage-title { font-size:12px; font-weight:700; color:var(--gold); margin-bottom:4px; }
+.usage-bar-bg { height:6px; background:var(--border); border-radius:3px; overflow:hidden; }
+.usage-bar { height:100%; background:linear-gradient(90deg,var(--green),var(--accent)); border-radius:3px; transition:width 0.5s,background 0.5s; }
+.usage-count { font-size:12px; color:var(--muted); margin-top:4px; }
+
+/* QUICK ACTIONS */
+.quick-actions { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+.quick-btn { display:flex; align-items:center; gap:6px; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:8px 14px; font-size:12px; font-weight:700; color:var(--text); cursor:pointer; transition:all .2s; white-space:nowrap; }
+.quick-btn:hover { border-color:var(--accent); color:var(--accent-light); background:var(--highlight); }
+.quick-btn.gold { border-color:rgba(245,158,11,.4); color:var(--gold); }
+.quick-btn.gold:hover { border-color:var(--gold); background:#1c1408; }
+.quick-btn.green { border-color:rgba(16,185,129,.4); color:var(--green); }
+.quick-btn.green:hover { border-color:var(--green); background:#064e3b22; }
+
+/* UPLOAD */
+.upload-zone { background:var(--card); border:2px dashed var(--border); border-radius:14px; padding:28px 20px; text-align:center; margin-bottom:16px; position:relative; overflow:hidden; cursor:pointer; transition:border-color 0.2s,background 0.2s; }
+.upload-zone.drag-over { border-color:var(--accent); background:var(--highlight); }
+.upload-icon { font-size:36px; margin-bottom:8px; }
+.upload-title { font-size:15px; font-weight:700; margin-bottom:5px; }
+.upload-sub { font-size:12px; color:var(--muted); margin-bottom:14px; }
+.upload-btn { display:inline-block; background:var(--accent); color:#fff; border-radius:8px; padding:9px 22px; font-size:14px; font-weight:700; pointer-events:none; }
+.upload-zone input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; font-size:16px; }
+
+/* FILE LIST */
+.file-list { display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
+.file-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 14px; }
+.file-card-top { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.file-icon { font-size:18px; flex-shrink:0; }
+.file-name { font-size:13px; font-weight:600; flex:1; min-width:80px; word-break:break-all; }
+.badge { font-size:11px; padding:3px 10px; border-radius:20px; font-weight:700; white-space:nowrap; }
+.badge-pending { background:#1f2937; color:var(--muted); }
+.badge-loading { background:var(--highlight); color:var(--accent-light); }
+.badge-done    { background:#064e3b; color:var(--green); }
+.badge-error   { background:#450a0a; color:var(--red); }
+.btn-view { background:var(--highlight); color:var(--accent-light); border:1px solid var(--accent); border-radius:6px; padding:5px 12px; font-size:12px; font-weight:700; cursor:pointer; }
+
+/* SAMPLE AUDIOS SECTION */
+.sample-section { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; margin-bottom:16px; }
+.sample-title { font-size:15px; font-weight:700; color:var(--accent-light); margin-bottom:4px; }
+.sample-sub   { font-size:12px; color:var(--muted); margin-bottom:14px; line-height:1.5; }
+.sample-grid  { display:flex; flex-direction:column; gap:10px; }
+.sample-card  { background:#0f172a; border:1px solid var(--border); border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:10px; }
+.sample-card-top { display:flex; align-items:center; gap:10px; }
+.sample-flag  { font-size:22px; flex-shrink:0; }
+.sample-info  { flex:1; }
+.sample-lang  { font-size:11px; font-weight:800; color:var(--gold); text-transform:uppercase; letter-spacing:.8px; margin-bottom:3px; }
+.sample-text  { font-size:13px; color:var(--text); line-height:1.6; font-style:italic; }
+.sample-meaning { font-size:12px; color:var(--muted); margin-top:2px; }
+.sample-actions { display:flex; gap:8px; flex-wrap:wrap; }
+.sample-play-btn { display:flex; align-items:center; gap:6px; background:rgba(59,130,246,.15); border:1px solid rgba(59,130,246,.4); border-radius:8px; padding:7px 14px; font-size:12px; font-weight:700; color:var(--accent-light); cursor:pointer; transition:all .2s; }
+.sample-play-btn:hover { background:rgba(59,130,246,.3); }
+.sample-play-btn.playing { background:rgba(16,185,129,.15); border-color:rgba(16,185,129,.4); color:var(--green); }
+.sample-try-btn { display:flex; align-items:center; gap:6px; background:rgba(245,158,11,.12); border:1px solid rgba(245,158,11,.35); border-radius:8px; padding:7px 14px; font-size:12px; font-weight:700; color:var(--gold); cursor:pointer; transition:all .2s; }
+.sample-try-btn:hover { background:rgba(245,158,11,.25); }
+.sample-try-btn:disabled { opacity:.5; cursor:not-allowed; }
+.sample-progress { height:3px; background:var(--border); border-radius:2px; overflow:hidden; display:none; }
+.sample-progress-bar { height:100%; background:linear-gradient(90deg,var(--accent),var(--green)); border-radius:2px; width:0%; transition:width .3s; }
+.synced-transcript { cursor: default; }
+.sync-word { display:inline; border-radius:3px; padding:1px 0; transition:background .15s, color .15s; }
+.sync-word.active { background:rgba(59,130,246,.35); color:#fff; border-radius:4px; padding:1px 3px; }
+
+/* STUDY CARD AUDIO PLAYER */
+.study-audio-player { margin-bottom:14px; background:#0f172a; border:1px solid var(--border); border-radius:10px; padding:10px 12px; }
+.study-audio-player .player-label { font-size:11px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:.8px; margin-bottom:8px; }
+.study-audio-player audio { width:100%; height:36px; border-radius:6px; outline:none; display:block; }
+
+/* WORD-FOR-WORD TRANSLATION COLORS */
+.wfw-original { color:#e2e8f0; font-weight:500; line-height:1.75; display:block; }
+.wfw-english  { color:#fcd34d; font-style:italic; line-height:1.75; display:block; margin-bottom:10px; }
+.wfw-pair-sep { display:block; height:2px; }
+
+/* PROGRESS */
+.progress-wrap { margin-bottom:12px; }
+.progress-info { display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-bottom:5px; }
+.progress-bg { height:5px; background:var(--border); border-radius:3px; overflow:hidden; }
+.progress-bar { height:100%; background:linear-gradient(90deg,var(--accent),var(--green)); border-radius:3px; transition:width 0.5s; }
+
+.process-btn { width:100%; background:linear-gradient(135deg,#1e3a5f,#1e4a7f); color:#60a5fa; border:1px solid #3b82f6; border-radius:10px; padding:13px; font-size:15px; font-weight:700; cursor:pointer; margin-bottom:18px; transition:all .2s; }
+.process-btn:hover:not(:disabled) { background:linear-gradient(135deg,#1e4a7f,#2563eb); }
+.process-btn:disabled { opacity:0.4; cursor:not-allowed; }
+
+/* LIMIT CARD */
+.limit-card { background:#1c1408; border:1px solid var(--gold); border-radius:12px; padding:16px; margin-bottom:16px; text-align:center; display:none; }
+.limit-card h3 { color:var(--gold); font-size:15px; margin-bottom:8px; }
+.limit-card p  { color:#fcd34d; font-size:13px; line-height:1.6; }
+
+/* TABS */
+.tabs { display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; margin-bottom:14px; scrollbar-width:none; }
+.tabs::-webkit-scrollbar { display:none; }
+.tab { padding:7px 14px; border-radius:8px; cursor:pointer; font-size:12px; font-weight:700; border:1px solid var(--border); background:transparent; color:var(--muted); white-space:nowrap; flex-shrink:0; transition:all .15s; }
+.tab.active { background:var(--highlight); color:var(--accent-light); border-color:var(--accent); }
+
+/* STUDY CARDS */
+.study-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; margin-bottom:14px; display:block; width:100%; box-sizing:border-box; }
+.study-card-title { font-size:15px; font-weight:700; color:var(--accent-light); margin-bottom:12px; display:block; }
+.text-box {
+  background:#0f172a; border-radius:10px; padding:14px;
+  font-size:14px; line-height:1.8; color:var(--text);
+  white-space:pre-wrap; word-break:break-word; overflow-wrap:break-word;
+  border:1px solid var(--border);
+  display:block; width:100%; max-width:100%;
+  box-sizing:border-box; overflow-x:hidden;
+}
+.sec-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--gold); margin:16px 0 8px; display:block; }
+#studyArea { display:block; width:100%; box-sizing:border-box; }
+
+/* ACTION BUTTONS ROW */
+.action-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; padding-top:14px; border-top:1px solid var(--border); }
+.action-btn { display:flex; align-items:center; gap:6px; border-radius:8px; padding:9px 14px; font-size:12px; font-weight:700; cursor:pointer; border:1px solid; transition:all .2s; white-space:nowrap; }
+.action-btn.blue  { background:var(--highlight); color:var(--accent-light); border-color:var(--accent); }
+.action-btn.blue:hover  { background:#1e4a7f; }
+.action-btn.green { background:#064e3b22; color:var(--green); border-color:rgba(16,185,129,.5); }
+.action-btn.green:hover { background:#064e3b55; }
+.action-btn.purple{ background:rgba(139,92,246,.1); color:#a78bfa; border-color:rgba(139,92,246,.4); }
+.action-btn.purple:hover{ background:rgba(139,92,246,.2); }
+.action-btn.gold  { background:rgba(245,158,11,.1); color:var(--gold); border-color:rgba(245,158,11,.4); }
+.action-btn.gold:hover  { background:rgba(245,158,11,.2); }
+.action-btn.wa    { background:rgba(37,211,102,.1); color:#25d366; border-color:rgba(37,211,102,.4); }
+.action-btn.wa:hover { background:rgba(37,211,102,.2); }
+
+/* QUIZ SECTION */
+.quiz-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; margin-bottom:14px; display:none; }
+.quiz-card.show { display:block; }
+.quiz-title { font-size:15px; font-weight:700; color:#a78bfa; margin-bottom:14px; }
+.flashcard { background:#0f172a; border:1px solid var(--border); border-radius:12px; padding:20px; text-align:center; cursor:pointer; min-height:120px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; transition:all .2s; position:relative; overflow:hidden; }
+.flashcard:hover { border-color:var(--purple); }
+.flashcard-front { font-size:20px; font-weight:800; color:var(--accent-light); }
+.flashcard-back  { font-size:16px; color:var(--green); display:none; }
+.flashcard-tap   { font-size:11px; color:var(--muted); margin-top:4px; }
+.flashcard.flipped .flashcard-back { display:block; }
+.flashcard.flipped .flashcard-front { color:var(--muted); font-size:14px; }
+.quiz-mode-btn { background:transparent; border:1px solid var(--border); border-radius:8px; padding:6px 14px; font-size:12px; font-weight:700; color:var(--muted); cursor:pointer; transition:all .15s; }
+.quiz-mode-btn.active { background:var(--highlight); color:var(--accent-light); border-color:var(--accent); }
+.flashcard-question { font-size:12px; color:var(--muted); margin-bottom:6px; }
+.quiz-nav-btn { background:var(--highlight); color:var(--accent-light); border:1px solid var(--accent); border-radius:8px; padding:7px 18px; font-size:13px; font-weight:700; cursor:pointer; }
+.quiz-nav-btn:disabled { opacity:0.4; cursor:not-allowed; }
+.quiz-counter { font-size:12px; color:var(--muted); min-width:60px; text-align:center; }
+
+/* SAVED GUIDES */
+.saved-empty { text-align:center; padding:24px; color:var(--muted); font-size:13px; }
+.saved-item { background:#0f172a; border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin-bottom:8px; display:flex; align-items:center; gap:10px; }
+.saved-item-info { flex:1; }
+.saved-item-name { font-size:13px; font-weight:700; color:var(--text); }
+.saved-item-date { font-size:11px; color:var(--muted); margin-top:2px; }
+.saved-item-btn { background:var(--highlight); color:var(--accent-light); border:1px solid var(--accent); border-radius:6px; padding:5px 10px; font-size:11px; font-weight:700; cursor:pointer; }
+.saved-item-del { background:rgba(239,68,68,.1); color:var(--red); border:1px solid rgba(239,68,68,.3); border-radius:6px; padding:5px 10px; font-size:11px; font-weight:700; cursor:pointer; }
+
+/* PROGRESS TRACKER */
+.progress-tracker { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; margin-bottom:14px; }
+.tracker-title { font-size:14px; font-weight:700; color:var(--gold); margin-bottom:12px; }
+.tracker-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.tracker-stat { background:#0f172a; border-radius:10px; padding:12px; text-align:center; }
+.tracker-stat-num { font-size:24px; font-weight:800; color:var(--accent-light); }
+.tracker-stat-lbl { font-size:11px; color:var(--muted); margin-top:2px; }
+
+/* SPINS */
+.spin { display:inline-block; width:12px; height:12px; border:2px solid var(--border); border-top-color:var(--accent-light); border-radius:50%; animation:spin .8s linear infinite; vertical-align:middle; margin-right:4px; }
+@keyframes spin { to{transform:rotate(360deg)} }
+
+/* HOW TO */
+.howto { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; margin-bottom:14px; }
+.howto-title { font-size:14px; font-weight:700; color:var(--gold); margin-bottom:14px; }
+.step { background:#0f172a; border-radius:10px; padding:13px; border-left:3px solid var(--accent); margin-bottom:10px; }
+.step-title { font-size:13px; font-weight:700; color:var(--accent-light); margin-bottom:4px; }
+.step-body  { font-size:13px; color:#cbd5e1; line-height:1.6; }
+.step.green { border-left-color:var(--green); }
+.step.green .step-title { color:var(--green); }
+
+/* FEATURE SHOWCASE */
+.feature-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+@media(max-width:480px){ .feature-grid{grid-template-columns:1fr;} }
+.feature-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px; }
+.feature-card-icon { font-size:24px; margin-bottom:8px; }
+.feature-card-title { font-size:13px; font-weight:700; color:var(--text); margin-bottom:4px; }
+.feature-card-desc  { font-size:12px; color:var(--muted); line-height:1.5; }
+.feature-card.free-badge::after { content:'FREE'; position:absolute; top:10px; right:10px; background:rgba(16,185,129,.2); color:var(--green); font-size:9px; font-weight:800; padding:2px 6px; border-radius:20px; border:1px solid rgba(16,185,129,.4); }
+.feature-card { position:relative; }
+
+/* CONTENT SECTION */
+.content-section { max-width:700px; margin:0 auto; padding:0 16px; }
+.content-section h2 { font-size:20px; font-weight:800; color:#fff; margin:32px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+.article-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:16px; }
+.article-card h3 { font-size:16px; font-weight:700; color:var(--accent-light); margin-bottom:10px; }
+.article-card p  { font-size:14px; color:#cbd5e1; line-height:1.8; margin-bottom:10px; }
+.article-card p:last-child { margin-bottom:0; }
+.article-card ul { padding-left:18px; }
+.article-card ul li { font-size:14px; color:#cbd5e1; line-height:1.8; margin-bottom:6px; }
+.tip-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px; }
+@media(max-width:500px){ .tip-grid{grid-template-columns:1fr;} }
+.tip-box { background:#0f172a; border-radius:10px; padding:14px; border:1px solid var(--border); }
+.tip-box-icon  { font-size:22px; margin-bottom:6px; }
+.tip-box-title { font-size:13px; font-weight:700; color:var(--accent-light); margin-bottom:4px; }
+.tip-box-body  { font-size:12px; color:var(--muted); line-height:1.6; }
+.vocab-table { width:100%; border-collapse:collapse; margin-top:10px; }
+.vocab-table th { background:var(--highlight); color:var(--accent-light); font-size:12px; padding:8px 12px; text-align:left; }
+.vocab-table td { font-size:13px; color:#cbd5e1; padding:8px 12px; border-bottom:1px solid var(--border); }
+.vocab-table tr:last-child td { border-bottom:none; }
+
+/* COMING SOON */
+.coming-soon-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:16px; }
+.coming-feature { background:#0f172a; border-radius:10px; padding:12px 14px; border-left:3px solid var(--accent); display:flex; align-items:flex-start; gap:12px; margin-bottom:10px; }
+.coming-feature:last-child { margin-bottom:0; }
+.coming-feature-icon { font-size:20px; flex-shrink:0; margin-top:2px; }
+.coming-feature-title { font-size:13px; font-weight:700; margin-bottom:3px; }
+.coming-feature-desc  { font-size:12px; color:var(--muted); line-height:1.5; }
+
+/* FOOTER */
+.footer { text-align:center; padding:24px 20px 40px; color:var(--muted); font-size:12px; border-top:1px solid var(--border); margin-top:20px; }
+.footer a { color:var(--accent-light); text-decoration:none; }
+.empty { text-align:center; color:var(--muted); padding:32px 0; font-size:14px; }
+.empty-icon { font-size:44px; margin-bottom:10px; }
+
+/* MODAL */
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.80); z-index:1000; display:none; align-items:flex-start; justify-content:center; padding:16px; overflow-y:auto; }
+.modal-overlay.open { display:flex; }
+.modal-box { background:#111827; border:1px solid #1e2d45; border-radius:16px; padding:24px; max-width:480px; width:100%; position:relative; margin:auto; }
+.modal-close { position:absolute; top:12px; right:16px; background:none; border:none; color:var(--muted); font-size:22px; cursor:pointer; line-height:1; padding:4px 6px; }
+.modal-close:hover { color:var(--text); }
+.modal-title { font-size:18px; font-weight:800; color:var(--gold); margin-bottom:6px; }
+.modal-sub   { font-size:13px; color:var(--muted); margin-bottom:18px; }
+
+/* PAYMENT MODAL */
+.payment-packages { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px; }
+@media(max-width:400px){ .payment-packages{grid-template-columns:1fr;} }
+.package { background:#0f172a; border:2px solid var(--border); border-radius:12px; padding:18px 10px 14px; text-align:center; cursor:pointer; position:relative; transition:border-color .2s,background .2s; user-select:none; }
+.package:hover    { border-color:var(--accent); background:var(--highlight); }
+.package.selected { border-color:var(--gold);   background:#1c1408; }
+.package-name     { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; }
+.package-price    { font-size:24px; font-weight:900; color:var(--gold); margin-bottom:4px; }
+.package-desc     { font-size:12px; font-weight:600; color:var(--text); margin-bottom:3px; }
+.package-validity { font-size:11px; color:var(--muted); }
+.package-popular { position:absolute; top:-11px; left:50%; transform:translateX(-50%); background:var(--accent); color:#fff; font-size:10px; font-weight:800; padding:2px 10px; border-radius:20px; white-space:nowrap; }
+.package-best    { position:absolute; top:-11px; left:50%; transform:translateX(-50%); background:var(--gold); color:#000; font-size:10px; font-weight:800; padding:2px 10px; border-radius:20rap; white-space:nowrap; }
+.modal-email { width:100%; background:#0f172a; border:1px solid var(--border); border-radius:8px; padding:10px 12px; color:var(--text); font-size:14px; box-sizing:border-box; margin-bottom:10px; outline:none; }
+.modal-email:focus { border-color:var(--accent); }
+.modal-pay-btn { width:100%; border:none; border-radius:8px; padding:13px; font-size:14px; font-weight:700; background:var(--muted); color:#fff; cursor:not-allowed; transition:background .2s,color .2s; }
+.modal-pay-btn.ready { background:linear-gradient(135deg,#f59e0b,#f97316); color:#000; cursor:pointer; }
+.modal-pay-btn:disabled { opacity:.6; }
+.modal-status { margin-top:10px; font-size:13px; text-align:center; display:none; min-height:18px; }
+
+/* REMINDER MODAL */
+.reminder-input { width:100%; background:#0f172a; border:1px solid var(--border); border-radius:8px; padding:10px 12px; color:var(--text); font-size:14px; box-sizing:border-box; margin-bottom:10px; outline:none; }
+.reminder-input:focus { border-color:var(--accent); }
+.reminder-set-btn { width:100%; background:linear-gradient(135deg,var(--gold),#f97316); color:#000; border:none; border-radius:8px; padding:12px; font-size:14px; font-weight:700; cursor:pointer; }
+.reminder-clear-btn { width:100%; background:rgba(239,68,68,.1); color:var(--red); border:1px solid rgba(239,68,68,.3); border-radius:8px; padding:10px; font-size:13px; font-weight:700; cursor:pointer; margin-top:8px; display:none; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <span class="header-flag">🇫🇷</span>
+    <div>
+      <div class="header-title">French Oral Master</div>
+      <div class="header-sub">AI-Powered Exam Prep</div>
+    </div>
+  </div>
+  <div class="header-actions">
+    <span class="header-badge" onclick="showSavedModal()">💾 Saved</span>
+    <span class="header-badge" onclick="showProgressModal()">📊 Progress</span>
+    <button onclick="showUpgradeModal()" style="background:#78350f;color:#f59e0b;border:1px solid #f59e0b;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;">🚀 Upgrade</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Master Your <span>French Oral</span> Exam with AI</h1>
+  <p>Upload your audio files and instantly get transcriptions, word-for-word translations, vocabulary, grammar notes, and study guides — all for free.</p>
+  <div class="hero-features">
+    <span class="feature-pill">🎤 Auto Transcription</span>
+    <span class="feature-pill">🌐 Word-for-Word Translation</span>
+    <span class="feature-pill">📚 Vocabulary</span>
+    <span class="feature-pill">🔤 Grammar Notes</span>
+    <span class="feature-pill">❓ Sample Q&amp;A</span>
+    <span class="feature-pill">🏆 Exam Tips</span>
+    <span class="feature-pill">🔊 Audio Playback</span>
+    <span class="feature-pill">📥 PDF Download</span>
+    <span class="feature-pill">📝 Practice Quiz</span>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:20px;">
+    <span style="font-size:12px;color:var(--muted);align-self:center;">🌍 Languages:</span>
+    <button class="lang-pill active" data-lang="fr" onclick="selectLang(this)">🇫🇷 French</button>
+    <button class="lang-pill" data-lang="es" onclick="selectLang(this)">🇪🇸 Spanish</button>
+    <button class="lang-pill" data-lang="ar" onclick="selectLang(this)">🇸🇦 Arabic</button>
+    <button class="lang-pill" data-lang="pt" onclick="selectLang(this)">🇧🇷 Portuguese</button>
+  </div>
+  <div class="hero-free">✅ No account needed &nbsp;·&nbsp; 3 free audios per day &nbsp;·&nbsp; No credit card</div>
+</div>
+
+<!-- REMINDER BANNER -->
+<div class="reminder-banner" id="reminderBanner">
+  <span style="font-size:20px;">🔔</span>
+  <span class="reminder-text" id="reminderBannerText"></span>
+  <button class="reminder-dismiss" onclick="dismissReminderBanner()">✕</button>
+</div>
+
+<div class="main">
+
+  <!-- USAGE CARD -->
+  <div class="usage-card" id="usageCard">
+    <div class="usage-title">📊 Today's Free Usage</div>
+    <div class="usage-bar-bg"><div class="usage-bar" id="usageBar" style="width:0%"></div></div>
+    <div class="usage-count" id="usageCount">Loading...</div>
+  </div>
+
+  <!-- WAKEUP CARD -->
+  <div class="wakeup-card" id="wakeupCard">
+    <p id="wakeupMsg">⏳ <strong>Waking up the server…</strong> This takes up to 30 seconds on first use. Please wait!</p>
+    <div class="wakeup-bar-bg"><div class="wakeup-bar"></div></div>
+  </div>
+
+  <!-- QUICK ACTIONS -->
+  <div class="quick-actions">
+    <button class="quick-btn gold" onclick="showReminderModal()">🔔 Set Exam Reminder</button>
+    <button class="quick-btn green" onclick="showSavedModal()">💾 My Saved Guides</button>
+    <button class="quick-btn" onclick="showProgressModal()">📊 My Progress</button>
+  </div>
+
+  <!-- UPLOAD ZONE -->
+  <div class="upload-zone" id="uploadZone">
+    <div class="upload-icon" id="uploadIcon">🎧</div>
+    <div class="upload-title" id="uploadTitle">Tap to upload your French audio files</div>
+    <div class="upload-sub">MP3, M4A, OGG, WAV supported · Select all at once</div>
+    <span class="upload-btn">Browse Files</span>
+    <input type="file" id="fileInput" multiple accept="audio/*,.mp3,.m4a,.ogg,.wav,.aac,.webm,.opus,.mpeg,.mpga" onchange="addFiles(this.files)"/>
+  </div>
+
+  <div class="file-list" id="fileList"></div>
+
+  <div class="progress-wrap" id="progressWrap" style="display:none">
+    <div class="progress-info"><span>Processing your audios…</span><span id="progressTxt">0/0</span></div>
+    <div class="progress-bg"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  </div>
+
+  <div class="limit-card" id="limitCard">
+    <h3>🎯 Daily Limit Reached</h3>
+    <p>You've used your 3 free transcriptions for today.<br/>
+      <button onclick="showUpgradeModal()" style="margin-top:10px;background:linear-gradient(135deg,#f59e0b,#f97316);color:#000;border:none;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:800;cursor:pointer;">🚀 Buy More Transcriptions</button>
+    </p>
+  </div>
+
+  <button class="process-btn" id="processBtn" style="display:none" onclick="processAll()">🚀 Transcribe &amp; Study All Files</button>
+
+  <div class="tabs" id="tabs" style="display:none"></div>
+  <div id="studyArea"></div>
+  <div class="quiz-card" id="quizCard">
+    <div class="quiz-title">📝 Practice Quiz Mode</div>
+    <div style="display:flex;gap:8px;margin-bottom:14px;">
+      <button id="quizModeVocab" class="quiz-mode-btn active" onclick="switchQuizMode('vocab')">📚 Vocabulary Cards</button>
+      <button id="quizModeQA"    class="quiz-mode-btn"        onclick="switchQuizMode('qa')">❓ Q&amp;A Practice</button>
+    </div>
+    <div class="flashcard" id="flashcard" onclick="flipCard()">
+      <div class="flashcard-question" id="flashQuestion" style="font-size:12px;color:var(--muted);margin-bottom:6px;"></div>
+      <div class="flashcard-front" id="flashFront"></div>
+      <div class="flashcard-back"  id="flashBack"></div>
+      <div class="flashcard-tap" id="flashTap">Tap to flip</div>
+    </div>
+    <div class="quiz-nav">
+      <button class="quiz-nav-btn" id="quizPrev" onclick="quizMove(-1)" disabled>← Prev</button>
+      <span class="quiz-counter" id="quizCounter">1 / 1</span>
+      <button class="quiz-nav-btn" id="quizNext" onclick="quizMove(1)">Next →</button>
+    </div>
+    <div style="text-align:center;margin-top:10px;">
+      <button onclick="document.getElementById('quizCard').classList.remove('show')" style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;">✕ Close Quiz</button>
+    </div>
+  </div>
+
+  <div class="empty" id="emptyState">
+    <div class="empty-icon">🎓</div>
+    Upload your French oral audio files above<br/>to get your instant study guide.<br/>
+    <span style="font-size:12px;color:var(--muted);margin-top:6px;display:block;">Or try a sample audio below 👇</span>
+  </div>
+
+  <!-- SAMPLE AUDIOS -->
+  <div class="sample-section">
+    <div class="sample-title">🎧 Sample Audios — No upload needed</div>
+    <div class="sample-sub">Press ▶ Play to hear the audio, then tap "Try This" to get a full study guide instantly</div>
+    <div class="sample-grid" id="sampleGrid"></div>
+  </div>
+
+  <!-- HOW TO GUIDE -->
+  <div class="howto">
+    <div class="howto-title">📖 How to Upload Your Audio Files</div>
+    <div class="step"><div class="step-title">Step 1 — Tap the upload box</div><div class="step-body">Tap anywhere on the 🎧 upload area. Your phone's file picker will open.</div></div>
+    <div class="step"><div class="step-title">Step 2 — It shows images? Switch to files</div><div class="step-body"><strong>Android:</strong> Tap the ☰ menu → select "Files" or "Browse"<br/><strong>iPhone:</strong> Tap "Browse" at the bottom → go to Downloads or WhatsApp folder<br/><strong>Desktop:</strong> A normal file picker opens — navigate to your audio folder.</div></div>
+    <div class="step"><div class="step-title">Step 3 — Find your audio files</div><div class="step-body">From <strong>WhatsApp</strong>: Internal Storage → WhatsApp → Media → WhatsApp Audio<br/>From <strong>Downloads</strong>: Internal Storage → Downloads</div></div>
+    <div class="step"><div class="step-title">Step 4 — Select all files at once</div><div class="step-body"><strong>Mobile:</strong> Long press the first file → tap each remaining file → tap Open / Done<br/><strong>Desktop:</strong> Hold Ctrl (Windows) or Cmd (Mac) to select multiple files</div></div>
+    <div class="step green"><div class="step-title">✅ Then tap "Transcribe & Study All"</div><div class="step-body">Each audio will be transcribed and a full study guide built automatically. 🎵 Use the built-in player to listen while reading!</div></div>
+  </div>
+
+  <!-- FEATURE HIGHLIGHTS -->
+  <div style="font-size:14px;font-weight:800;color:var(--gold);margin:0 0 12px;">✨ All Features — Completely Free</div>
+  <div class="feature-grid">
+    <div class="feature-card free-badge">
+      <div class="feature-card-icon">🎤</div>
+      <div class="feature-card-title">AI Transcription</div>
+      <div class="feature-card-desc">Powered by Groq Whisper. Accurate French speech-to-text in seconds.</div>
+    </div>
+    <div class="feature-card free-badge">
+      <div class="feature-card-icon">🌐</div>
+      <div class="feature-card-title">Word-for-Word Translation</div>
+      <div class="feature-card-desc">Every sentence translated into English so you understand everything.</div>
+    </div>
+    <div class="feature-card free-badge">
+      <div class="feature-card-icon">🔊</div>
+      <div class="feature-card-title">Audio Playback</div>
+      <div class="feature-card-desc">Play your audio right inside the app while reading the transcript side-by-side.</div>
+    </div>
+    <div class="feature-card free-badge">
+      <div class="feature-card-icon">📥</div>
+      <div class="feature-card-title">Download as PDF</div>
+      <div class="feature-card-desc">Save your full study guide as a PDF to study offline anytime, anywhere.</div>
+    </div>
+    <div class="feature-card free-badge">
+      <div class="feature-card-icon">📝</div>
+      <div class="feature-card-title">Vocabulary Quiz</div>
+      <div class="feature-card-desc">Flashcard quiz mode built from your audio's vocabulary. Test yourself!</div>
+    </div>
+    <div class="feature-card free-badge">
+      <div class="feature-card-icon">👥</div>
+      <div class="feature-card-title">WhatsApp Share</div>
+      <div class="feature-card-desc">Send your study guide to classmates via WhatsApp with one tap.</div>
+    </div>
+    <div class="feature-card free-badge">
+      <div class="feature-card-icon">💾</div>
+      <div class="feature-card-title">Save Study Guides</div>
+      <div class="feature-card-desc">Bookmark and revisit your guides anytime — even days later.</div>
+    </div>
+    <div class="feature-card free-badge">
+      <div class="feature-card-icon">🌍</div>
+      <div class="feature-card-title">4 Languages</div>
+      <div class="feature-card-desc">French, Spanish, Arabic & Portuguese. Select your language before uploading!</div>
+    </div>
+    <div class="feature-card free-badge">
+      <div class="feature-card-icon">🔔</div>
+      <div class="feature-card-title">Exam Reminder</div>
+      <div class="feature-card-desc">Set your exam date and get a daily reminder to study.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT SECTION -->
+<div class="content-section">
+  <h2>🇫🇷 Your Complete Guide to Passing the French Oral Exam</h2>
+  <div class="article-card">
+    <h3>What is a French Oral Exam?</h3>
+    <p>A French oral exam (also called an <em>épreuve orale</em>) is a spoken language assessment where students demonstrate their ability to understand and communicate in French. It typically involves listening to audio passages, answering questions, describing images, or having a conversation with an examiner in French.</p>
+    <p>The exam tests several key skills: listening comprehension, spoken fluency, vocabulary range, grammar accuracy, and the ability to express opinions and ideas clearly in French. Most oral exams at the secondary and university level in West Africa, including Ghana, follow the WAEC or GCE format.</p>
+  </div>
+  <div class="article-card">
+    <h3>Top Tips for Passing Your French Oral Exam</h3>
+    <div class="tip-grid">
+      <div class="tip-box"><div class="tip-box-icon">🎧</div><div class="tip-box-title">Listen Repeatedly</div><div class="tip-box-body">Play each audio at least 3 times. First for general meaning, second for details, third while reading the transcription.</div></div>
+      <div class="tip-box"><div class="tip-box-icon">📝</div><div class="tip-box-title">Learn Key Phrases</div><div class="tip-box-body">Memorise "À mon avis" (In my opinion), "Par exemple" (For example), and "En conclusion" (In conclusion).</div></div>
+      <div class="tip-box"><div class="tip-box-icon">🗣️</div><div class="tip-box-title">Speak Out Loud</div><div class="tip-box-body">Practice answering sample questions out loud. Speaking French daily, even for 5 minutes, significantly improves fluency.</div></div>
+      <div class="tip-box"><div class="tip-box-icon">📖</div><div class="tip-box-title">Study Vocabulary</div><div class="tip-box-body">Focus on the key vocabulary from each audio. Use the built-in quiz mode to test yourself before exam day.</div></div>
+      <div class="tip-box"><div class="tip-box-icon">⏱️</div><div class="tip-box-title">Time Yourself</div><div class="tip-box-body">Practice answering questions within 1–2 minutes to build the habit of being concise in the actual exam.</div></div>
+      <div class="tip-box"><div class="tip-box-icon">🤝</div><div class="tip-box-title">Study in Groups</div><div class="tip-box-body">Share this tool with classmates. Quiz each other using the sample questions generated from your audios.</div></div>
+    </div>
+  </div>
+  <div class="article-card">
+    <h3>Common French Vocabulary for Oral Exams</h3>
+    <table class="vocab-table">
+      <tr><th>French</th><th>English</th><th>Example Use</th></tr>
+      <tr><td>Bonjour / Bonsoir</td><td>Good morning / Good evening</td><td>Greeting the examiner</td></tr>
+      <tr><td>Je pense que…</td><td>I think that…</td><td>Expressing an opinion</td></tr>
+      <tr><td>À mon avis</td><td>In my opinion</td><td>Starting a personal view</td></tr>
+      <tr><td>C'est-à-dire</td><td>That is to say</td><td>Clarifying a point</td></tr>
+      <tr><td>Par exemple</td><td>For example</td><td>Giving an example</td></tr>
+      <tr><td>Cependant</td><td>However</td><td>Introducing contrast</td></tr>
+      <tr><td>Il faut</td><td>It is necessary</td><td>Giving advice</td></tr>
+      <tr><td>Je suis d'accord</td><td>I agree</td><td>Agreeing</td></tr>
+      <tr><td>Je ne suis pas d'accord</td><td>I disagree</td><td>Politely disagreeing</td></tr>
+      <tr><td>En conclusion</td><td>In conclusion</td><td>Ending a response</td></tr>
+      <tr><td>Pouvez-vous répéter?</td><td>Can you repeat?</td><td>Asking examiner to repeat</td></tr>
+    </table>
+  </div>
+  <div class="article-card">
+    <h3>Common French Oral Exam Topics</h3>
+    <ul>
+      <li><strong>La famille</strong> — family members, relationships, and home life</li>
+      <li><strong>L'école et l'éducation</strong> — subjects, teachers, school life</li>
+      <li><strong>La santé</strong> — illness, visiting the doctor, healthy habits</li>
+      <li><strong>L'environnement</strong> — climate change, pollution, conservation</li>
+      <li><strong>Les transports</strong> — travel, directions, road safety</li>
+      <li><strong>Le travail</strong> — jobs, careers, ambitions</li>
+      <li><strong>La technologie</strong> — internet, social media, modern life</li>
+      <li><strong>Les loisirs</strong> — sports, music, reading, free time</li>
+    </ul>
+  </div>
+
+  <!-- COMING SOON -->
+  <h2>🚀 Coming Soon — What's Next</h2>
+  <div class="coming-soon-card">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">We're constantly improving. Here's what's coming next:</p>
+    <div class="coming-feature" style="border-left-color:#60a5fa;">
+      <span class="coming-feature-icon">📊</span>
+      <div><div class="coming-feature-title" style="color:#60a5fa;">Progress Dashboard</div><div class="coming-feature-desc">Track how many topics you've studied per week, your quiz scores, and see which areas need more practice.</div></div>
+    </div>
+    <div class="coming-feature" style="border-left-color:#f472b6;">
+      <span class="coming-feature-icon">🏆</span>
+      <div><div class="coming-feature-title" style="color:#f472b6;">Leaderboard & Study Streaks</div><div class="coming-feature-desc">Compete with classmates, build study streaks, and earn badges for consistent practice before exam day.</div></div>
+    </div>
+    <div class="coming-feature" style="border-left-color:#34d399;">
+      <span class="coming-feature-icon">🎙️</span>
+      <div><div class="coming-feature-title" style="color:#34d399;">Speak & Get Feedback</div><div class="coming-feature-desc">Record yourself answering questions and get AI feedback on your pronunciation and grammar — like a personal examiner.</div></div>
+    </div>
+    <div style="margin-top:14px;text-align:center;font-size:12px;color:#475569;">Want these features faster? Share the app with your friends and classmates 🙏<br/><a href="javascript:void(0)" onclick="showUpgradeModal()" style="color:#60a5fa;font-weight:700;">🚀 Buy More Transcriptions</a> to support development.</div>
+  </div>
+</div>
+
+<div class="footer">
+  French Oral Master &copy; 2026 &nbsp;·&nbsp; Free AI-powered French exam prep<br/>
+  <small style="color:#334155;">Powered by Groq Whisper &amp; Gemini AI</small><br/>
+  <small style="color:#334155;">made with ❤️ by Nana</small><br/>
+  <a href="privacy-policy.html">Privacy Policy</a>
+</div>
+
+<!-- ═══════ UPGRADE MODAL ═══════ -->
+<div class="modal-overlay" id="upgradeModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('upgradeModal')">✕</button>
+    <div class="modal-title">🚀 Get More Transcriptions</div>
+    <div class="modal-sub">3 free per day. Buy a pack valid for 30 days — use anytime.</div>
+    <div class="payment-packages">
+      <div class="package" data-pkg="small" onclick="selectPkg('small')">
+        <div class="package-name">Starter</div>
+        <div class="package-price">GHS 5</div>
+        <div class="package-desc">5 transcriptions</div>
+        <div class="package-validity">Valid 30 days</div>
+      </div>
+      <div class="package" data-pkg="medium" onclick="selectPkg('medium')">
+        <div class="package-popular">⭐ Popular</div>
+        <div class="package-name">Standard</div>
+        <div class="package-price">GHS 12</div>
+        <div class="package-desc">10 transcriptions</div>
+        <div class="package-validity">Valid 30 days</div>
+      </div>
+      <div class="package" data-pkg="large" onclick="selectPkg('large')">
+        <div class="package-best">💎 Best Value</div>
+        <div class="package-name">Premium</div>
+        <div class="package-price">GHS 20</div>
+        <div class="package-desc">15 transcriptions</div>
+        <div class="package-validity">Valid 30 days</div>
+      </div>
+    </div>
+    <input type="email" id="modalEmail" class="modal-email" placeholder="Your email address (for receipt)" autocomplete="email"/>
+    <button id="modalPayBtn" class="modal-pay-btn" onclick="handlePayment()" disabled>👆 Select a package first</button>
+    <div class="modal-status" id="modalStatus"></div>
+    <p style="font-size:11px;color:#475569;text-align:center;margin-top:8px;">🔒 Secured by Paystack · Mobile Money &amp; Card accepted</p>
+  </div>
+</div>
+
+<!-- ═══════ SAVED GUIDES MODAL ═══════ -->
+<div class="modal-overlay" id="savedModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('savedModal')">✕</button>
+    <div class="modal-title">💾 My Saved Study Guides</div>
+    <div class="modal-sub">Guides you've saved for later review.</div>
+    <div id="savedList"></div>
+  </div>
+</div>
+
+<!-- ═══════ PROGRESS MODAL ═══════ -->
+<div class="modal-overlay" id="progressModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('progressModal')">✕</button>
+    <div class="modal-title">📊 My Progress</div>
+    <div class="modal-sub">Track your French oral exam preparation.</div>
+    <div class="tracker-stats" style="margin-bottom:16px;">
+      <div class="tracker-stat"><div class="tracker-stat-num" id="statTotal">0</div><div class="tracker-stat-lbl">Total Transcribed</div></div>
+      <div class="tracker-stat"><div class="tracker-stat-num" id="statSaved">0</div><div class="tracker-stat-lbl">Guides Saved</div></div>
+      <div class="tracker-stat"><div class="tracker-stat-num" id="statQuiz">0</div><div class="tracker-stat-lbl">Quiz Sessions</div></div>
+    </div>
+    <div style="background:#0f172a;border-radius:10px;padding:14px;font-size:13px;color:#cbd5e1;line-height:1.8;">
+      <strong style="color:var(--gold);">📅 Today:</strong> <span id="statToday">No transcriptions yet today</span><br/>
+      <strong style="color:var(--accent-light);">🏆 Topics studied:</strong><br/>
+      <div id="statTopics" style="margin-top:6px;color:var(--muted);font-size:12px;">No topics yet. Upload and transcribe an audio to get started!</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ REMINDER MODAL ═══════ -->
+<div class="modal-overlay" id="reminderModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('reminderModal')">✕</button>
+    <div class="modal-title">🔔 Set Exam Reminder</div>
+    <div class="modal-sub">Enter your exam date and we'll remind you every day until your exam!</div>
+    <label style="font-size:12px;color:var(--muted);margin-bottom:6px;display:block;">Your Exam Date</label>
+    <input type="date" id="reminderDate" class="reminder-input"/>
+    <label style="font-size:12px;color:var(--muted);margin-bottom:6px;display:block;margin-top:8px;">Your Name (optional)</label>
+    <input type="text" id="reminderName" class="reminder-input" placeholder="e.g. Kofi"/>
+    <button class="reminder-set-btn" onclick="setReminder()">🔔 Save Reminder</button>
+    <button class="reminder-clear-btn" id="reminderClearBtn" onclick="clearReminder()">🗑️ Clear Reminder</button>
+    <div id="reminderStatus" style="margin-top:10px;font-size:13px;text-align:center;color:var(--green);display:none;"></div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+/* ═══════════════════════════════
+   CONFIG & STATE
+   ═══════════════════════════════ */
+const API_BASE = 'https://french-backend-9bz8.onrender.com';
+const files = [];
+const audioURLs = {};
+const results = {};
+let activeTab = null, busy = false, SESSION_TOKEN = null, selectedPkg = null;
+let userExtraCredits = 0;
+let quizCards = [], quizIdx = 0, quizMode = 'vocab'; // quizMode: 'vocab' | 'qa'
+
+const LANG_META = {
+  fr: { flag:'🇫🇷', name:'French',     uploadText:'Tap to upload your French audio files'    },
+  es: { flag:'🇪🇸', name:'Spanish',    uploadText:'Tap to upload your Spanish audio files'   },
+  ar: { flag:'🇸🇦', name:'Arabic',     uploadText:'Tap to upload your Arabic audio files'    },
+  pt: { flag:'🇧🇷', name:'Portuguese', uploadText:'Tap to upload your Portuguese audio files' },
+};
+let selectedLang = 'fr';
+
+/* ═══════════════════════════════
+   SAMPLE AUDIOS
+   ═══════════════════════════════ */
+var SAMPLES = [
+  {
+    lang: 'fr', flag: '🇫🇷', langName: 'French',
+    voiceLang: 'fr-FR',
+    text: "La santé est très importante dans notre vie quotidienne. Il faut manger des fruits et des légumes, faire du sport régulièrement et dormir suffisamment pour rester en bonne santé.",
+    meaning: "Health is very important in our daily life. We must eat fruits and vegetables, exercise regularly and sleep enough to stay healthy."
+  },
+  {
+    lang: 'fr', flag: '🇫🇷', langName: 'French',
+    voiceLang: 'fr-FR',
+    text: "L'environnement est en danger à cause de la pollution. Nous devons protéger la nature en recyclant nos déchets et en utilisant les transports en commun.",
+    meaning: "The environment is in danger because of pollution. We must protect nature by recycling our waste and using public transport."
+  },
+  {
+    lang: 'es', flag: '🇪🇸', langName: 'Spanish',
+    voiceLang: 'es-ES',
+    text: "La educación es la base del desarrollo de cualquier país. Los jóvenes deben aprovechar las oportunidades de aprendizaje para construir un futuro mejor.",
+    meaning: "Education is the foundation of any country's development. Young people must take advantage of learning opportunities to build a better future."
+  },
+  {
+    lang: 'ar', flag: '🇸🇦', langName: 'Arabic',
+    voiceLang: 'ar-SA',
+    text: "الصحة كنز لا يُقدَّر بثمن. يجب على كل إنسان أن يهتم بصحته من خلال تناول الغذاء الصحي وممارسة الرياضة بانتظام.",
+    meaning: "Health is a priceless treasure. Every person must take care of their health by eating healthy food and exercising regularly."
+  },
+  {
+    lang: 'pt', flag: '🇧🇷', langName: 'Portuguese',
+    voiceLang: 'pt-BR',
+    text: "A tecnologia mudou completamente a forma como nos comunicamos. As redes sociais aproximam as pessoas, mas também podem causar problemas de saúde mental.",
+    meaning: "Technology has completely changed the way we communicate. Social media brings people closer but can also cause mental health problems."
+  }
+];
+
+var currentSpeech = null; // track playing utterance
+
+function initSampleGrid() {
+  var grid = document.getElementById('sampleGrid');
+  if (!grid) return;
+
+  SAMPLES.forEach(function(sample, idx) {
+    var card = document.createElement('div');
+    card.className = 'sample-card';
+    card.id = 'sampleCard_' + idx;
+
+    // Top row
+    var top = document.createElement('div');
+    top.className = 'sample-card-top';
+
+    var flag = document.createElement('div');
+    flag.className = 'sample-flag';
+    flag.textContent = sample.flag;
+
+    var info = document.createElement('div');
+    info.className = 'sample-info';
+
+    var lang = document.createElement('div');
+    lang.className = 'sample-lang';
+    lang.textContent = sample.langName + ' Sample';
+
+    var text = document.createElement('div');
+    text.className = 'sample-text';
+    text.textContent = '"' + sample.text + '"';
+
+    var meaning = document.createElement('div');
+    meaning.className = 'sample-meaning';
+    meaning.textContent = '🌐 ' + sample.meaning;
+
+    info.appendChild(lang);
+    info.appendChild(text);
+    info.appendChild(meaning);
+    top.appendChild(flag);
+    top.appendChild(info);
+
+    // Progress bar
+    var progress = document.createElement('div');
+    progress.className = 'sample-progress';
+    progress.id = 'sampleProg_' + idx;
+    var progBar = document.createElement('div');
+    progBar.className = 'sample-progress-bar';
+    progBar.id = 'sampleProgBar_' + idx;
+    progress.appendChild(progBar);
+
+    // Action buttons
+    var actions = document.createElement('div');
+    actions.className = 'sample-actions';
+
+    var playBtn = document.createElement('button');
+    playBtn.className = 'sample-play-btn';
+    playBtn.id = 'samplePlay_' + idx;
+    playBtn.innerHTML = '▶ Play';
+    playBtn.onclick = (function(s, i) {
+      return function() { playSample(s, i); };
+    })(sample, idx);
+
+    var tryBtn = document.createElement('button');
+    tryBtn.className = 'sample-try-btn';
+    tryBtn.id = 'sampleTry_' + idx;
+    tryBtn.innerHTML = '✨ Try This — Get Study Guide';
+    tryBtn.onclick = (function(s, i) {
+      return function() { trySample(s, i); };
+    })(sample, idx);
+
+    actions.appendChild(playBtn);
+    actions.appendChild(tryBtn);
+
+    card.appendChild(top);
+    card.appendChild(progress);
+    card.appendChild(actions);
+    grid.appendChild(card);
+  });
+}
+
+function playSample(sample, idx) {
+  // Stop any currently playing speech
+  if (currentSpeech) {
+    window.speechSynthesis.cancel();
+    currentSpeech = null;
+    // Reset all play buttons
+    SAMPLES.forEach(function(_, i) {
+      var btn = document.getElementById('samplePlay_' + i);
+      var prog = document.getElementById('sampleProg_' + i);
+      if (btn)  { btn.innerHTML = '▶ Play'; btn.classList.remove('playing'); }
+      if (prog) prog.style.display = 'none';
+    });
+  }
+
+  var playBtn = document.getElementById('samplePlay_' + idx);
+  var prog    = document.getElementById('sampleProg_' + idx);
+  var progBar = document.getElementById('sampleProgBar_' + idx);
+
+  // Check speech synthesis support
+  if (!('speechSynthesis' in window)) {
+    playBtn.innerHTML = '⚠️ Not supported in this browser';
+    return;
+  }
+
+  var utterance = new SpeechSynthesisUtterance(sample.text);
+  utterance.lang = sample.voiceLang;
+  utterance.rate = 0.85;
+  utterance.pitch = 1;
+
+  // Try to find a matching voice
+  var voices = window.speechSynthesis.getVoices();
+  var match  = voices.find(function(v) { return v.lang.startsWith(sample.voiceLang.slice(0,2)); });
+  if (match) utterance.voice = match;
+
+  // Animate progress bar over estimated duration
+  var estimatedMs = (sample.text.length / 12) * 1000; // ~12 chars/sec at rate 0.85
+  var startTime   = Date.now();
+  var animFrame;
+
+  function animateProgress() {
+    var elapsed  = Date.now() - startTime;
+    var progress = Math.min((elapsed / estimatedMs) * 100, 98);
+    if (progBar) progBar.style.width = progress + '%';
+    if (elapsed < estimatedMs) {
+      animFrame = requestAnimationFrame(animateProgress);
+    }
+  }
+
+  utterance.onstart = function() {
+    currentSpeech = utterance;
+    playBtn.innerHTML = '⏹ Stop';
+    playBtn.classList.add('playing');
+    if (prog) prog.style.display = 'block';
+    animateProgress();
+  };
+
+  utterance.onend = function() {
+    currentSpeech = null;
+    playBtn.innerHTML = '▶ Play Again';
+    playBtn.classList.remove('playing');
+    if (progBar) progBar.style.width = '100%';
+    cancelAnimationFrame(animFrame);
+    setTimeout(function() {
+      playBtn.innerHTML = '▶ Play';
+      if (prog) prog.style.display = 'none';
+      if (progBar) progBar.style.width = '0%';
+    }, 1200);
+  };
+
+  utterance.onerror = function() {
+    currentSpeech = null;
+    playBtn.innerHTML = '▶ Play';
+    playBtn.classList.remove('playing');
+    if (prog) prog.style.display = 'none';
+    cancelAnimationFrame(animFrame);
+  };
+
+  // Toggle: if button says Stop, we already cancelled above so just return
+  playBtn.onclick = function() {
+    if (currentSpeech) {
+      window.speechSynthesis.cancel();
+    } else {
+      playSample(sample, idx);
+    }
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+function trySample(sample, idx) {
+  var tryBtn = document.getElementById('sampleTry_' + idx);
+  tryBtn.disabled = true;
+  tryBtn.innerHTML = '<span class="spin"></span> Building study guide…';
+
+  // Set the language selector to match this sample
+  var langPill = document.querySelector('.lang-pill[data-lang="' + sample.lang + '"]');
+  if (langPill) selectLang(langPill);
+
+  // Scroll to study area
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('tabs').style.display = 'none';
+
+  // Use the sample text as the transcript — call the real /study-guide API
+  var fakeName = sample.flag + ' ' + sample.langName + ' Sample ' + (idx + 1);
+  results[fakeName] = { status: 'studying', transcript: sample.text };
+
+  // Ensure it appears in tabs
+  if (!files.find(function(f) { return f.name === fakeName; })) {
+    files.push({ name: fakeName });
+  }
+  activeTab = fakeName;
+  renderTabs();
+  renderStudy();
+
+  // Call real study-guide API
+  fetchWithWakeup(API_BASE + '/study-guide', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify({ transcript: sample.text, language: sample.lang })
+  }).then(function(res) {
+    return res.json().then(function(data) {
+      if (!res.ok) throw new Error(data.error || 'Study guide failed');
+      results[fakeName] = {
+        status:     'done',
+        transcript: sample.text,
+        parsed:     parseGuide(data.guide),
+        raw:        data.guide
+      };
+      activeTab = fakeName;
+      renderTabs();
+      renderStudy();
+      // Scroll to study area
+      document.getElementById('studyArea').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }).catch(function(err) {
+    results[fakeName] = { status: 'error', error: err.message };
+    renderTabs();
+    renderStudy();
+  }).finally(function() {
+    tryBtn.disabled = false;
+    tryBtn.innerHTML = '✨ Try This — Get Study Guide';
+  });
+}
+
+// Init samples on load — wait for voices to load
+if ('speechSynthesis' in window) {
+  window.speechSynthesis.onvoiceschanged = initSampleGrid;
+  // Also call immediately in case voices already loaded
+  if (window.speechSynthesis.getVoices().length > 0) initSampleGrid();
+  else setTimeout(initSampleGrid, 500);
+} else {
+  initSampleGrid(); // still show UI, play button will show unsupported msg
+}
+
+/* ═══════════════════════════════
+   LOCAL STORAGE HELPERS
+   ═══════════════════════════════ */
+function lsGet(key, def) {
+  try { const v = localStorage.getItem(key); return v !== null ? JSON.parse(v) : def; }
+  catch(e) { return def; }
+}
+function lsSet(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
+}
+
+/* ═══════════════════════════════
+   LANGUAGE SELECTOR
+   ═══════════════════════════════ */
+function selectLang(btn) {
+  selectedLang = btn.dataset.lang;
+  document.querySelectorAll('.lang-pill').forEach(function(b) { b.classList.toggle('active', b === btn); });
+  var meta = LANG_META[selectedLang] || LANG_META['fr'];
+  document.getElementById('uploadTitle').textContent = meta.uploadText;
+  document.getElementById('uploadIcon').textContent  = '🎧';
+}
+
+/* ═══════════════════════════════
+   SESSION
+   ═══════════════════════════════ */
+async function initSession() {
+  try {
+    const token = localStorage.getItem('fom_session_token');
+    const headers = token ? { 'x-session-token': token } : {};
+    const res  = await fetch(`${API_BASE}/session`, { headers, signal: AbortSignal.timeout(35000) });
+    const data = await res.json();
+    SESSION_TOKEN = data.token;
+    localStorage.setItem('fom_session_token', SESSION_TOKEN);
+    userExtraCredits = data.extra_transcriptions || 0;
+    updateUsageUI(data.used, data.limit, userExtraCredits);
+  } catch(e) {
+    try {
+      const res  = await fetch(`${API_BASE}/usage`, { signal: AbortSignal.timeout(35000) });
+      const data = await res.json();
+      updateUsageUI(data.used, data.limit, 0);
+    } catch(_) {
+      document.getElementById('usageCount').textContent = 'Could not load usage info.';
+    }
+  }
+}
+initSession();
+
+function updateUsageUI(used, limit, extra) {
+  extra = extra || 0;
+  userExtraCredits = extra;
+  const pct = Math.min((used / limit) * 100, 100);
+  const bar = document.getElementById('usageBar');
+  bar.style.width = pct + '%';
+  if (used >= limit && extra > 0) {
+    bar.style.background = 'linear-gradient(90deg,#f59e0b,#10b981)';
+    document.getElementById('usageCount').textContent = 'Free limit reached · 💎 ' + extra + ' paid transcription' + (extra !== 1 ? 's' : '') + ' remaining';
+    document.getElementById('limitCard').style.display = 'none';
+    if (files.length > 0) document.getElementById('processBtn').style.display = 'block';
+  } else if (used >= limit) {
+    bar.style.background = 'linear-gradient(90deg,#ef4444,#b91c1c)';
+    document.getElementById('usageCount').textContent = '⛔ All ' + limit + ' free transcriptions used today';
+    document.getElementById('limitCard').style.display = 'block';
+    document.getElementById('processBtn').style.display = 'none';
+  } else {
+    bar.style.background = 'linear-gradient(90deg,var(--green),var(--accent))';
+    document.getElementById('usageCount').textContent = extra > 0
+      ? used + ' of ' + limit + ' free used · 💎 ' + extra + ' paid remaining'
+      : used + ' of ' + limit + ' free transcriptions used today';
+    document.getElementById('limitCard').style.display = 'none';
+  }
+}
+
+/* ═══════════════════════════════
+   DRAG & DROP
+   ═══════════════════════════════ */
+const zone = document.getElementById('uploadZone');
+zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.classList.add('drag-over'); });
+zone.addEventListener('dragleave', function() { zone.classList.remove('drag-over'); });
+zone.addEventListener('drop', function(e) { e.preventDefault(); zone.classList.remove('drag-over'); addFiles(e.dataTransfer.files); });
+
+function addFiles(list) {
+  const arr = Array.from(list).filter(function(f) {
+    return /\.(mp3|m4a|ogg|wav|aac|webm|m4b|opus|mpeg|mpga)$/i.test(f.name)
+        || f.type.startsWith('audio')
+        || (f.type === '' && f.size > 1000); // allow unknown types on desktop
+  });
+  if (!arr.length) { alert('Please select audio files (MP3, M4A, OGG, WAV, etc)'); return; }
+  const existing = new Set(files.map(function(f) { return f.name; }));
+  arr.forEach(function(f) {
+    if (!existing.has(f.name)) {
+      files.push(f);
+      // Create audio URL immediately for playback
+      try { audioURLs[f.name] = URL.createObjectURL(f); } catch(e) {}
+    }
+  });
+  if (!activeTab && files.length) activeTab = files[0].name;
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('processBtn').style.display = 'block';
+  renderAll();
+}
+
+/* ═══════════════════════════════
+   RENDER
+   ═══════════════════════════════ */
+function renderAll() { renderFileList(); renderTabs(); renderStudy(); }
+
+function renderFileList() {
+  const container = document.getElementById('fileList');
+  const html = files.map(function(f, idx) {
+    const r = results[f.name];
+    let cls = 'badge-pending', lbl = 'Ready';
+    if (r) {
+      if (r.status === 'transcribing') { cls = 'badge-loading'; lbl = 'Transcribing…'; }
+      else if (r.status === 'studying') { cls = 'badge-loading'; lbl = 'Building guide…'; }
+      else if (r.status === 'done')    { cls = 'badge-done';    lbl = '✓ Done'; }
+      else if (r.status === 'error')   { cls = 'badge-error';   lbl = '✗ Error'; }
+    }
+    const spin    = (r && (r.status === 'transcribing' || r.status === 'studying')) ? '<span class="spin"></span>' : '';
+    const viewBtn = (r && r.status === 'done') ? '<button class="btn-view" onclick="setTabByIdx(' + idx + ')">Study →</button>' : '';
+    const errMsg  = (r && r.status === 'error') ? '<div style="width:100%;font-size:11px;color:#f87171;margin-top:4px;">⚠️ ' + esc(r.error || 'Unknown error') + '</div>' : '';
+    const audioSrc = audioURLs[f.name] ? esc(audioURLs[f.name]) : '';
+    const audioHtml = audioSrc
+      ? '<div class="audio-player"><audio controls preload="none" src="' + audioSrc + '"></audio></div>'
+      : '';
+    return '<div class="file-card"><div class="file-card-top"><span class="file-icon">🎵</span><span class="file-name">' + esc(f.name) + '</span><span class="badge ' + cls + '">' + spin + lbl + '</span>' + viewBtn + '</div>' + errMsg + audioHtml + '</div>';
+  }).join('');
+  container.innerHTML = html;
+}
+
+function renderTabs() {
+  const done = files.filter(function(f) { return results[f.name] && results[f.name].status === 'done'; });
+  const el = document.getElementById('tabs');
+  if (!done.length) { el.style.display = 'none'; return; }
+  el.style.display = 'flex';
+  el.innerHTML = done.map(function(f) {
+    const idx   = files.indexOf(f);
+    const short = f.name.replace(/AUD-\d+-WA\d+/i, '').replace(/\.\w+$/, '') || f.name.replace(/\.\w+$/, '');
+    return '<button class="tab' + (activeTab === f.name ? ' active' : '') + '" onclick="setTabByIdx(' + idx + ')">🎙 ' + esc(short) + '</button>';
+  }).join('');
+}
+
+function setTabByIdx(rawIdx) {
+  const f = files[parseInt(rawIdx, 10)];
+  if (f) {
+    activeTab = f.name;
+    document.getElementById('quizCard').classList.remove('show');
+    renderTabs();
+    renderStudy();
+  }
+}
+
+/* ═══════════════════════════════
+   RENDER STUDY GUIDE — DESKTOP FIX
+   ═══════════════════════════════ */
+function renderStudy() {
+  var area = document.getElementById('studyArea');
+  area.innerHTML = '';  // clear first
+
+  var r = results[activeTab];
+  if (!r || r.status !== 'done') return;
+
+  var ICONS = {
+    'WORD-FOR-WORD TRANSLATION': '🌐',
+    'KEY VOCABULARY': '📚',
+    'GRAMMAR POINTS': '🔤',
+    'SAMPLE QUESTIONS & MODEL ANSWERS': '❓',
+    'TIPS TO ACE THIS TOPIC': '🏆'
+  };
+
+  // ── Transcription card ──
+  var transcriptCard = document.createElement('div');
+  transcriptCard.className = 'study-card';
+
+  var transcriptTitle = document.createElement('span');
+  transcriptTitle.className = 'study-card-title';
+  transcriptTitle.textContent = '🎤 French Transcription';
+  transcriptCard.appendChild(transcriptTitle);
+
+  var transcriptBox = document.createElement('div');
+  transcriptBox.className = 'text-box';
+  transcriptBox.textContent = r.transcript || '';
+  transcriptCard.appendChild(transcriptBox);
+  area.appendChild(transcriptCard);
+
+  // ── Study guide card ──
+  if (r.parsed && r.parsed.length > 0) {
+    var guideCard = document.createElement('div');
+    guideCard.className = 'study-card';
+
+    var guideTitle = document.createElement('span');
+    guideTitle.className = 'study-card-title';
+    guideTitle.textContent = '📖 Full Study Guide';
+    guideCard.appendChild(guideTitle);
+
+    r.parsed.forEach(function(s) {
+      var label = document.createElement('span');
+      label.className = 'sec-label';
+      label.textContent = (ICONS[s.label] || '•') + ' ' + s.label;
+      guideCard.appendChild(label);
+
+      var box = document.createElement('div');
+      box.className = 'text-box';
+
+      if (s.label === 'WORD-FOR-WORD TRANSLATION') {
+        // Colored: original language = white, English = yellow
+        renderWordForWord(s.content, box);
+      } else {
+        box.textContent = s.content;
+      }
+
+      guideCard.appendChild(box);
+    });
+
+    // Action buttons
+    var actionRow = document.createElement('div');
+    actionRow.className = 'action-row';
+
+    var btnPDF = document.createElement('button');
+    btnPDF.className = 'action-btn blue';
+    btnPDF.innerHTML = '📥 Download PDF';
+    btnPDF.onclick = function() { downloadAsPDF(); };
+    actionRow.appendChild(btnPDF);
+
+    var btnTxt = document.createElement('button');
+    btnTxt.className = 'action-btn green';
+    btnTxt.innerHTML = '📄 Download Text';
+    btnTxt.onclick = function() { downloadAsText(); };
+    actionRow.appendChild(btnTxt);
+
+    var btnQuiz = document.createElement('button');
+    btnQuiz.className = 'action-btn purple';
+    btnQuiz.innerHTML = '📝 Quiz Mode';
+    btnQuiz.onclick = function() { startQuiz(); };
+    actionRow.appendChild(btnQuiz);
+
+    var btnWA = document.createElement('button');
+    btnWA.className = 'action-btn wa';
+    btnWA.innerHTML = '📤 Share via WhatsApp';
+    btnWA.onclick = function() { shareWhatsApp(); };
+    actionRow.appendChild(btnWA);
+
+    var btnSave = document.createElement('button');
+    btnSave.className = 'action-btn gold';
+    btnSave.innerHTML = '💾 Save Guide';
+    btnSave.onclick = function() { saveGuide(); btnSave.innerHTML = '✅ Saved!'; setTimeout(function() { btnSave.innerHTML = '💾 Save Guide'; }, 2000); };
+    actionRow.appendChild(btnSave);
+
+    guideCard.appendChild(actionRow);
+    area.appendChild(guideCard);
+
+  } else if (r.guideError) {
+    var errCard = document.createElement('div');
+    errCard.className = 'study-card';
+    var errTitle = document.createElement('span');
+    errTitle.className = 'study-card-title';
+    errTitle.textContent = '⚠️ Study Guide Unavailable';
+    errCard.appendChild(errTitle);
+    var errBox = document.createElement('div');
+    errBox.className = 'text-box';
+    errBox.style.color = '#f87171';
+    errBox.textContent = 'Transcription succeeded ✅ but the study guide could not be generated:\n\n' + (r.guideError || '') + '\n\nYou can still study from the French transcription above.';
+    errCard.appendChild(errBox);
+    area.appendChild(errCard);
+  }
+}
+
+/* ═══════════════════════════════
+   WORD-FOR-WORD TRANSLATION RENDERER
+   The AI outputs sentence pairs: original language first, then English.
+   We go line by line — even lines (0,2,4…) = original (white),
+   odd lines (1,3,5…) = English translation (yellow).
+   Blank lines reset the pair counter so each paragraph starts fresh.
+   ═══════════════════════════════ */
+function renderWordForWord(content, container) {
+  var lines   = content.split('\n');
+  var pairPos = 0; // 0 = original language, 1 = english
+
+  lines.forEach(function(rawLine) {
+    var line = rawLine.trim();
+
+    if (!line) {
+      // Blank line = visual gap between sentence pairs, reset counter
+      pairPos = 0;
+      var gap = document.createElement('div');
+      gap.style.height = '8px';
+      container.appendChild(gap);
+      return;
+    }
+
+    // Strip bullets / numbering (e.g. "1." "•" "-")
+    var cleaned = line.replace(/^[\d]+[.)]\s*/, '').replace(/^[-•*]\s*/, '').trim();
+    if (!cleaned) return;
+
+    var span = document.createElement('span');
+    span.style.display     = 'block';
+    span.style.lineHeight  = '1.75';
+
+    if (pairPos % 2 === 0) {
+      // ── Original language ── white
+      span.style.color      = '#e2e8f0';
+      span.style.fontWeight = '500';
+      span.textContent      = cleaned;
+    } else {
+      // ── English translation ── yellow/gold
+      span.style.color       = '#fcd34d';
+      span.style.fontStyle   = 'italic';
+      span.style.marginBottom = '10px';
+      span.textContent       = '↳ ' + cleaned;
+    }
+
+    container.appendChild(span);
+    pairPos++;
+  });
+}
+
+/* ═══════════════════════════════
+   FETCH WITH WAKEUP RETRY
+   ═══════════════════════════════ */
+async function fetchWithWakeup(url, opts, attempt) {
+  attempt = attempt || 1;
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(function() { controller.abort(); }, 90000);
+    const res = await fetch(url, Object.assign({}, opts, { signal: controller.signal }));
+    clearTimeout(timer);
+    return res;
+  } catch(e) {
+    if (attempt < 3) {
+      const wakeup = document.getElementById('wakeupCard');
+      wakeup.style.display = 'block';
+      document.getElementById('wakeupMsg').innerHTML = '⏳ <strong>Server waking up… (attempt ' + (attempt + 1) + ' of 3)</strong><br/>Retrying automatically — do not close the app!';
+      await new Promise(function(r) { setTimeout(r, 6000); });
+      return fetchWithWakeup(url, opts, attempt + 1);
+    }
+    throw new Error('Server still waking up. Please wait 30 seconds then tap Transcribe again.');
+  }
+}
+
+/* ═══════════════════════════════
+   PROCESS ALL — DESKTOP SAFE
+   ═══════════════════════════════ */
+async function processAll() {
+  if (busy) return;
+  busy = true;
+  document.getElementById('processBtn').disabled = true;
+  document.getElementById('progressWrap').style.display = 'block';
+
+  const wakeup = document.getElementById('wakeupCard');
+  wakeup.style.display = 'block';
+  const wakeupTimer = setTimeout(function() { wakeup.style.display = 'none'; }, 35000);
+
+  const todo = files.filter(function(f) { return !results[f.name] || !results[f.name].transcript; });
+
+  for (var i = 0; i < todo.length; i++) {
+    var file = todo[i];
+    results[file.name] = { status: 'transcribing' };
+    renderAll();
+
+    try {
+      // DESKTOP FIX: Read as ArrayBuffer for reliable binary transfer
+      const buf  = await readFileAsArrayBuffer(file);
+      const mime = file.type || getAudioMimeFromName(file.name);
+      const blob = new Blob([buf], { type: mime });
+      const form = new FormData();
+      form.append('file', blob, file.name || 'audio.mp3');
+      form.append('language', selectedLang);  // ← send selected language
+
+      const tHeaders = {};
+      if (SESSION_TOKEN) tHeaders['x-session-token'] = SESSION_TOKEN;
+
+      const tRes  = await fetchWithWakeup(API_BASE + '/transcribe', { method: 'POST', body: form, headers: tHeaders });
+      let tData;
+      try { tData = await tRes.json(); } catch(e) { throw new Error('Server returned invalid response. Please try again.'); }
+
+      if (tRes.status === 429 && tData.error === 'daily_limit') {
+        results[file.name] = { status: 'error', error: tData.message };
+        document.getElementById('limitCard').style.display = 'block';
+        renderAll(); break;
+      }
+      if (!tRes.ok) throw new Error(tData.error || tData.message || 'Transcription failed (status ' + tRes.status + ')');
+
+      const transcript = tData.transcript;
+      if (tData.usage) updateUsageUI(tData.usage.used, tData.usage.limit, tData.usage.extra_transcriptions || 0);
+
+      // Track stats
+      trackTranscription(file.name.replace(/\.\w+$/, ''));
+
+      results[file.name] = { status: 'studying', transcript: transcript };
+      if (!activeTab || !results[activeTab] || results[activeTab].status !== 'done') activeTab = file.name;
+      renderAll();
+
+      try {
+        const gRes  = await fetchWithWakeup(API_BASE + '/study-guide', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ transcript: transcript, language: selectedLang })
+        });
+        let gData;
+        try { gData = await gRes.json(); } catch(e) { throw new Error('Study guide response was invalid.'); }
+        if (!gRes.ok) throw new Error(gData.error || gData.message || 'Study guide failed');
+        results[file.name] = { status: 'done', transcript: transcript, parsed: parseGuide(gData.guide), raw: gData.guide };
+      } catch(guideErr) {
+        results[file.name] = { status: 'done', transcript: transcript, parsed: [], guideError: guideErr.message };
+      }
+
+      if (!activeTab || !results[activeTab] || results[activeTab].status !== 'done') activeTab = file.name;
+      wakeup.style.display = 'none';
+
+    } catch(err) {
+      results[file.name] = { status: 'error', error: err.message };
+    }
+
+    const doneCount = files.filter(function(f) { return results[f.name] && results[f.name].status === 'done'; }).length;
+    document.getElementById('progressTxt').textContent = doneCount + '/' + files.length;
+    document.getElementById('progressBar').style.width = ((doneCount / files.length) * 100) + '%';
+    renderAll();
+  }
+
+  clearTimeout(wakeupTimer);
+  wakeup.style.display = 'none';
+  busy = false;
+  document.getElementById('processBtn').disabled = false;
+  const left = files.filter(function(f) { return !results[f.name] || !results[f.name].transcript; }).length;
+  document.getElementById('processBtn').textContent = left ? ('🚀 Transcribe Remaining (' + left + ')') : '✓ All Done!';
+}
+
+// Safe FileReader for desktop compatibility
+function readFileAsArrayBuffer(file) {
+  return new Promise(function(resolve, reject) {
+    const reader = new FileReader();
+    reader.onload  = function(e) { resolve(e.target.result); };
+    reader.onerror = function()  { reject(new Error('Could not read file. Please try again.')); };
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+function getAudioMimeFromName(name) {
+  const ext = (name || '').split('.').pop().toLowerCase();
+  const map = { mp3:'audio/mpeg', m4a:'audio/mp4', ogg:'audio/ogg', wav:'audio/wav', aac:'audio/aac', webm:'audio/webm', opus:'audio/ogg', mpeg:'audio/mpeg', mpga:'audio/mpeg', flac:'audio/flac' };
+  return map[ext] || 'audio/mpeg';
+}
+
+/* ═══════════════════════════════
+   PARSE GUIDE — ROBUST VERSION
+   ═══════════════════════════════ */
+function parseGuide(text) {
+  if (!text) return [];
+  const SECTIONS = [
+    'WORD-FOR-WORD TRANSLATION',
+    'KEY VOCABULARY',
+    'GRAMMAR POINTS',
+    'SAMPLE QUESTIONS & MODEL ANSWERS',
+    'TIPS TO ACE THIS TOPIC'
+  ];
+
+  // Build a version of text to search in — normalise for robustness
+  const UPPER = text.toUpperCase();
+  const parsed = [];
+
+  SECTIONS.forEach(function(name, i) {
+    // Try multiple patterns: **HEADER**, ## HEADER, just HEADER on its own line
+    const patterns = [
+      '**' + name + '**',
+      '## ' + name,
+      '# ' + name,
+      name + '\n',
+      name + '\r'
+    ];
+
+    let start = -1;
+    for (var p = 0; p < patterns.length; p++) {
+      const idx = UPPER.indexOf(patterns[p]);
+      if (idx !== -1) { start = idx; break; }
+    }
+    if (start === -1) return;
+
+    // Find where content starts (skip the header marker)
+    const markerEnd = text.indexOf('\n', start);
+    const contentStart = markerEnd !== -1 ? markerEnd + 1 : start + name.length;
+
+    // Find where next section starts
+    let end = -1;
+    for (var j = i + 1; j < SECTIONS.length; j++) {
+      const nextPatterns = ['**' + SECTIONS[j] + '**', '## ' + SECTIONS[j], '# ' + SECTIONS[j], SECTIONS[j] + '\n'];
+      for (var q = 0; q < nextPatterns.length; q++) {
+        const nidx = UPPER.indexOf(nextPatterns[q]);
+        if (nidx !== -1 && nidx > start) { end = nidx; break; }
+      }
+      if (end !== -1) break;
+    }
+
+    const content = text.slice(contentStart, end !== -1 ? end : text.length).trim();
+    if (content) parsed.push({ label: name, content: content });
+  });
+
+  return parsed;
+}
+
+/* ═══════════════════════════════
+   QUIZ MODE — TWO MODES
+   ═══════════════════════════════ */
+function startQuiz() {
+  var r = results[activeTab];
+  if (!r || !r.parsed) return;
+  // Try to build both decks; start whichever has content
+  var vocabOk = buildVocabDeck(r);
+  var qaOk    = buildQADeck(r);
+  if (!vocabOk && !qaOk) { alert('No quiz content found in this guide yet.'); return; }
+  // Default to vocab if available, else Q&A
+  switchQuizMode(vocabOk ? 'vocab' : 'qa');
+  document.getElementById('quizCard').classList.add('show');
+  document.getElementById('quizCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  trackQuiz();
+}
+
+function switchQuizMode(mode) {
+  quizMode = mode;
+  document.getElementById('quizModeVocab').classList.toggle('active', mode === 'vocab');
+  document.getElementById('quizModeQA').classList.toggle('active',    mode === 'qa');
+
+  var r = results[activeTab];
+  if (!r || !r.parsed) return;
+
+  if (mode === 'vocab') {
+    if (!buildVocabDeck(r)) { alert('No vocabulary found in this guide.'); return; }
+  } else {
+    if (!buildQADeck(r))    { alert('No Q&A found in this guide.'); return; }
+  }
+  quizIdx = 0;
+  showQuizCard();
+}
+
+function buildVocabDeck(r) {
+  var section = r.parsed.find(function(s) { return s.label === 'KEY VOCABULARY'; });
+  if (!section) return false;
+  var lines = section.content.split('\n');
+  var cards = [];
+  lines.forEach(function(line) {
+    line = line.trim().replace(/^[-•*\d]+\.?\s*/, '');
+    var sep = line.indexOf(' - ');
+    if (sep !== -1) {
+      var fr = line.slice(0, sep).trim();
+      var en = line.slice(sep + 3).trim();
+      if (fr && en) cards.push({ question: '🌐 What does this mean?', front: fr, back: en });
+    }
+  });
+  if (!cards.length) return false;
+  quizCards = cards;
+  return true;
+}
+
+function buildQADeck(r) {
+  var section = r.parsed.find(function(s) { return s.label === 'SAMPLE QUESTIONS & MODEL ANSWERS'; });
+  if (!section) return false;
+  var text  = section.content;
+  var cards = [];
+
+  // Split on question markers: lines starting with numbers, Q:, Question, •
+  var lines = text.split('\n');
+  var currentQ = '', currentA = [], inAnswer = false;
+
+  lines.forEach(function(line) {
+    var trimmed = line.trim();
+    if (!trimmed) return;
+
+    // Detect question lines
+    var isQuestion = /^[\d]+[.)]\s+/.test(trimmed) ||
+                     /^[-•]\s*(question|q\s*:)/i.test(trimmed) ||
+                     /\?$/.test(trimmed) && trimmed.length < 200 && !inAnswer;
+
+    // Detect answer lines
+    var isAnswer = /^(model answer|answer|réponse|respuesta|إجابة|resposta|a\s*:)/i.test(trimmed);
+
+    if (isQuestion && !isAnswer) {
+      if (currentQ && currentA.length) {
+        cards.push({ question: '❓ Answer this question:', front: currentQ.trim(), back: currentA.join(' ').trim() });
+      }
+      currentQ = trimmed.replace(/^[\d]+[.)]\s+/, '').replace(/^[-•]\s*(question|q\s*:)\s*/i, '');
+      currentA = []; inAnswer = false;
+    } else if (isAnswer) {
+      inAnswer = true;
+      currentA.push(trimmed.replace(/^(model answer|answer|réponse|respuesta|إجابة|resposta|a\s*:)\s*/i, ''));
+    } else if (inAnswer) {
+      currentA.push(trimmed);
+    } else if (!currentQ) {
+      // First line might be a question without numbering
+      if (trimmed.includes('?')) { currentQ = trimmed; inAnswer = false; }
+    }
+  });
+  if (currentQ && currentA.length) {
+    cards.push({ question: '❓ Answer this question:', front: currentQ.trim(), back: currentA.join(' ').trim() });
+  }
+
+  // Fallback: split on blank lines into pairs
+  if (!cards.length) {
+    var blocks = text.split(/\n\s*\n/).filter(function(b) { return b.trim(); });
+    blocks.forEach(function(block) {
+      var bLines = block.split('\n').map(function(l) { return l.trim(); }).filter(Boolean);
+      if (bLines.length >= 2) {
+        cards.push({ question: '❓ Answer this question:', front: bLines[0], back: bLines.slice(1).join(' ') });
+      }
+    });
+  }
+
+  if (!cards.length) return false;
+  quizCards = cards;
+  return true;
+}
+
+function showQuizCard() {
+  var card = quizCards[quizIdx];
+  if (!card) return;
+  var fc = document.getElementById('flashcard');
+  fc.classList.remove('flipped');
+  document.getElementById('flashQuestion').textContent = card.question || '';
+  document.getElementById('flashFront').textContent    = card.front;
+  document.getElementById('flashBack').textContent     = card.back;
+  document.getElementById('flashTap').textContent      = 'Tap to flip';
+  document.getElementById('quizCounter').textContent   = (quizIdx + 1) + ' / ' + quizCards.length;
+  document.getElementById('quizPrev').disabled = quizIdx === 0;
+  document.getElementById('quizNext').disabled = quizIdx === quizCards.length - 1;
+}
+
+function flipCard() {
+  document.getElementById('flashcard').classList.toggle('flipped');
+}
+
+function quizMove(dir) {
+  quizIdx = Math.max(0, Math.min(quizCards.length - 1, quizIdx + dir));
+  showQuizCard();
+}
+
+/* ═══════════════════════════════
+   DOWNLOAD AS PDF
+   ═══════════════════════════════ */
+function downloadAsPDF() {
+  var r = results[activeTab];
+  if (!r || r.status !== 'done') return;
+
+  // Try jsPDF
+  if (typeof window.jspdf !== 'undefined' || (typeof jspdf !== 'undefined')) {
+    generateJsPDF(r);
+  } else {
+    // Fallback to print-to-PDF
+    printToPDF(r);
+  }
+}
+
+function generateJsPDF(r) {
+  try {
+    var jsPDFLib = window.jspdf && window.jspdf.jsPDF ? window.jspdf.jsPDF : jspdf.jsPDF;
+    var doc = new jsPDFLib({ unit: 'mm', format: 'a4' });
+    var name = (activeTab || 'audio').replace(/\.[^.]+$/, '');
+    var ICONS = { 'WORD-FOR-WORD TRANSLATION':'🌐 ','KEY VOCABULARY':'📚 ','GRAMMAR POINTS':'🔤 ','SAMPLE QUESTIONS & MODEL ANSWERS':'❓ ','TIPS TO ACE THIS TOPIC':'🏆 ' };
+
+    var pageW  = doc.internal.pageSize.getWidth();
+    var margin = 20;
+    var maxW   = pageW - margin * 2;
+    var y = 20;
+
+    function addText(text, size, color, bold) {
+      doc.setFontSize(size || 11);
+      doc.setTextColor.apply(doc, color || [226, 232, 240]);
+      doc.setFont('helvetica', bold ? 'bold' : 'normal');
+      var lines = doc.splitTextToSize(text, maxW);
+      lines.forEach(function(line) {
+        if (y > 270) { doc.addPage(); y = 20; }
+        doc.text(line, margin, y);
+        y += (size || 11) * 0.5 + 1;
+      });
+    }
+
+    // Header
+    doc.setFillColor(10, 14, 26);
+    doc.rect(0, 0, pageW, 30, 'F');
+    doc.setFontSize(16); doc.setTextColor(96, 165, 250); doc.setFont('helvetica', 'bold');
+    doc.text('French Oral Master — Study Guide', margin, 18);
+    doc.setFontSize(10); doc.setTextColor(100, 116, 139); doc.setFont('helvetica', 'normal');
+    doc.text(name + '  ·  ' + new Date().toLocaleDateString(), margin, 26);
+    y = 40;
+
+    addText('FRENCH TRANSCRIPTION', 12, [245, 158, 11], true);
+    y += 2;
+    addText(r.transcript, 10, [203, 213, 225], false);
+    y += 4;
+
+    if (r.parsed) {
+      r.parsed.forEach(function(s) {
+        if (y > 260) { doc.addPage(); y = 20; }
+        addText((ICONS[s.label] || '') + s.label, 12, [245, 158, 11], true);
+        y += 2;
+        addText(s.content, 10, [203, 213, 225], false);
+        y += 4;
+      });
+    }
+
+    // Footer
+    if (y > 270) { doc.addPage(); y = 20; }
+    y += 4;
+    doc.setFontSize(9); doc.setTextColor(71, 85, 105);
+    doc.text('Generated by French Oral Master · oralmaster.netlify.app', margin, y);
+
+    doc.save(name + '-study-guide.pdf');
+  } catch(e) {
+    console.error('jsPDF error:', e);
+    printToPDF(r);
+  }
+}
+
+function printToPDF(r) {
+  // Open a print-friendly window
+  var name = (activeTab || 'audio').replace(/\.[^.]+$/, '');
+  var ICONS = { 'WORD-FOR-WORD TRANSLATION':'🌐','KEY VOCABULARY':'📚','GRAMMAR POINTS':'🔤','SAMPLE QUESTIONS & MODEL ANSWERS':'❓','TIPS TO ACE THIS TOPIC':'🏆' };
+
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>' + name + ' Study Guide</title><style>';
+  html += 'body{font-family:Arial,sans-serif;font-size:12px;color:#1e293b;padding:24px;max-width:760px;margin:0 auto;}';
+  html += 'h1{font-size:20px;color:#1e40af;margin-bottom:4px;}';
+  html += '.meta{color:#64748b;font-size:11px;margin-bottom:20px;}';
+  html += '.sec{margin-bottom:16px;} .sec-title{font-size:13px;font-weight:bold;color:#92400e;margin-bottom:6px;text-transform:uppercase;}';
+  html += '.sec-body{white-space:pre-wrap;line-height:1.7;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px;}';
+  html += '@media print{body{padding:10px;}}';
+  html += '</style></head><body>';
+  html += '<h1>🇫🇷 French Oral Master — Study Guide</h1>';
+  html += '<div class="meta">Audio: ' + name + ' · Generated: ' + new Date().toLocaleDateString() + '</div>';
+  html += '<div class="sec"><div class="sec-title">🎤 French Transcription</div><div class="sec-body">' + r.transcript.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div></div>';
+  if (r.parsed) {
+    r.parsed.forEach(function(s) {
+      html += '<div class="sec"><div class="sec-title">' + (ICONS[s.label] || '') + ' ' + s.label + '</div><div class="sec-body">' + s.content.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div></div>';
+    });
+  }
+  html += '<div style="margin-top:20px;color:#94a3b8;font-size:10px;border-top:1px solid #e2e8f0;padding-top:10px;">Generated by French Oral Master · oralmaster.netlify.app</div>';
+  html += '</body></html>';
+
+  var win = window.open('', '_blank');
+  if (win) {
+    win.document.write(html);
+    win.document.close();
+    setTimeout(function() { win.print(); }, 500);
+  } else {
+    alert('Please allow pop-ups for PDF download, or use the Text download instead.');
+  }
+}
+
+/* ═══════════════════════════════
+   DOWNLOAD AS TEXT
+   ═══════════════════════════════ */
+function downloadAsText() {
+  var r = results[activeTab];
+  if (!r || r.status !== 'done') return;
+  var ICONS = { 'WORD-FOR-WORD TRANSLATION':'🌐','KEY VOCABULARY':'📚','GRAMMAR POINTS':'🔤','SAMPLE QUESTIONS & MODEL ANSWERS':'❓','TIPS TO ACE THIS TOPIC':'🏆' };
+  var name = (activeTab || 'audio').replace(/\.[^.]+$/, '');
+  var body = 'FRENCH ORAL MASTER — STUDY GUIDE\r\n';
+  body += 'Audio: ' + name + '\r\n';
+  body += 'Date: ' + new Date().toLocaleDateString() + '\r\n';
+  body += '='.repeat(50) + '\r\n\r\n';
+  body += 'FRENCH TRANSCRIPTION\r\n' + '-'.repeat(40) + '\r\n' + r.transcript + '\r\n\r\n';
+  if (r.parsed) {
+    r.parsed.forEach(function(s) {
+      body += (ICONS[s.label] || '') + ' ' + s.label + '\r\n' + '-'.repeat(40) + '\r\n' + s.content + '\r\n\r\n';
+    });
+  }
+  body += '='.repeat(50) + '\r\nGenerated by French Oral Master · oralmaster.netlify.app';
+  var blob = new Blob([body], { type: 'text/plain;charset=utf-8' });
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement('a');
+  a.href = url; a.download = name + '-study-guide.txt';
+  document.body.appendChild(a); a.click();
+  setTimeout(function() { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+}
+
+/* ═══════════════════════════════
+   WHATSAPP SHARE
+   ═══════════════════════════════ */
+function shareWhatsApp() {
+  var r = results[activeTab];
+  if (!r || !r.parsed || !r.parsed.length) return;
+  var name = (activeTab || 'audio').replace(/\.[^.]+$/, '');
+  var msg = '🇫🇷 *French Oral Master — Study Guide*\n';
+  msg += 'Audio: ' + name + '\n\n';
+  msg += '*🎤 French Transcription:*\n' + (r.transcript || '').slice(0, 500);
+  if (r.transcript && r.transcript.length > 500) msg += '…';
+  msg += '\n\n*📖 Full study guide at:* oralmaster.netlify.app';
+  var url = 'https://wa.me/?text=' + encodeURIComponent(msg);
+  window.open(url, '_blank');
+}
+
+/* ═══════════════════════════════
+   SAVE & LOAD GUIDES
+   ═══════════════════════════════ */
+function saveGuide() {
+  var r = results[activeTab];
+  if (!r || r.status !== 'done') return;
+  var name = (activeTab || 'unknown').replace(/\.[^.]+$/, '');
+  var saved = lsGet('fom_saved_guides', []);
+
+  // Remove if already saved (re-save updates it)
+  saved = saved.filter(function(g) { return g.name !== name; });
+
+  // Keep only last 10 to avoid storage overflow
+  if (saved.length >= 10) saved = saved.slice(-9);
+
+  saved.push({
+    name: name,
+    date: new Date().toISOString(),
+    transcript: r.transcript,
+    parsed: r.parsed || [],
+    raw: r.raw || ''
+  });
+  lsSet('fom_saved_guides', saved);
+}
+
+function showSavedModal() {
+  var saved = lsGet('fom_saved_guides', []);
+  var container = document.getElementById('savedList');
+
+  if (!saved.length) {
+    container.innerHTML = '<div class="saved-empty">💾 No guides saved yet.<br/>After transcribing, click "Save Guide" to bookmark it!</div>';
+  } else {
+    container.innerHTML = saved.map(function(g, idx) {
+      var date = new Date(g.date).toLocaleDateString();
+      return '<div class="saved-item"><div class="saved-item-info"><div class="saved-item-name">🎙 ' + esc(g.name) + '</div><div class="saved-item-date">Saved ' + date + ' · ' + g.parsed.length + ' sections</div></div><button class="saved-item-btn" onclick="loadSavedGuide(' + idx + ')">Open →</button><button class="saved-item-del" onclick="deleteSavedGuide(' + idx + ')">🗑</button></div>';
+    }).join('');
+  }
+  openModal('savedModal');
+}
+
+function loadSavedGuide(idx) {
+  var saved = lsGet('fom_saved_guides', []);
+  var g = saved[idx];
+  if (!g) return;
+
+  closeModal('savedModal');
+
+  // Load into results and display
+  var fakeName = g.name + '.saved';
+  results[fakeName] = { status: 'done', transcript: g.transcript, parsed: g.parsed, raw: g.raw };
+  if (!files.find(function(f) { return f.name === fakeName; })) {
+    files.push({ name: fakeName });
+  }
+  activeTab = fakeName;
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('quizCard').classList.remove('show');
+  renderAll();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function deleteSavedGuide(idx) {
+  if (!confirm('Delete this saved guide?')) return;
+  var saved = lsGet('fom_saved_guides', []);
+  saved.splice(idx, 1);
+  lsSet('fom_saved_guides', saved);
+  showSavedModal();
+}
+
+/* ═══════════════════════════════
+   PROGRESS TRACKING
+   ═══════════════════════════════ */
+function trackTranscription(topicName) {
+  var stats = lsGet('fom_stats', { total: 0, today: 0, todayDate: '', topics: [], quizSessions: 0 });
+  var today = new Date().toLocaleDateString();
+  if (stats.todayDate !== today) { stats.today = 0; stats.todayDate = today; }
+  stats.total++;
+  stats.today++;
+  if (!stats.topics.includes(topicName)) stats.topics.push(topicName);
+  if (stats.topics.length > 50) stats.topics = stats.topics.slice(-50);
+  lsSet('fom_stats', stats);
+}
+
+function trackQuiz() {
+  var stats = lsGet('fom_stats', { total: 0, today: 0, todayDate: '', topics: [], quizSessions: 0 });
+  stats.quizSessions = (stats.quizSessions || 0) + 1;
+  lsSet('fom_stats', stats);
+}
+
+function showProgressModal() {
+  var stats   = lsGet('fom_stats', { total: 0, today: 0, todayDate: '', topics: [], quizSessions: 0 });
+  var saved   = lsGet('fom_saved_guides', []);
+  var today   = new Date().toLocaleDateString();
+
+  document.getElementById('statTotal').textContent = stats.total || 0;
+  document.getElementById('statSaved').textContent = saved.length;
+  document.getElementById('statQuiz').textContent  = stats.quizSessions || 0;
+
+  var todayCount = (stats.todayDate === today) ? stats.today : 0;
+  document.getElementById('statToday').textContent = todayCount ? todayCount + ' transcription' + (todayCount !== 1 ? 's' : '') + ' today' : 'No transcriptions yet today';
+
+  var topicsEl = document.getElementById('statTopics');
+  if (stats.topics && stats.topics.length) {
+    topicsEl.innerHTML = stats.topics.slice(-20).map(function(t) {
+      return '<span style="display:inline-block;background:var(--highlight);color:var(--accent-light);border-radius:20px;padding:2px 10px;margin:2px;font-size:11px;font-weight:600;">🎙 ' + esc(t) + '</span>';
+    }).join('');
+  } else {
+    topicsEl.textContent = 'No topics yet. Upload and transcribe an audio to get started!';
+  }
+
+  openModal('progressModal');
+}
+
+/* ═══════════════════════════════
+   EXAM REMINDER
+   ═══════════════════════════════ */
+function showReminderModal() {
+  var existing = lsGet('fom_reminder', null);
+  if (existing) {
+    document.getElementById('reminderDate').value = existing.date;
+    document.getElementById('reminderName').value = existing.name || '';
+    document.getElementById('reminderClearBtn').style.display = 'block';
+    document.getElementById('reminderStatus').textContent = '✅ Reminder set for ' + new Date(existing.date).toLocaleDateString();
+    document.getElementById('reminderStatus').style.display = 'block';
+  } else {
+    document.getElementById('reminderDate').value = '';
+    document.getElementById('reminderName').value = '';
+    document.getElementById('reminderClearBtn').style.display = 'none';
+    document.getElementById('reminderStatus').style.display = 'none';
+  }
+  openModal('reminderModal');
+}
+
+function setReminder() {
+  var date = document.getElementById('reminderDate').value;
+  var name = document.getElementById('reminderName').value.trim();
+  if (!date) { alert('Please select your exam date.'); return; }
+  var examDate = new Date(date);
+  if (isNaN(examDate)) { alert('Invalid date. Please try again.'); return; }
+  lsSet('fom_reminder', { date: date, name: name, setOn: new Date().toISOString() });
+  document.getElementById('reminderStatus').textContent = '✅ Reminder set for ' + examDate.toLocaleDateString();
+  document.getElementById('reminderStatus').style.display = 'block';
+  document.getElementById('reminderClearBtn').style.display = 'block';
+  setTimeout(function() { closeModal('reminderModal'); checkReminder(); }, 1000);
+}
+
+function clearReminder() {
+  localStorage.removeItem('fom_reminder');
+  document.getElementById('reminderBanner').classList.remove('show');
+  document.getElementById('reminderClearBtn').style.display = 'none';
+  document.getElementById('reminderStatus').style.display = 'none';
+  document.getElementById('reminderDate').value = '';
+  document.getElementById('reminderName').value = '';
+}
+
+function checkReminder() {
+  var r = lsGet('fom_reminder', null);
+  if (!r) return;
+  var examDate = new Date(r.date);
+  var today    = new Date();
+  today.setHours(0,0,0,0);
+  examDate.setHours(0,0,0,0);
+  var diff = Math.round((examDate - today) / (1000 * 60 * 60 * 24));
+
+  var banner = document.getElementById('reminderBanner');
+  var bannerText = document.getElementById('reminderBannerText');
+
+  if (diff < 0) {
+    bannerText.innerHTML = '🎓 <strong>Exam day has passed!</strong> Hope it went well' + (r.name ? ', ' + r.name : '') + '! 🥳';
+  } else if (diff === 0) {
+    bannerText.innerHTML = '🔔 <strong>Your French oral exam is TODAY' + (r.name ? ', ' + r.name : '') + '!</strong> Bonne chance! 🇫🇷';
+  } else if (diff === 1) {
+    bannerText.innerHTML = '🔔 <strong>Your exam is TOMORROW' + (r.name ? ', ' + r.name : '') + '!</strong> Review your saved guides now!';
+  } else if (diff <= 7) {
+    bannerText.innerHTML = '🔔 <strong>' + diff + ' days until your exam' + (r.name ? ', ' + r.name : '') + '!</strong> Keep studying! 📚';
+  } else {
+    bannerText.innerHTML = '🔔 <strong>' + diff + ' days until your exam</strong> · ' + examDate.toLocaleDateString();
+  }
+  banner.classList.add('show');
+}
+
+function dismissReminderBanner() {
+  document.getElementById('reminderBanner').classList.remove('show');
+}
+
+// Run reminder check on load
+checkReminder();
+
+/* ═══════════════════════════════
+   MODAL HELPERS
+   ═══════════════════════════════ */
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(function(el) {
+  el.addEventListener('click', function(e) { if (e.target === this) closeModal(this.id); });
+});
+
+/* ═══════════════════════════════
+   UPGRADE MODAL
+   ═══════════════════════════════ */
+function showUpgradeModal() {
+  selectedPkg = null;
+  document.querySelectorAll('.package').forEach(function(p) { p.classList.remove('selected'); });
+  var btn = document.getElementById('modalPayBtn');
+  btn.disabled = true; btn.className = 'modal-pay-btn'; btn.textContent = '👆 Select a package first';
+  setModalStatus('');
+  document.getElementById('modalEmail').value = '';
+  openModal('upgradeModal');
+}
+
+function selectPkg(pkg) {
+  selectedPkg = pkg;
+  document.querySelectorAll('.package').forEach(function(p) { p.classList.toggle('selected', p.dataset.pkg === pkg); });
+  var btn = document.getElementById('modalPayBtn');
+  btn.disabled = false; btn.className = 'modal-pay-btn ready'; btn.textContent = '💳 Pay with Mobile Money / Card';
+  setModalStatus('');
+}
+
+function setModalStatus(msg, color) {
+  var el = document.getElementById('modalStatus');
+  el.style.display = msg ? 'block' : 'none';
+  el.style.color   = color || 'var(--gold)';
+  el.textContent   = msg;
+}
+
+async function handlePayment() {
+  var email = (document.getElementById('modalEmail').value || '').trim();
+  if (!selectedPkg) { alert('Please select a package first.'); return; }
+  if (!email)       { alert('Please enter your email address.'); document.getElementById('modalEmail').focus(); return; }
+  if (!email.includes('@') || !email.includes('.')) { alert('Please enter a valid email address.'); return; }
+  var btn = document.getElementById('modalPayBtn');
+  btn.disabled = true; btn.textContent = '⏳ Creating payment link…';
+  setModalStatus('Connecting to Paystack…', 'var(--gold)');
+  try {
+    var callbackUrl = window.location.origin + window.location.pathname + '?fom_verify=1';
+    var token = SESSION_TOKEN || localStorage.getItem('fom_session_token') || '';
+    var res  = await fetch(API_BASE + '/create-payment', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'x-session-token': token },
+      body:    JSON.stringify({ email: email, pkg: selectedPkg, callback_url: callbackUrl })
+    });
+    var data = await res.json();
+    if (data.status && data.payment_url) {
+      localStorage.setItem('fom_pay_ref', data.reference);
+      setModalStatus('✅ Redirecting to payment page…', 'var(--green)');
+      setTimeout(function() { window.location.href = data.payment_url; }, 900);
+    } else {
+      throw new Error(data.error || 'Could not create payment link. Please try again.');
+    }
+  } catch(e) {
+    setModalStatus('❌ ' + e.message, 'var(--red)');
+    btn.disabled = false; btn.className = 'modal-pay-btn ready'; btn.textContent = '💳 Try Again';
+  }
+}
+
+/* ═══════════════════════════════
+   AUTO-VERIFY PAYMENT RETURN
+   ═══════════════════════════════ */
+(async function checkPaymentReturn() {
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('fom_verify') !== '1') return;
+  history.replaceState({}, '', window.location.pathname);
+  var ref   = params.get('trxref') || params.get('reference') || localStorage.getItem('fom_pay_ref');
+  var token = SESSION_TOKEN || localStorage.getItem('fom_session_token') || '';
+  if (!ref) return;
+  try {
+    var res  = await fetch(API_BASE + '/verify-payment', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'x-session-token': token },
+      body:    JSON.stringify({ reference: ref })
+    });
+    var data = await res.json();
+    localStorage.removeItem('fom_pay_ref');
+    if (data.status) {
+      alert('🎉 Payment successful! You now have ' + data.extra_transcriptions + ' extra transcription' + (data.extra_transcriptions !== 1 ? 's' : '') + ' ready to use. Enjoy!');
+      initSession();
+    } else {
+      alert('⚠️ Payment could not be verified automatically. If you were charged, please contact us with your email and we will credit your account manually.');
+    }
+  } catch(e) { console.error('[verify-payment]', e); }
+})();
+
+/* ═══════════════════════════════
+   HTML ESCAPE
+   ═══════════════════════════════ */
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+</script>
+</body>
+</html>
+
 <title>French Oral Master — AI Transcription & Study Guide</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
