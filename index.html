@@ -28,11 +28,6 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .header-actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
 .header-badge { background:var(--highlight); border:1px solid var(--accent); border-radius:20px; padding:4px 12px; font-size:11px; font-weight:700; color:var(--accent-light); cursor:pointer; }
 
-/* LIVE INDICATOR */
-.live-badge { display:flex; align-items:center; gap:5px; background:rgba(16,185,129,.15); border:1px solid rgba(16,185,129,.35); border-radius:20px; padding:4px 10px; font-size:11px; font-weight:700; color:var(--green); cursor:default; }
-.live-dot { width:7px; height:7px; background:var(--green); border-radius:50%; animation:livePulse 1.5s infinite; flex-shrink:0; }
-@keyframes livePulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
-
 /* HERO */
 .hero { background:linear-gradient(160deg,#0f172a 0%,#1e3a5f 50%,#0f172a 100%); padding:40px 20px 32px; text-align:center; }
 .hero h1 { font-size:26px; font-weight:800; color:#fff; margin-bottom:10px; line-height:1.3; }
@@ -136,14 +131,26 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
   display:block; width:100%; max-width:100%;
   box-sizing:border-box; overflow-x:hidden;
 }
-/* ★ YELLOW for word-for-word English translation */
-.text-box.translation-box {
-  color: #fcd34d;
-  border-color: rgba(245,158,11,.35);
-  background: #0f1a0a;
-}
 .sec-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--gold); margin:16px 0 8px; display:block; }
 #studyArea { display:block; width:100%; box-sizing:border-box; }
+
+/* ── INTERLEAVED TRANSLATION BOX ── */
+.translation-interleaved {
+  background:#0f172a; border:1px solid rgba(245,158,11,.25);
+  border-radius:10px; padding:14px;
+  display:block; width:100%; box-sizing:border-box;
+}
+.tl-pair { margin-bottom:14px; }
+.tl-pair:last-child { margin-bottom:0; }
+.tl-orig {
+  font-size:14px; line-height:1.7; color:#e2e8f0;
+  font-weight:500; margin-bottom:3px;
+}
+.tl-en {
+  font-size:13px; line-height:1.6; color:#fcd34d;
+  font-style:italic; padding-left:10px;
+  border-left:2px solid rgba(245,158,11,.4);
+}
 
 /* ACTION BUTTONS ROW */
 .action-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; padding-top:14px; border-top:1px solid var(--border); }
@@ -213,25 +220,28 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .mcq-score-bar { height:100%; border-radius:5px; transition:width 1s; }
 .mcq-retry-btn { background:linear-gradient(135deg,var(--gold),#f97316); color:#000; border:none; border-radius:8px; padding:11px 24px; font-size:14px; font-weight:800; cursor:pointer; }
 
-/* ══ SAMPLE AUDIOS SECTION ══ */
-.sample-section { margin-bottom:20px; }
-.sample-section-title { font-size:14px; font-weight:800; color:var(--gold); margin-bottom:12px; display:flex; align-items:center; gap:8px; }
-.sample-lang-tabs { display:flex; gap:8px; margin-bottom:12px; overflow-x:auto; scrollbar-width:none; padding-bottom:4px; }
+/* ══ SAMPLE AUDIOS — COMPACT HORIZONTAL STRIP ══ */
+.sample-section { margin-bottom:16px; }
+.sample-section-title { font-size:13px; font-weight:800; color:var(--muted); margin-bottom:8px; display:flex; align-items:center; gap:8px; }
+.sample-section-title span { color:var(--gold); }
+.sample-lang-tabs { display:flex; gap:6px; margin-bottom:8px; overflow-x:auto; scrollbar-width:none; padding-bottom:2px; }
 .sample-lang-tabs::-webkit-scrollbar { display:none; }
-.sample-lang-tab { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:5px 14px; font-size:12px; font-weight:700; color:var(--muted); cursor:pointer; white-space:nowrap; transition:all .15s; flex-shrink:0; }
+.sample-lang-tab { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:4px 10px; font-size:11px; font-weight:700; color:var(--muted); cursor:pointer; white-space:nowrap; transition:all .15s; flex-shrink:0; }
 .sample-lang-tab.active { background:var(--highlight); color:var(--accent-light); border-color:var(--accent); }
-.sample-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-@media(max-width:480px){ .sample-grid{grid-template-columns:1fr;} }
-.sample-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; cursor:pointer; transition:all .2s; position:relative; overflow:hidden; }
+
+/* Compact horizontal scroll grid */
+.sample-grid { display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; padding-bottom:4px; flex-wrap:nowrap; }
+.sample-grid::-webkit-scrollbar { display:none; }
+.sample-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:9px 11px; cursor:pointer; transition:all .2s; flex-shrink:0; width:130px; position:relative; overflow:hidden; }
 .sample-card:hover { border-color:var(--accent); background:var(--highlight); }
-.sample-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--accent),var(--green)); }
-.sample-card-icon { font-size:26px; margin-bottom:6px; }
-.sample-card-title { font-size:13px; font-weight:700; color:var(--text); margin-bottom:3px; }
-.sample-card-desc { font-size:11px; color:var(--muted); line-height:1.4; margin-bottom:8px; }
-.sample-card-meta { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
-.sample-card-lang { font-size:10px; font-weight:700; background:var(--highlight); color:var(--accent-light); padding:2px 8px; border-radius:20px; }
-.sample-card-dur  { font-size:10px; color:var(--muted); }
-.sample-card-btn  { display:flex; align-items:center; gap:4px; background:linear-gradient(135deg,var(--accent),#2563eb); color:#fff; border:none; border-radius:6px; padding:5px 12px; font-size:11px; font-weight:700; cursor:pointer; margin-top:8px; transition:opacity .2s; }
+.sample-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--accent),var(--green)); }
+.sample-card-icon { font-size:18px; margin-bottom:4px; }
+.sample-card-title { font-size:12px; font-weight:700; color:var(--text); margin-bottom:4px; line-height:1.3; }
+.sample-card-desc  { display:none; }
+.sample-card-meta  { display:flex; align-items:center; gap:4px; margin-bottom:6px; }
+.sample-card-lang  { font-size:9px; font-weight:700; background:var(--highlight); color:var(--accent-light); padding:1px 6px; border-radius:20px; }
+.sample-card-dur   { display:none; }
+.sample-card-btn   { display:flex; align-items:center; justify-content:center; gap:3px; background:linear-gradient(135deg,var(--accent),#2563eb); color:#fff; border:none; border-radius:5px; padding:4px 8px; font-size:10px; font-weight:700; cursor:pointer; width:100%; transition:opacity .2s; }
 .sample-card-btn:hover { opacity:.85; }
 .sample-card-btn.loading { background:var(--border); cursor:wait; }
 
@@ -356,14 +366,9 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     </div>
   </div>
   <div class="header-actions">
-    <!-- LIVE USERS BADGE -->
-    <div class="live-badge" id="liveBadge" title="People currently using the app">
-      <span class="live-dot"></span>
-      <span id="liveCount">–</span> live
-    </div>
     <span class="header-badge" onclick="showSavedModal()">💾 Saved</span>
     <span class="header-badge" onclick="showProgressModal()">📊 Progress</span>
-      <a href="language-academy.html" style="background:#064e3b;color:#10b981;border:1px solid #10b981;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;text-decoration:none;">🎓 Learn</a>
+    <a href="language-academy.html" style="background:#064e3b;color:#10b981;border:1px solid #10b981;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;text-decoration:none;">🎓 Learn</a>
     <button onclick="showUpgradeModal()" style="background:#78350f;color:#f59e0b;border:1px solid #f59e0b;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;">🚀 Upgrade</button>
   </div>
 </div>
@@ -419,9 +424,8 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
   <!-- QUICK ACTIONS -->
   <div class="quick-actions">
     <button class="quick-btn gold" onclick="showReminderModal()">🔔 Set Exam Reminder</button>
-    
     <button class="quick-btn green" onclick="showSavedModal()">💾 My Saved Guides</button>
-      <a href="language-academy.html" class="quick-btn" style="border-color:rgba(16,185,129,.4);color:var(--green);text-decoration:none;">🎓 Language Academy</a>
+    <a href="language-academy.html" class="quick-btn" style="border-color:rgba(16,185,129,.4);color:var(--green);text-decoration:none;">🎓 Language Academy</a>
     <button class="quick-btn" onclick="showProgressModal()">📊 My Progress</button>
   </div>
 
@@ -434,23 +438,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     <input type="file" id="fileInput" multiple accept="audio/*,.mp3,.m4a,.ogg,.wav,.aac,.webm,.opus,.mpeg,.mpga" onchange="addFiles(this.files)"/>
   </div>
 
-  <!-- ══════════════════════════════════════
-       SAMPLE AUDIOS SECTION
-       ══════════════════════════════════════ -->
-  <div class="sample-section">
-    <div class="sample-section-title">
-      🎵 Try a Sample Audio
-      <span style="font-size:11px;font-weight:600;color:var(--muted);background:var(--highlight);padding:3px 10px;border-radius:20px;">No audio? Start here!</span>
-    </div>
-    <div class="sample-lang-tabs" id="sampleLangTabs">
-      <button class="sample-lang-tab active" data-slang="fr" onclick="switchSampleLang(this)">🇫🇷 French</button>
-      <button class="sample-lang-tab" data-slang="es" onclick="switchSampleLang(this)">🇪🇸 Spanish</button>
-      <button class="sample-lang-tab" data-slang="ar" onclick="switchSampleLang(this)">🇸🇦 Arabic</button>
-      <button class="sample-lang-tab" data-slang="pt" onclick="switchSampleLang(this)">🇧🇷 Portuguese</button>
-    </div>
-    <div class="sample-grid" id="sampleGrid"></div>
-  </div>
-
+  <!-- FILE LIST (now above process button and sample section) -->
   <div class="file-list" id="fileList"></div>
 
   <div class="progress-wrap" id="progressWrap" style="display:none">
@@ -467,10 +455,27 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 
   <button class="process-btn" id="processBtn" style="display:none" onclick="processAll()">🚀 Transcribe &amp; Study All Files</button>
 
+  <!-- ══════════════════════════════════════
+       SAMPLE AUDIOS — compact strip, shown below upload area
+       ══════════════════════════════════════ -->
+  <div class="sample-section">
+    <div class="sample-section-title">
+      <span>🎵 Try a Sample Audio</span>
+      <span style="font-size:11px;font-weight:600;color:var(--muted);background:var(--highlight);padding:2px 8px;border-radius:20px;border:1px solid var(--border);">No audio? Start here!</span>
+    </div>
+    <div class="sample-lang-tabs" id="sampleLangTabs">
+      <button class="sample-lang-tab active" data-slang="fr" onclick="switchSampleLang(this)">🇫🇷 French</button>
+      <button class="sample-lang-tab" data-slang="es" onclick="switchSampleLang(this)">🇪🇸 Spanish</button>
+      <button class="sample-lang-tab" data-slang="ar" onclick="switchSampleLang(this)">🇸🇦 Arabic</button>
+      <button class="sample-lang-tab" data-slang="pt" onclick="switchSampleLang(this)">🇧🇷 Portuguese</button>
+    </div>
+    <div class="sample-grid" id="sampleGrid"></div>
+  </div>
+
   <div class="tabs" id="tabs" style="display:none"></div>
   <div id="studyArea"></div>
 
-  <!-- QUIZ CARD (existing flashcard + new MCQ mode) -->
+  <!-- QUIZ CARD (existing flashcard + MCQ mode) -->
   <div class="quiz-card" id="quizCard">
     <div class="quiz-title">📝 Practice Quiz Mode</div>
     <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
@@ -512,7 +517,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
   <div class="empty" id="emptyState">
     <div class="empty-icon">🎓</div>
     Upload your French oral audio files above<br/>to get your instant study guide.<br/>
-    <span style="font-size:12px;color:var(--muted);">Or try a sample audio above ↑</span>
+    <span style="font-size:12px;color:var(--muted);">Or try a sample audio below ↓</span>
   </div>
 
   <!-- HOW TO GUIDE -->
@@ -536,7 +541,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     <div class="feature-card free-badge">
       <div class="feature-card-icon">🌐</div>
       <div class="feature-card-title">Word-for-Word Translation</div>
-      <div class="feature-card-desc">Every sentence translated into English so you understand everything. Shown in <span style="color:#fcd34d;font-weight:700;">yellow</span> for easy reading.</div>
+      <div class="feature-card-desc">Every sentence shown with original text then English translation side by side. English shown in <span style="color:#fcd34d;font-weight:700;">yellow</span>.</div>
     </div>
     <div class="feature-card free-badge">
       <div class="feature-card-icon">🔊</div>
@@ -656,7 +661,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
   <small style="color:#334155;">Powered by Groq Whisper &amp; Gemini AI</small><br/>
   <small style="color:#334155;">made with ❤️ by Nana</small><br/>
   <small style="color:#475569;">🔒 Your saved guides and progress are private to your device only.</small><br/>
-   <a href="language-academy.html">🎓 Language Academy</a> &nbsp;·&nbsp;
+  <a href="language-academy.html">🎓 Language Academy</a> &nbsp;·&nbsp;
   <a href="privacy-policy.html">Privacy Policy</a>
 </div>
 
@@ -765,8 +770,6 @@ let selectedLang = 'fr';
 
 /* ═══════════════════════════════════════════════════
    SAMPLE AUDIOS DATA
-   Real publicly accessible educational audio files
-   (Wikipedia audio files — public domain / CC)
    ═══════════════════════════════════════════════════ */
 const SAMPLE_AUDIOS = {
   fr: [
@@ -774,7 +777,6 @@ const SAMPLE_AUDIOS = {
       icon: '👨‍👩‍👧‍👦', title: 'La Famille',
       desc: 'A short dialogue about family members, relationships and home life.',
       lang: 'French', dur: '~45s',
-      // Using a TTS-generated educational sample via a public French audio source
       url: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/f/f9/Fr-Paris.ogg/Fr-Paris.ogg.mp3',
       topic: 'La Famille — Family Life',
       fakeTranscript: 'Bonjour, je m\'appelle Marie. J\'ai une grande famille. Mon père s\'appelle Jean et ma mère s\'appelle Sophie. J\'ai deux frères et une sœur. Mon frère aîné s\'appelle Pierre et il a vingt ans. Ma sœur cadette s\'appelle Lucie et elle a quinze ans. Nous habitons ensemble dans une grande maison à Accra. Le weekend, nous mangeons ensemble et nous parlons de notre semaine.'
@@ -925,13 +927,11 @@ function renderSampleGrid() {
     return '<div class="sample-card" id="sampleCard' + activeSampleLang + i + '">' +
       '<div class="sample-card-icon">' + s.icon + '</div>' +
       '<div class="sample-card-title">' + esc(s.title) + '</div>' +
-      '<div class="sample-card-desc">' + esc(s.desc) + '</div>' +
       '<div class="sample-card-meta">' +
         '<span class="sample-card-lang">' + s.lang + '</span>' +
-        '<span class="sample-card-dur">📻 ' + s.dur + '</span>' +
       '</div>' +
       '<button class="sample-card-btn" onclick="loadSampleAudio(\'' + activeSampleLang + '\',' + i + ',this)">' +
-        '▶ Use This Sample' +
+        '▶ Use Sample' +
       '</button>' +
     '</div>';
   }).join('');
@@ -947,29 +947,23 @@ async function loadSampleAudio(lang, idx, btn) {
   btn.disabled = true;
 
   try {
-    // Try to fetch the real audio URL
     var audioBlob = null;
     try {
       var controller = new AbortController();
       var timer = setTimeout(function() { controller.abort(); }, 8000);
       var resp = await fetch(sample.url, { signal: controller.signal, mode: 'cors' });
       clearTimeout(timer);
-      if (resp.ok) {
-        audioBlob = await resp.blob();
-      }
+      if (resp.ok) audioBlob = await resp.blob();
     } catch(fetchErr) {
-      // Network/CORS failed — we'll use the fake transcript path
       audioBlob = null;
     }
 
     var fileName = sample.title.replace(/[^a-zA-Z0-9À-ÿ\u0600-\u06FF]/g, '_') + '_sample.mp3';
 
-    // Sync the language pill to match sample language
     var langBtn = document.querySelector('.lang-pill[data-lang="' + lang + '"]');
     if (langBtn) selectLang(langBtn);
 
     if (audioBlob && audioBlob.size > 1000) {
-      // We got a real audio file
       var audioFile = new File([audioBlob], fileName, { type: audioBlob.type || 'audio/mpeg' });
       var existing = new Set(files.map(function(f) { return f.name; }));
       if (!existing.has(audioFile.name)) {
@@ -978,19 +972,17 @@ async function loadSampleAudio(lang, idx, btn) {
       }
       if (!activeTab) activeTab = audioFile.name;
     } else {
-      // Use pre-written transcript (demo mode — no real audio needed)
       var fakeName = fileName;
       var existing2 = new Set(files.map(function(f) { return f.name; }));
       if (!existing2.has(fakeName)) {
         files.push({ name: fakeName, _isSample: true });
       }
-      // Pre-load the result so it's ready immediately
       results[fakeName] = {
         status: 'done',
         transcript: sample.fakeTranscript,
         parsed: [],
         guideError: null,
-        _needsGuide: true,   // flag to trigger guide generation on process
+        _needsGuide: true,
         _lang: lang
       };
       if (!activeTab) activeTab = fakeName;
@@ -1010,7 +1002,6 @@ async function loadSampleAudio(lang, idx, btn) {
       btn.disabled = false;
     }, 2500);
 
-    // Scroll to file list
     document.getElementById('fileList').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
   } catch(err) {
@@ -1021,7 +1012,6 @@ async function loadSampleAudio(lang, idx, btn) {
   }
 }
 
-// Init sample grid on load
 renderSampleGrid();
 
 /* ═══════════════════════════════
@@ -1059,8 +1049,8 @@ async function initSession() {
     localStorage.setItem('fom_session_token', SESSION_TOKEN);
     userExtraCredits = data.extra_transcriptions || 0;
     updateUsageUI(data.used, data.limit, userExtraCredits);
-    // Update live count if returned
-    if (data.live_users !== undefined) updateLiveCount(data.live_users);
+    // Analytics: silently store live count without displaying it
+    if (data.live_users !== undefined) storeLiveCount(data.live_users);
   } catch(e) {
     try {
       var res2  = await fetch(API_BASE + '/usage', { signal: AbortSignal.timeout(35000) });
@@ -1074,11 +1064,11 @@ async function initSession() {
 initSession();
 
 /* ═══════════════════════════════
-   LIVE USERS
+   LIVE USERS — analytics only, no UI display
    ═══════════════════════════════ */
-function updateLiveCount(count) {
-  var el = document.getElementById('liveCount');
-  if (el) el.textContent = count || '–';
+function storeLiveCount(count) {
+  // Kept for analytics — store silently, no header display
+  try { sessionStorage.setItem('fom_live_users', count || 0); } catch(e) {}
 }
 
 async function pollLiveUsers() {
@@ -1088,12 +1078,11 @@ async function pollLiveUsers() {
     var res = await fetch(API_BASE + '/live', { headers: headers, signal: AbortSignal.timeout(10000) });
     if (res.ok) {
       var data = await res.json();
-      updateLiveCount(data.live_users || data.count || 0);
+      storeLiveCount(data.live_users || data.count || 0);
     }
-  } catch(e) { /* silent fail — not critical */ }
+  } catch(e) { /* silent */ }
 }
 
-// Poll live users every 30 seconds
 pollLiveUsers();
 setInterval(pollLiveUsers, 30000);
 
@@ -1202,9 +1191,29 @@ function setTabByIdx(rawIdx) {
   }
 }
 
+/* ═══════════════════════════════════════════
+   SENTENCE SPLITTER — for translation pairing
+   ═══════════════════════════════════════════ */
+function splitToSentences(text) {
+  if (!text) return [];
+  // If content is already line-by-line (3+ lines), use as-is
+  var byLine = text.split('\n').map(function(l) { return l.trim().replace(/^[-•*\d]+\.?\s*/, ''); }).filter(function(l) { return l.length > 2; });
+  if (byLine.length >= 3) return byLine;
+  // Otherwise split by sentence-ending punctuation
+  var result = [];
+  // Match sentence chunks: text + punctuation (handles French/Spanish/Arabic/Portuguese)
+  var re = /[^.!?؟\n]+(?:[.!?؟]+|(?=\n)|$)/g;
+  var m;
+  while ((m = re.exec(text)) !== null) {
+    var s = m[0].trim();
+    if (s.length > 2) result.push(s);
+  }
+  return result.length > 1 ? result : (text.trim() ? [text.trim()] : []);
+}
+
 /* ═══════════════════════════════
    RENDER STUDY GUIDE
-   ★ Word-for-word translation shown in YELLOW
+   ★ Word-for-word translation: interleaved original (white) + English (yellow)
    ═══════════════════════════════ */
 function renderStudy() {
   var area = document.getElementById('studyArea');
@@ -1252,13 +1261,53 @@ function renderStudy() {
       label.textContent = (ICONS[s.label] || '•') + ' ' + s.label;
       guideCard.appendChild(label);
 
-      var box = document.createElement('div');
-      // ★ YELLOW for English translation section
-      box.className = (s.label === 'WORD-FOR-WORD TRANSLATION')
-        ? 'text-box translation-box'
-        : 'text-box';
-      box.textContent = s.content;
-      guideCard.appendChild(box);
+      if (s.label === 'WORD-FOR-WORD TRANSLATION') {
+        // ── INTERLEAVED rendering ──
+        var origSentences  = splitToSentences(r.transcript);
+        var transSentences = splitToSentences(s.content);
+
+        var container = document.createElement('div');
+        container.className = 'translation-interleaved';
+
+        // Add a small legend
+        var legend = document.createElement('div');
+        legend.style.cssText = 'font-size:11px;color:var(--muted);margin-bottom:12px;display:flex;gap:16px;flex-wrap:wrap;';
+        legend.innerHTML =
+          '<span style="color:#e2e8f0;">● Original language</span>' +
+          '<span style="color:#fcd34d;">● English translation</span>';
+        container.appendChild(legend);
+
+        var maxLen = Math.max(origSentences.length, transSentences.length);
+        for (var si = 0; si < maxLen; si++) {
+          var pair = document.createElement('div');
+          pair.className = 'tl-pair';
+
+          if (origSentences[si]) {
+            var origDiv = document.createElement('div');
+            origDiv.className = 'tl-orig';
+            origDiv.textContent = origSentences[si];
+            pair.appendChild(origDiv);
+          }
+
+          if (transSentences[si]) {
+            var enDiv = document.createElement('div');
+            enDiv.className = 'tl-en';
+            enDiv.textContent = transSentences[si];
+            pair.appendChild(enDiv);
+          }
+
+          container.appendChild(pair);
+        }
+
+        guideCard.appendChild(container);
+
+      } else {
+        // All other sections: standard text box
+        var box = document.createElement('div');
+        box.className = 'text-box';
+        box.textContent = s.content;
+        guideCard.appendChild(box);
+      }
     });
 
     // Action buttons
@@ -1356,18 +1405,16 @@ async function processAll() {
   wakeup.style.display = 'block';
   var wakeupTimer = setTimeout(function() { wakeup.style.display = 'none'; }, 35000);
 
-  // Files that need transcription OR sample files that need guide generation
   var todo = files.filter(function(f) {
     var r = results[f.name];
-    if (!r || !r.transcript) return true;        // needs transcription
-    if (r._needsGuide) return true;              // sample with pre-loaded transcript
+    if (!r || !r.transcript) return true;
+    if (r._needsGuide) return true;
     return false;
   });
 
   for (var i = 0; i < todo.length; i++) {
     var file = todo[i];
 
-    // Sample audio: transcript already loaded, just need the study guide
     if (results[file.name] && results[file.name]._needsGuide) {
       var sLang = results[file.name]._lang || selectedLang;
       results[file.name].status = 'studying';
@@ -1407,7 +1454,6 @@ async function processAll() {
       continue;
     }
 
-    // Normal audio: transcribe then guide
     results[file.name] = { status: 'transcribing' };
     renderAll();
 
@@ -1480,7 +1526,6 @@ async function processAll() {
 function readFileAsArrayBuffer(file) {
   return new Promise(function(resolve, reject) {
     if (file._isSample && !file.size) {
-      // Fake file for sample — return empty buffer; transcript already stored
       resolve(new ArrayBuffer(0));
       return;
     }
@@ -1543,13 +1588,11 @@ async function startMCQQuiz() {
   var r = results[activeTab];
   if (!r || r.status !== 'done') return;
 
-  // Show quiz card in MCQ mode
   switchQuizMode('mcq');
   document.getElementById('quizCard').classList.add('show');
   document.getElementById('quizCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   trackQuiz();
 
-  // Show loading
   document.getElementById('mcqLoading').style.display = 'block';
   document.getElementById('mcqQuestionArea').innerHTML = '';
   document.getElementById('mcqScoreCard').classList.remove('show');
@@ -1575,7 +1618,6 @@ async function startMCQQuiz() {
 }
 
 async function generateMCQQuestions(transcript, parsed, lang) {
-  // Build context from transcript + guide
   var context = 'Transcript:\n' + (transcript || '').slice(0, 1500);
   if (parsed && parsed.length) {
     var vocabSec = parsed.find(function(s) { return s.label === 'KEY VOCABULARY'; });
@@ -1594,16 +1636,8 @@ async function generateMCQQuestions(transcript, parsed, lang) {
     '- Grammar questions about structures used\n' +
     '- Translation questions (what is the English for X?)\n\n' +
     'RESPOND ONLY WITH VALID JSON. No preamble, no markdown, no explanation.\n' +
-    'Format:\n' +
-    '[\n' +
-    '  {\n' +
-    '    "q": "Question text here",\n' +
-    '    "options": ["Option A", "Option B", "Option C", "Option D"],\n' +
-    '    "answer": 0,\n' +
-    '    "explanation": "Brief explanation of why this is correct"\n' +
-    '  }\n' +
-    ']\n' +
-    'The "answer" field is the 0-based index of the correct option (0=A, 1=B, 2=C, 3=D).\n' +
+    'Format:\n[\n  {\n    "q": "Question text here",\n    "options": ["Option A", "Option B", "Option C", "Option D"],\n    "answer": 0,\n    "explanation": "Brief explanation of why this is correct"\n  }\n]\n' +
+    'The "answer" field is the 0-based index of the correct option.\n' +
     'Make sure all 4 options are plausible but only one is correct.\n' +
     'Generate exactly 10 questions. Return ONLY the JSON array, nothing else.';
 
@@ -1616,9 +1650,7 @@ async function generateMCQQuestions(transcript, parsed, lang) {
   if (!res.ok) throw new Error(data.error || 'MCQ generation failed');
 
   var raw = data.guide || '';
-  // Strip markdown fences if present
   raw = raw.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
-  // Find JSON array
   var start = raw.indexOf('[');
   var end   = raw.lastIndexOf(']');
   if (start === -1 || end === -1) throw new Error('Could not parse questions. Please try again.');
@@ -1663,7 +1695,6 @@ function answerMCQ(chosen) {
   var correct = q.answer;
   var letters = ['A','B','C','D'];
 
-  // Disable all options
   for (var i = 0; i < 4; i++) {
     var btn = document.getElementById('mcqOpt' + i);
     if (!btn) continue;
@@ -1683,7 +1714,6 @@ function answerMCQ(chosen) {
     feedback.textContent = '❌ Wrong. The correct answer was ' + letters[correct] + '. ' + (q.explanation || '');
   }
 
-  // Show next button
   var nextBtn = document.getElementById('mcqNextBtn');
   if (nextBtn) nextBtn.classList.add('show');
 }
@@ -1703,10 +1733,10 @@ function showMCQScore() {
   var pct   = Math.round((mcqScore / total) * 100);
   var emoji, title, sub, barColor;
 
-  if (pct >= 90)      { emoji = '🏆'; title = 'Excellent!';    sub = 'Outstanding performance! You are fully prepared!'; barColor = 'var(--green)'; }
-  else if (pct >= 70) { emoji = '🎉'; title = 'Well Done!';    sub = 'Good understanding. Review a few areas and you\'re set!'; barColor = 'var(--accent)'; }
-  else if (pct >= 50) { emoji = '📚'; title = 'Keep Studying'; sub = 'You\'re getting there! Re-read the study guide and try again.'; barColor = 'var(--gold)'; }
-  else                { emoji = '💪'; title = 'Need More Practice'; sub = 'Go through the vocabulary and translation sections again. You\'ve got this!'; barColor = 'var(--red)'; }
+  if (pct >= 90)      { emoji = '🏆'; title = 'Excellent!';          sub = 'Outstanding performance! You are fully prepared!'; barColor = 'var(--green)'; }
+  else if (pct >= 70) { emoji = '🎉'; title = 'Well Done!';          sub = 'Good understanding. Review a few areas and you\'re set!'; barColor = 'var(--accent)'; }
+  else if (pct >= 50) { emoji = '📚'; title = 'Keep Studying';       sub = 'You\'re getting there! Re-read the study guide and try again.'; barColor = 'var(--gold)'; }
+  else                { emoji = '💪'; title = 'Need More Practice';  sub = 'Go through the vocabulary and translation sections again. You\'ve got this!'; barColor = 'var(--red)'; }
 
   var scoreCard = document.getElementById('mcqScoreCard');
   scoreCard.innerHTML =
@@ -1720,7 +1750,6 @@ function showMCQScore() {
   scoreCard.style.display = 'block';
   scoreCard.classList.add('show');
 
-  // Animate bar
   setTimeout(function() {
     var bar = document.getElementById('mcqScoreBarFill');
     if (bar) bar.style.width = pct + '%';
@@ -1730,7 +1759,7 @@ function showMCQScore() {
 }
 
 /* ═══════════════════════════════
-   QUIZ MODE — EXISTING FLASHCARDS
+   QUIZ MODE — FLASHCARDS
    ═══════════════════════════════ */
 function startQuiz() {
   var r = results[activeTab];
@@ -1912,9 +1941,19 @@ function generateJsPDF(r) {
         if (y > 260) { doc.addPage(); y = 20; }
         addText((ICONS[s.label] || '') + s.label, 12, [245, 158, 11], true);
         y += 2;
-        // Translation in yellow (RGB 252, 211, 77)
-        var textColor = s.label === 'WORD-FOR-WORD TRANSLATION' ? [252, 211, 77] : [203, 213, 225];
-        addText(s.content, 10, textColor, false);
+        if (s.label === 'WORD-FOR-WORD TRANSLATION') {
+          // Interleaved in PDF: orig (white) then translated (yellow), sentence by sentence
+          var origSents = splitToSentences(r.transcript);
+          var transSents = splitToSentences(s.content);
+          var maxLen = Math.max(origSents.length, transSents.length);
+          for (var si = 0; si < maxLen; si++) {
+            if (origSents[si]) addText(origSents[si], 10, [203, 213, 225], false);
+            if (transSents[si]) addText('  → ' + transSents[si], 10, [252, 211, 77], false);
+            y += 2;
+          }
+        } else {
+          addText(s.content, 10, [203, 213, 225], false);
+        }
         y += 4;
       });
     }
@@ -1938,16 +1977,30 @@ function printToPDF(r) {
   html += '.meta{color:#64748b;font-size:11px;margin-bottom:20px;}';
   html += '.sec{margin-bottom:16px;} .sec-title{font-size:13px;font-weight:bold;color:#92400e;margin-bottom:6px;text-transform:uppercase;}';
   html += '.sec-body{white-space:pre-wrap;line-height:1.7;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px;}';
-  html += '.sec-body.translation{color:#b45309;background:#fffbeb;border-color:#fde68a;}';
+  html += '.tl-pair{margin-bottom:10px;} .tl-orig{color:#1e293b;font-size:13px;line-height:1.6;} .tl-en{color:#b45309;font-size:12px;font-style:italic;padding-left:10px;border-left:2px solid #fde68a;margin-top:2px;}';
+  html += '.translation-wrap{background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:12px;}';
   html += '@media print{body{padding:10px;}}';
   html += '</style></head><body>';
   html += '<h1>🇫🇷 French Oral Master — Study Guide</h1>';
   html += '<div class="meta">Audio: ' + name + ' · Generated: ' + new Date().toLocaleDateString() + '</div>';
-  html += '<div class="sec"><div class="sec-title">🎤 Transcription</div><div class="sec-body">' + r.transcript.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div></div>';
+  html += '<div class="sec"><div class="sec-title">🎤 Transcription</div><div class="sec-body">' + esc(r.transcript) + '</div></div>';
   if (r.parsed) {
     r.parsed.forEach(function(s) {
-      var extraClass = s.label === 'WORD-FOR-WORD TRANSLATION' ? ' translation' : '';
-      html += '<div class="sec"><div class="sec-title">' + (ICONS[s.label] || '') + ' ' + s.label + '</div><div class="sec-body' + extraClass + '">' + s.content.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div></div>';
+      if (s.label === 'WORD-FOR-WORD TRANSLATION') {
+        var origSents  = splitToSentences(r.transcript);
+        var transSents = splitToSentences(s.content);
+        var maxLen = Math.max(origSents.length, transSents.length);
+        var inner = '';
+        for (var si = 0; si < maxLen; si++) {
+          inner += '<div class="tl-pair">';
+          if (origSents[si]) inner += '<div class="tl-orig">' + esc(origSents[si]) + '</div>';
+          if (transSents[si]) inner += '<div class="tl-en">' + esc(transSents[si]) + '</div>';
+          inner += '</div>';
+        }
+        html += '<div class="sec"><div class="sec-title">🌐 WORD-FOR-WORD TRANSLATION</div><div class="translation-wrap">' + inner + '</div></div>';
+      } else {
+        html += '<div class="sec"><div class="sec-title">' + (ICONS[s.label] || '') + ' ' + s.label + '</div><div class="sec-body">' + esc(s.content) + '</div></div>';
+      }
     });
   }
   html += '<div style="margin-top:20px;color:#94a3b8;font-size:10px;border-top:1px solid #e2e8f0;padding-top:10px;">Generated by French Oral Master · oralmaster.netlify.app</div>';
@@ -1977,7 +2030,19 @@ function downloadAsText() {
   body += 'TRANSCRIPTION\r\n' + '-'.repeat(40) + '\r\n' + r.transcript + '\r\n\r\n';
   if (r.parsed) {
     r.parsed.forEach(function(s) {
-      body += (ICONS[s.label] || '') + ' ' + s.label + '\r\n' + '-'.repeat(40) + '\r\n' + s.content + '\r\n\r\n';
+      if (s.label === 'WORD-FOR-WORD TRANSLATION') {
+        body += '🌐 WORD-FOR-WORD TRANSLATION\r\n' + '-'.repeat(40) + '\r\n';
+        var origSents  = splitToSentences(r.transcript);
+        var transSents = splitToSentences(s.content);
+        var maxLen = Math.max(origSents.length, transSents.length);
+        for (var si = 0; si < maxLen; si++) {
+          if (origSents[si])  body += origSents[si] + '\r\n';
+          if (transSents[si]) body += '  → ' + transSents[si] + '\r\n';
+          body += '\r\n';
+        }
+      } else {
+        body += (ICONS[s.label] || '') + ' ' + s.label + '\r\n' + '-'.repeat(40) + '\r\n' + s.content + '\r\n\r\n';
+      }
     });
   }
   body += '='.repeat(50) + '\r\nGenerated by French Oral Master · oralmaster.netlify.app';
