@@ -16,6 +16,7 @@
   --gold: #f59e0b; --green: #10b981; --red: #ef4444;
   --text: #e2e8f0; --muted: #64748b; --highlight: #1e3a5f;
   --purple: #8b5cf6; --pink: #ec4899;
+  --yellow: #fbbf24;
 }
 body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
 
@@ -135,99 +136,74 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 #studyArea { display:block; width:100%; box-sizing:border-box; }
 
 /* ══════════════════════════════════════════════════════
-   WORD-FOR-WORD TRANSLATION — TOKEN LEVEL (new design)
-   Each word shown with its English translation below it
+   WORD-FOR-WORD TRANSLATION — SENTENCE-BY-SENTENCE
+   Original in WHITE, English in YELLOW
    ══════════════════════════════════════════════════════ */
-.wfw-container {
-  background:#0f172a;
-  border:1px solid rgba(59,130,246,.2);
-  border-radius:12px;
-  padding:16px;
-  display:block; width:100%; box-sizing:border-box;
+.wfw-simple {
+  background: #0f172a;
+  border: 1px solid rgba(59,130,246,.2);
+  border-radius: 12px;
+  padding: 16px;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
 }
-.wfw-legend {
-  display:flex; gap:16px; flex-wrap:wrap;
-  font-size:11px; color:var(--muted);
-  margin-bottom:14px; padding-bottom:10px;
-  border-bottom:1px solid var(--border);
+.wfw-legend-simple {
+  display: flex;
+  gap: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  flex-wrap: wrap;
 }
-.wfw-legend span { display:flex; align-items:center; gap:5px; }
-.wfw-legend .dot-orig { width:8px; height:8px; border-radius:50%; background:#e2e8f0; display:inline-block; }
-.wfw-legend .dot-en   { width:8px; height:8px; border-radius:50%; background:#34d399; display:inline-block; }
-
-/* Each sentence block */
-.wfw-sentence-block {
-  margin-bottom:18px;
-  padding:12px;
-  background:rgba(30,58,95,.2);
-  border-radius:10px;
-  border-left:3px solid var(--accent);
+.wfw-legend-simple .leg-orig {
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
-.wfw-sentence-block:last-child { margin-bottom:0; }
-
-/* The token row — wraps tokens like flex */
-.wfw-token-row {
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px 8px;
-  align-items:flex-end;
+.wfw-legend-simple .leg-en {
+  color: #fbbf24;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
-
-/* Each word-pair bubble */
-.wfw-token {
-  display:inline-flex;
-  flex-direction:column;
-  align-items:center;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(59,130,246,.15);
-  border-radius:8px;
-  padding:5px 8px 4px;
-  min-width:36px;
-  transition:background .15s, border-color .15s;
-  cursor:default;
+.wfw-legend-simple .leg-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
 }
-.wfw-token:hover {
-  background:rgba(59,130,246,.12);
-  border-color:rgba(59,130,246,.4);
+.wfw-pair {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  background: rgba(30,58,95,.2);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
 }
-.wfw-token .orig {
-  font-size:14px;
-  font-weight:600;
-  color:#e2e8f0;
-  line-height:1.3;
-  white-space:nowrap;
+.wfw-pair:last-child { margin-bottom: 0; }
+.wfw-orig {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.8;
+  margin-bottom: 6px;
+  display: block;
 }
-.wfw-token .en {
-  font-size:10px;
-  font-weight:700;
-  color:#34d399;
-  line-height:1.3;
-  margin-top:3px;
-  white-space:nowrap;
-  letter-spacing:0.2px;
+.wfw-en {
+  color: #fbbf24;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.7;
+  display: block;
+  padding-left: 14px;
+  border-left: 2px solid rgba(251,191,36,.3);
+  margin-left: 4px;
 }
-
-/* Sentence separator tokens (punctuation-only) */
-.wfw-token.punct {
-  background:transparent;
-  border-color:transparent;
-  padding:5px 2px 4px;
-  min-width:unset;
+.wfw-en::before {
+  content: '→ ';
+  font-weight: 700;
+  color: rgba(251,191,36,.6);
 }
-.wfw-token.punct .orig { color:#64748b; }
-.wfw-token.punct .en   { display:none; }
-
-/* Full-sentence English summary row */
-.wfw-sentence-en {
-  margin-top:10px;
-  padding-top:8px;
-  border-top:1px solid rgba(59,130,246,.1);
-  font-size:12px;
-  color:#94a3b8;
-  font-style:italic;
-  line-height:1.6;
-}
-.wfw-sentence-en strong { color:#60a5fa; font-style:normal; font-size:10px; text-transform:uppercase; letter-spacing:.5px; margin-right:4px; }
 
 /* ACTION BUTTONS ROW */
 .action-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; padding-top:14px; border-top:1px solid var(--border); }
@@ -245,10 +221,11 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .action-btn.red   { background:rgba(239,68,68,.1); color:#f87171; border-color:rgba(239,68,68,.4); }
 .action-btn.red:hover { background:rgba(239,68,68,.2); }
 
-/* Premium-locked PDF button */
-.action-btn.pdf-locked { background:rgba(245,158,11,.08); color:#a16207; border-color:rgba(245,158,11,.25); cursor:pointer; position:relative; }
-.action-btn.pdf-locked:hover { background:rgba(245,158,11,.18); border-color:var(--gold); color:var(--gold); }
-.pdf-lock-badge { font-size:9px; background:var(--gold); color:#000; border-radius:4px; padding:1px 5px; font-weight:800; margin-left:2px; }
+/* Locked buttons */
+.action-btn.locked { background:rgba(100,116,139,.07); color:#475569; border-color:rgba(100,116,139,.25); cursor:pointer; }
+.action-btn.locked:hover { background:rgba(245,158,11,.12); border-color:var(--gold); color:var(--gold); }
+.lock-badge { font-size:9px; background:var(--gold); color:#000; border-radius:4px; padding:1px 5px; font-weight:800; margin-left:2px; }
+.lock-badge.green-badge { background:var(--green); }
 
 /* QUIZ SECTION */
 .quiz-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; margin-bottom:14px; display:none; }
@@ -374,6 +351,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .package-popular { position:absolute; top:-11px; left:50%; transform:translateX(-50%); background:var(--accent); color:#fff; font-size:10px; font-weight:800; padding:2px 10px; border-radius:20px; white-space:nowrap; }
 .package-best    { position:absolute; top:-11px; left:50%; transform:translateX(-50%); background:var(--gold); color:#000; font-size:10px; font-weight:800; padding:2px 10px; border-radius:20px; white-space:nowrap; }
 .package-feature { font-size:10px; color:var(--green); font-weight:700; margin-top:4px; }
+.package-feature-list { font-size:10px; color:#94a3b8; font-weight:600; margin-top:6px; line-height:1.6; }
 .modal-email { width:100%; background:#0f172a; border:1px solid var(--border); border-radius:8px; padding:10px 12px; color:var(--text); font-size:14px; box-sizing:border-box; margin-bottom:10px; outline:none; }
 .modal-email:focus { border-color:var(--accent); }
 .modal-pay-btn { width:100%; border:none; border-radius:8px; padding:13px; font-size:14px; font-weight:700; background:var(--muted); color:#fff; cursor:not-allowed; transition:background .2s,color .2s; }
@@ -421,7 +399,9 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
     <span class="feature-pill">🔊 Audio Playback</span>
     <span class="feature-pill">📝 Practice Quiz</span>
     <span class="feature-pill">🎯 MCQ Test</span>
-    <span class="feature-pill">📥 PDF (Premium)</span>
+    <span class="feature-pill">📤 WhatsApp (GHS 5+)</span>
+    <span class="feature-pill">📄 Text (GHS 12+)</span>
+    <span class="feature-pill">📥 PDF (GHS 20)</span>
   </div>
   <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:16px;">
     <span style="font-size:12px;color:var(--muted);align-self:center;">🌍 Languages:</span>
@@ -577,29 +557,33 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('upgradeModal')">✕</button>
     <div class="modal-title">🚀 Get More Transcriptions</div>
-    <div class="modal-sub">3 free per day. Buy a pack valid for 30 days — use anytime.</div>
+    <div class="modal-sub">3 free per day. Buy a pack valid for 30 days — unlock premium features too.</div>
     <div class="payment-packages">
+      <!-- GHS 5 — Starter: WhatsApp sharing -->
       <div class="package" data-pkg="small" onclick="selectPkg('small')">
         <div class="package-name">Starter</div>
         <div class="package-price">GHS 5</div>
         <div class="package-desc">5 transcriptions</div>
         <div class="package-validity">Valid 30 days</div>
+        <div class="package-feature-list">📤 WhatsApp sharing</div>
       </div>
+      <!-- GHS 12 — Standard: Text download -->
       <div class="package" data-pkg="medium" onclick="selectPkg('medium')">
         <div class="package-popular">⭐ Popular</div>
         <div class="package-name">Standard</div>
         <div class="package-price">GHS 12</div>
         <div class="package-desc">10 transcriptions</div>
         <div class="package-validity">Valid 30 days</div>
-        <div class="package-feature">📥 PDF Download included</div>
+        <div class="package-feature-list">📤 WhatsApp sharing<br/>📄 Download as Text</div>
       </div>
+      <!-- GHS 20 — Premium: PDF download -->
       <div class="package" data-pkg="large" onclick="selectPkg('large')">
         <div class="package-best">💎 Best Value</div>
         <div class="package-name">Premium</div>
         <div class="package-price">GHS 20</div>
         <div class="package-desc">15 transcriptions</div>
         <div class="package-validity">Valid 30 days</div>
-        <div class="package-feature">📥 PDF Download included</div>
+        <div class="package-feature-list">📤 WhatsApp sharing<br/>📄 Download as Text<br/>📥 PDF Download</div>
       </div>
     </div>
     <input type="email" id="modalEmail" class="modal-email" placeholder="Your email address (for receipt)" autocomplete="email"/>
@@ -676,6 +660,26 @@ const LANG_META = {
   pt: { flag:'🇧🇷', name:'Portuguese', uploadText:'Tap to upload your Portuguese audio files' },
 };
 let selectedLang = 'fr';
+
+/* ═══════════════════════════════
+   PACKAGE LEVEL HELPERS
+   Level 0 = free
+   Level 1 = GHS 5  Starter  → WhatsApp sharing
+   Level 2 = GHS 12 Standard → WhatsApp + Text download
+   Level 3 = GHS 20 Premium  → WhatsApp + Text + PDF
+   ═══════════════════════════════ */
+function getPkgLevel() {
+  var stored = parseInt(lsGet('fom_pkg_level', 0), 10);
+  return isNaN(stored) ? 0 : stored;
+}
+
+function setPkgLevel(pkg) {
+  var map = { small: 1, medium: 2, large: 3 };
+  var newLevel = map[pkg] || 0;
+  var current = getPkgLevel();
+  // Always keep the highest tier the user has ever purchased
+  if (newLevel > current) lsSet('fom_pkg_level', newLevel);
+}
 
 /* ═══════════════════════════════
    SAMPLE AUDIOS DATA
@@ -931,13 +935,18 @@ function setTabByIdx(rawIdx) {
   if (f) { activeTab = f.name; document.getElementById('quizCard').classList.remove('show'); renderTabs(); renderStudy(); }
 }
 
-/* ══════════════════════════════════════════════════════════
-   WORD-FOR-WORD TRANSLATION HELPERS
-   ══════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════
+   WORD-FOR-WORD TRANSLATION — sentence-by-sentence
+   Original in WHITE · English in YELLOW (#fbbf24)
+   ══════════════════════════════════════════════════════ */
 function splitToSentences(text) {
   if (!text) return [];
-  var byLine = text.split('\n').map(function(l) { return l.trim().replace(/^[-•*\d]+\.?\s*/,''); }).filter(function(l) { return l.length > 2; });
+  // First try splitting by newlines (if the AI already broke into lines/sentences)
+  var byLine = text.split('\n')
+    .map(function(l) { return l.trim().replace(/^[-•*\d]+\.?\s*/, ''); })
+    .filter(function(l) { return l.length > 2; });
   if (byLine.length >= 3) return byLine;
+  // Fall back to punctuation-based splitting
   var result = [];
   var re = /[^.!?؟\n]+(?:[.!?؟]+|(?=\n)|$)/g;
   var m;
@@ -949,124 +958,56 @@ function splitToSentences(text) {
 }
 
 /**
- * tokeniseAndPair(origSentence, translatedSentence)
- * Returns an array of { orig, en } token pairs.
- * Strategy:
- *   - Split both sentences into word tokens (preserve punctuation as separate items)
- *   - Pair them 1-to-1 as far as possible
- *   - Leftover tokens get empty partner or are merged into the last pair
+ * buildWFWSimple(origText, transText)
+ * Returns a DOM element showing original sentences in WHITE
+ * and English translations in YELLOW, sentence by sentence.
  */
-function tokeniseWords(sentence) {
-  if (!sentence) return [];
-  // Split keeping punctuation as separate tokens
-  var tokens = sentence.trim().split(/(\s+|(?=[.,!?;:،؟"'«»()\[\]])|(?<=[.,!?;:،؟"'«»()\[\]]))/);
-  var result = [];
-  tokens.forEach(function(t) {
-    var clean = t.trim();
-    if (clean.length > 0) result.push(clean);
-  });
-  return result;
-}
-
-function isPunct(token) {
-  return /^[.,!?;:،؟"'«»()\[\]\-–—…]+$/.test(token);
-}
-
-function buildTokenPairs(origSentence, transSentence) {
-  var origTokens  = tokeniseWords(origSentence);
-  var transTokens = tokeniseWords(transSentence);
-  
-  // If trans is empty, show orig only with no translation
-  if (!transTokens.length) {
-    return origTokens.map(function(t) { return { orig: t, en: '', punct: isPunct(t) }; });
-  }
-
-  var pairs = [];
-  // Simple 1-to-1 alignment with ratio scaling
-  var ratio = transTokens.length / Math.max(origTokens.length, 1);
-
-  origTokens.forEach(function(origWord, i) {
-    if (isPunct(origWord)) {
-      pairs.push({ orig: origWord, en: '', punct: true });
-      return;
-    }
-    // Map orig index to trans index band
-    var tStart = Math.floor(i * ratio);
-    var tEnd   = Math.floor((i + 1) * ratio);
-    // Clamp
-    tStart = Math.min(tStart, transTokens.length - 1);
-    tEnd   = Math.min(tEnd,   transTokens.length);
-    if (tStart >= tEnd) tEnd = tStart + 1;
-    
-    var enWords = transTokens.slice(tStart, tEnd).filter(function(t) { return !isPunct(t); });
-    pairs.push({ orig: origWord, en: enWords.join(' '), punct: false });
-  });
-
-  return pairs;
-}
-
-/* ══════════════════════════════════════════════════
-   BUILD WORD-FOR-WORD HTML (token bubbles)
-   ══════════════════════════════════════════════════ */
-function buildWFWHtml(origText, transText) {
-  var origSentences  = splitToSentences(origText);
-  var transSentences = splitToSentences(transText);
+function buildWFWSimple(origText, transText) {
+  var origSentences  = splitToSentences(origText  || '');
+  var transSentences = splitToSentences(transText || '');
   var maxLen = Math.max(origSentences.length, transSentences.length);
 
   var container = document.createElement('div');
-  container.className = 'wfw-container';
+  container.className = 'wfw-simple';
 
   // Legend
   var legend = document.createElement('div');
-  legend.className = 'wfw-legend';
+  legend.className = 'wfw-legend-simple';
   legend.innerHTML =
-    '<span><span class="dot-orig"></span> Original</span>' +
-    '<span><span class="dot-en"></span> English translation (word below)</span>';
+    '<span class="leg-orig"><span class="leg-dot" style="background:#ffffff;"></span>Original (Audio Language)</span>' +
+    '<span class="leg-en"><span class="leg-dot" style="background:#fbbf24;"></span>English Translation</span>';
   container.appendChild(legend);
 
-  for (var si = 0; si < maxLen; si++) {
-    var origSent  = origSentences[si]  || '';
-    var transSent = transSentences[si] || '';
+  if (maxLen === 0) {
+    var empty = document.createElement('div');
+    empty.style.cssText = 'color:var(--muted);font-size:13px;padding:8px;';
+    empty.textContent = 'No translation available yet.';
+    container.appendChild(empty);
+    return container;
+  }
 
-    var block = document.createElement('div');
-    block.className = 'wfw-sentence-block';
+  for (var i = 0; i < maxLen; i++) {
+    var origSent  = (origSentences[i]  || '').trim();
+    var transSent = (transSentences[i] || '').trim();
 
-    // Token row
-    var tokenRow = document.createElement('div');
-    tokenRow.className = 'wfw-token-row';
+    var pair = document.createElement('div');
+    pair.className = 'wfw-pair';
 
     if (origSent) {
-      var pairs = buildTokenPairs(origSent, transSent);
-      pairs.forEach(function(p) {
-        var bubble = document.createElement('div');
-        bubble.className = 'wfw-token' + (p.punct ? ' punct' : '');
-
-        var origSpan = document.createElement('span');
-        origSpan.className = 'orig';
-        origSpan.textContent = p.orig;
-        bubble.appendChild(origSpan);
-
-        if (!p.punct && p.en) {
-          var enSpan = document.createElement('span');
-          enSpan.className = 'en';
-          enSpan.textContent = p.en;
-          bubble.appendChild(enSpan);
-        }
-
-        tokenRow.appendChild(bubble);
-      });
+      var origEl = document.createElement('span');
+      origEl.className = 'wfw-orig';
+      origEl.textContent = origSent;
+      pair.appendChild(origEl);
     }
-    block.appendChild(tokenRow);
 
-    // Full-sentence English summary at the bottom of the block
     if (transSent) {
-      var sentEn = document.createElement('div');
-      sentEn.className = 'wfw-sentence-en';
-      sentEn.innerHTML = '<strong>EN</strong>' + esc(transSent);
-      block.appendChild(sentEn);
+      var enEl = document.createElement('span');
+      enEl.className = 'wfw-en';
+      enEl.textContent = transSent;
+      pair.appendChild(enEl);
     }
 
-    container.appendChild(block);
+    container.appendChild(pair);
   }
 
   return container;
@@ -1089,6 +1030,12 @@ function renderStudy() {
     'SAMPLE QUESTIONS & MODEL ANSWERS': '❓',
     'TIPS TO ACE THIS TOPIC': '🏆'
   };
+
+  // Determine what the user can access
+  var pkgLevel = getPkgLevel();
+  var canWhatsApp = pkgLevel >= 1;  // GHS 5+
+  var canTextDL   = pkgLevel >= 2;  // GHS 12+
+  var canPDF      = pkgLevel >= 3;  // GHS 20 only
 
   // Transcription card
   var transcriptCard = document.createElement('div');
@@ -1120,8 +1067,8 @@ function renderStudy() {
       guideCard.appendChild(label);
 
       if (s.label === 'WORD-FOR-WORD TRANSLATION') {
-        // ── NEW: Token-level word-for-word bubbles ──
-        var wfwEl = buildWFWHtml(r.transcript, s.content);
+        // ── Sentence-by-sentence: WHITE original, YELLOW English ──
+        var wfwEl = buildWFWSimple(r.transcript, s.content);
         guideCard.appendChild(wfwEl);
       } else {
         var box = document.createElement('div');
@@ -1131,48 +1078,64 @@ function renderStudy() {
       }
     });
 
-    // Action buttons
+    // ── ACTION BUTTONS ──
     var actionRow = document.createElement('div');
     actionRow.className = 'action-row';
 
-    // PDF — premium only
-    var hasPremium = userExtraCredits > 0;
+    // 1. PDF — GHS 20 (Premium) only
     var btnPDF = document.createElement('button');
-    if (hasPremium) {
+    if (canPDF) {
       btnPDF.className = 'action-btn blue';
       btnPDF.innerHTML = '📥 Download PDF';
       btnPDF.onclick = function() { downloadAsPDF(); };
     } else {
-      btnPDF.className = 'action-btn pdf-locked';
-      btnPDF.innerHTML = '📥 PDF Download <span class="pdf-lock-badge">🔒 Premium</span>';
+      btnPDF.className = 'action-btn locked';
+      btnPDF.innerHTML = '📥 PDF Download <span class="lock-badge">🔒 GHS 20</span>';
       btnPDF.onclick = function() { showUpgradeModal(); };
     }
     actionRow.appendChild(btnPDF);
 
+    // 2. Text Download — GHS 12+ (Standard / Premium)
     var btnTxt = document.createElement('button');
-    btnTxt.className = 'action-btn green';
-    btnTxt.innerHTML = '📄 Download Text';
-    btnTxt.onclick = function() { downloadAsText(); };
+    if (canTextDL) {
+      btnTxt.className = 'action-btn green';
+      btnTxt.innerHTML = '📄 Download Text';
+      btnTxt.onclick = function() { downloadAsText(); };
+    } else {
+      btnTxt.className = 'action-btn locked';
+      btnTxt.innerHTML = '📄 Download Text <span class="lock-badge" style="background:var(--green);color:#000;">🔒 GHS 12</span>';
+      btnTxt.onclick = function() { showUpgradeModal(); };
+    }
     actionRow.appendChild(btnTxt);
 
+    // 3. Flashcard Quiz — always free
     var btnQuiz = document.createElement('button');
     btnQuiz.className = 'action-btn purple';
     btnQuiz.innerHTML = '📝 Flashcard Quiz';
     btnQuiz.onclick = function() { startQuiz(); };
     actionRow.appendChild(btnQuiz);
 
+    // 4. MCQ Test — always free
     var btnMCQ = document.createElement('button');
     btnMCQ.className = 'action-btn red';
     btnMCQ.innerHTML = '🎯 MCQ Test (10 Qs)';
     btnMCQ.onclick = function() { startMCQQuiz(); };
     actionRow.appendChild(btnMCQ);
 
+    // 5. WhatsApp Share — GHS 5+ (any paid plan)
     var btnWA = document.createElement('button');
-    btnWA.className = 'action-btn wa';
-    btnWA.innerHTML = '📤 Share via WhatsApp';
-    btnWA.onclick = function() { shareWhatsApp(); };
+    if (canWhatsApp) {
+      btnWA.className = 'action-btn wa';
+      btnWA.innerHTML = '📤 Share via WhatsApp';
+      btnWA.onclick = function() { shareWhatsApp(); };
+    } else {
+      btnWA.className = 'action-btn locked';
+      btnWA.innerHTML = '📤 WhatsApp Share <span class="lock-badge" style="background:#25d366;color:#000;">🔒 GHS 5</span>';
+      btnWA.onclick = function() { showUpgradeModal(); };
+    }
     actionRow.appendChild(btnWA);
 
+    // 6. Save Guide — always free
     var btnSave = document.createElement('button');
     btnSave.className = 'action-btn gold';
     btnSave.innerHTML = '💾 Save Guide';
@@ -1574,8 +1537,7 @@ function flipCard() { document.getElementById('flashcard').classList.toggle('fli
 function quizMove(dir) { quizIdx = Math.max(0, Math.min(quizCards.length - 1, quizIdx + dir)); showQuizCard(); }
 
 /* ══════════════════════════════════════════
-   DOWNLOAD AS PDF — clean readable format
-   (Premium only — checked in renderStudy)
+   DOWNLOAD AS PDF — GHS 20 Premium only
    ══════════════════════════════════════════ */
 function downloadAsPDF() {
   var r = results[activeTab];
@@ -1592,7 +1554,6 @@ function generateJsPDF(r) {
     var jsPDFLib = window.jspdf && window.jspdf.jsPDF ? window.jspdf.jsPDF : jspdf.jsPDF;
     var doc = new jsPDFLib({ unit:'mm', format:'a4' });
     var name = (activeTab || 'audio').replace(/\.[^.]+$/,'');
-    var ICONS = { 'WORD-FOR-WORD TRANSLATION':'WORD-FOR-WORD TRANSLATION','KEY VOCABULARY':'KEY VOCABULARY','GRAMMAR POINTS':'GRAMMAR POINTS','SAMPLE QUESTIONS & MODEL ANSWERS':'SAMPLE QUESTIONS & MODEL ANSWERS','TIPS TO ACE THIS TOPIC':'TIPS TO ACE THIS TOPIC' };
     var pageW = doc.internal.pageSize.getWidth();
     var margin = 18;
     var maxW = pageW - margin * 2;
@@ -1624,7 +1585,6 @@ function generateJsPDF(r) {
     doc.text(name + '  ·  Generated ' + new Date().toLocaleDateString(), margin, 19);
     y = 30;
 
-    // Transcription
     addHeading('TRANSCRIPTION');
     addBody(r.transcript || '');
     y += 5;
@@ -1634,7 +1594,6 @@ function generateJsPDF(r) {
         checkPage(14);
         y += 3;
         addHeading(s.label);
-
         if (s.label === 'WORD-FOR-WORD TRANSLATION') {
           var origSents  = splitToSentences(r.transcript);
           var transSents = splitToSentences(s.content);
@@ -1712,12 +1671,11 @@ function printToPDF(r) {
 }
 
 /* ═══════════════════════════════
-   DOWNLOAD AS TEXT
+   DOWNLOAD AS TEXT — GHS 12+ only
    ═══════════════════════════════ */
 function downloadAsText() {
   var r = results[activeTab];
   if (!r || r.status !== 'done') return;
-  var ICONS = { 'WORD-FOR-WORD TRANSLATION':'WORD-FOR-WORD TRANSLATION','KEY VOCABULARY':'KEY VOCABULARY','GRAMMAR POINTS':'GRAMMAR POINTS','SAMPLE QUESTIONS & MODEL ANSWERS':'SAMPLE QUESTIONS & MODEL ANSWERS','TIPS TO ACE THIS TOPIC':'TIPS TO ACE THIS TOPIC' };
   var name = (activeTab || 'audio').replace(/\.[^.]+$/,'');
   var body = 'FRENCH ORAL MASTER — STUDY GUIDE\r\nAudio: ' + name + '\r\nDate: ' + new Date().toLocaleDateString() + '\r\n' + '='.repeat(50) + '\r\n\r\nTRANSCRIPTION\r\n' + '-'.repeat(40) + '\r\n' + r.transcript + '\r\n\r\n';
   if (r.parsed) {
@@ -1747,7 +1705,7 @@ function downloadAsText() {
 }
 
 /* ═══════════════════════════════
-   WHATSAPP SHARE
+   WHATSAPP SHARE — GHS 5+ only
    ═══════════════════════════════ */
 function shareWhatsApp() {
   var r = results[activeTab];
@@ -1947,6 +1905,10 @@ async function handlePayment() {
   var btn = document.getElementById('modalPayBtn');
   btn.disabled = true; btn.textContent = '⏳ Creating payment link…';
   setModalStatus('Connecting to Paystack…', 'var(--gold)');
+
+  // Store the selected package so we can set the level after payment verification
+  localStorage.setItem('fom_pending_pkg', selectedPkg);
+
   try {
     var callbackUrl = window.location.origin + window.location.pathname + '?fom_verify=1';
     var token = SESSION_TOKEN || localStorage.getItem('fom_session_token') || '';
@@ -1980,8 +1942,16 @@ async function handlePayment() {
     var data = await res.json();
     localStorage.removeItem('fom_pay_ref');
     if (data.status) {
-      alert('🎉 Payment successful! You now have ' + data.extra_transcriptions + ' extra transcription' + (data.extra_transcriptions !== 1 ? 's' : '') + ' ready to use. PDF download is now unlocked!');
+      // Set the package level based on what was purchased
+      var pendingPkg = localStorage.getItem('fom_pending_pkg') || 'small';
+      localStorage.removeItem('fom_pending_pkg');
+      setPkgLevel(pendingPkg);
+
+      var pkgNames = { small:'Starter (GHS 5)', medium:'Standard (GHS 12)', large:'Premium (GHS 20)' };
+      var featureMsg = { small:'📤 WhatsApp sharing is now unlocked!', medium:'📄 Download as Text & 📤 WhatsApp are now unlocked!', large:'📥 PDF Download, 📄 Text Download & 📤 WhatsApp are all unlocked!' };
+      alert('🎉 Payment successful! You now have ' + data.extra_transcriptions + ' extra transcription' + (data.extra_transcriptions !== 1 ? 's' : '') + ' ready to use.\n\n' + (featureMsg[pendingPkg] || 'Your premium features are now active!'));
       initSession();
+      renderAll(); // re-render to update button states immediately
     } else {
       alert('⚠️ Payment could not be verified automatically. If you were charged, please contact us with your email and we will credit your account manually.');
     }
