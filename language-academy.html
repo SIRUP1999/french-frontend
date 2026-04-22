@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -148,6 +147,77 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .next-btn{background:var(--highlight);color:var(--accent-light);border:1px solid var(--accent);border-radius:8px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;}
 .next-btn:disabled{opacity:.4;cursor:not-allowed;}
 
+/* ═══════════════════════════
+   SPEED ROUND GAME STYLES
+   ═══════════════════════════ */
+.speed-arena{position:relative;background:#070d1a;border:2px solid var(--accent);border-radius:14px;padding:18px;overflow:hidden;}
+.speed-arena::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(59,130,246,.1),transparent 70%);pointer-events:none;}
+.speed-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.speed-timer-wrap{display:flex;align-items:center;gap:8px;}
+.speed-timer{font-size:28px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;transition:color .3s;}
+.speed-timer.danger{color:var(--red);animation:pulse-red .5s infinite alternate;}
+@keyframes pulse-red{to{text-shadow:0 0 12px rgba(239,68,68,.8);}}
+.speed-timer-ring{width:52px;height:52px;position:relative;flex-shrink:0;}
+.speed-timer-ring svg{transform:rotate(-90deg);}
+.speed-timer-ring .ring-bg{stroke:#1e2d45;fill:none;stroke-width:4;}
+.speed-timer-ring .ring-fill{fill:none;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset .9s linear,stroke .3s;}
+.speed-streak{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);border-radius:20px;padding:4px 12px;font-size:13px;font-weight:800;color:var(--gold);}
+.speed-word-display{text-align:center;padding:18px 8px;font-size:22px;font-weight:900;color:#fff;background:rgba(255,255,255,.03);border-radius:10px;margin-bottom:14px;min-height:70px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(59,130,246,.2);}
+.speed-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.speed-opt{background:#0f172a;border:2px solid var(--border);border-radius:10px;padding:14px 10px;font-size:14px;font-weight:700;text-align:center;cursor:pointer;transition:all .15s;position:relative;overflow:hidden;}
+.speed-opt:hover{border-color:var(--accent);transform:translateY(-2px);}
+.speed-opt.flash-correct{background:#064e3b;border-color:var(--green);color:var(--green);animation:flash-g .3s;}
+.speed-opt.flash-wrong{background:#450a0a;border-color:var(--red);color:#f87171;animation:flash-r .3s;}
+@keyframes flash-g{0%{transform:scale(1.05);}100%{transform:scale(1);}}
+@keyframes flash-r{0%{transform:translateX(-4px);}50%{transform:translateX(4px);}100%{transform:translateX(0);}}
+.speed-progress-bar{height:5px;background:var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden;}
+.speed-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:10px;transition:width .2s;}
+.speed-combo-popup{position:absolute;top:20%;left:50%;transform:translateX(-50%);font-size:20px;font-weight:900;color:var(--gold);pointer-events:none;animation:combo-fly .7s forwards;z-index:10;white-space:nowrap;text-shadow:0 2px 8px rgba(0,0,0,.8);}
+@keyframes combo-fly{0%{opacity:1;transform:translateX(-50%) translateY(0);}100%{opacity:0;transform:translateX(-50%) translateY(-40px);}}
+.speed-result-screen{text-align:center;padding:24px;}
+.speed-result-score{font-size:56px;font-weight:900;color:var(--gold);line-height:1;}
+.speed-result-grade{font-size:44px;margin:10px 0;}
+.speed-start-screen{text-align:center;padding:30px 20px;}
+
+/* ═══════════════════════════
+   HANGMAN GAME STYLES
+   ═══════════════════════════ */
+.hangman-arena{background:#070d1a;border:2px solid rgba(139,92,246,.5);border-radius:14px;padding:18px;position:relative;overflow:hidden;}
+.hangman-arena::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(139,92,246,.08),transparent 70%);pointer-events:none;}
+.hangman-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.hangman-lives{display:flex;gap:5px;align-items:center;}
+.hangman-heart{font-size:18px;transition:all .3s;display:inline-block;}
+.hangman-heart.lost{filter:grayscale(1) opacity(.3);transform:scale(.8);}
+.hangman-body{display:flex;gap:16px;align-items:flex-start;margin-bottom:16px;}
+@media(max-width:440px){.hangman-body{flex-direction:column;align-items:center;}}
+.hangman-svg-wrap{flex-shrink:0;}
+.hangman-svg{background:rgba(255,255,255,.02);border-radius:8px;border:1px solid var(--border);}
+.hangman-right{flex:1;}
+.hangman-category{font-size:11px;color:#a78bfa;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.hangman-hint{font-size:12px;color:var(--muted);margin-bottom:14px;font-style:italic;padding:8px 12px;background:rgba(139,92,246,.08);border-radius:6px;border:1px solid rgba(139,92,246,.15);}
+.hangman-word-display{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:16px;padding:14px;background:rgba(255,255,255,.02);border-radius:10px;border:1px solid var(--border);}
+.hangman-letter-slot{width:28px;height:36px;border-bottom:3px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;transition:all .3s;position:relative;}
+.hangman-letter-slot.revealed{animation:letter-pop .3s cubic-bezier(.175,.885,.32,1.275);}
+@keyframes letter-pop{0%{transform:scale(0) translateY(-10px);}100%{transform:scale(1) translateY(0);}}
+.hangman-letter-slot.space{border-bottom-color:transparent;width:14px;}
+.hangman-keyboard{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-bottom:12px;}
+.hm-key{width:34px;height:34px;background:#0f172a;border:1.5px solid var(--border);border-radius:6px;font-size:12px;font-weight:800;color:var(--text);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;}
+.hm-key:hover:not(.used){background:var(--highlight);border-color:var(--purple);color:#c4b5fd;transform:translateY(-2px);}
+.hm-key.used-correct{background:rgba(16,185,129,.2);border-color:var(--green);color:var(--green);cursor:not-allowed;}
+.hm-key.used-wrong{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:rgba(239,68,68,.4);cursor:not-allowed;}
+.hangman-feedback{font-size:14px;font-weight:700;text-align:center;padding:10px;border-radius:8px;margin-bottom:10px;display:none;}
+.hangman-feedback.win{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.4);color:var(--green);display:block;}
+.hangman-feedback.lose{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#f87171;display:block;}
+
+/* Wrong letter shake */
+@keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-5px);}40%,80%{transform:translateX(5px);}}
+.shake{animation:shake .4s ease;}
+
+/* ═══════════════════
+   COMBO ANIMATIONS
+   ═══════════════════ */
+@keyframes glow-pulse{0%,100%{box-shadow:0 0 0 rgba(59,130,246,0);}50%{box-shadow:0 0 20px rgba(59,130,246,.3);}}
+
 /* SPIN */
 .spin{display:inline-block;width:12px;height:12px;border:2px solid var(--border);border-top-color:var(--accent-light);border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:4px;}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -161,6 +231,10 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .dot{width:10px;height:10px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .2s;}
 .dot.done{background:var(--green);}
 .dot.active-dot{background:var(--accent);}
+
+/* Game container tabs highlight */
+.game-mode-btn.speed-btn.active{background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(234,88,12,.2));border-color:var(--gold);color:var(--gold);}
+.game-mode-btn.hangman-btn.active{background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(236,72,153,.2));border-color:#a78bfa;color:#c4b5fd;}
 </style>
 </head>
 <body>
@@ -560,6 +634,198 @@ const CURRICULUM = {
         ]
       },
       {
+        id: 'colors', icon: '🎨', title: 'Colors & Descriptions (Les Couleurs)',
+        subtitle: 'Colors, adjective agreement, and describing things',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '🎨 Colors (Les Couleurs)',
+            intro: 'In French, adjectives AGREE with the noun — they change for masculine/feminine and singular/plural:',
+            headers: ['Color', 'Masculine (le)', 'Feminine (la)', 'English'],
+            rows: [
+              ['Red','rouge','rouge','red (same for both!)'],
+              ['Blue','bleu','bleue','blue'],
+              ['Green','vert','verte','green'],
+              ['Yellow','jaune','jaune','yellow (same)'],
+              ['Black','noir','noire','black'],
+              ['White','blanc','blanche','white (irregular!)'],
+              ['Orange','orange','orange','orange (invariable)'],
+              ['Purple','violet','violette','purple'],
+              ['Pink','rose','rose','pink (same)'],
+              ['Brown','brun / marron','brune / marron','brown'],
+              ['Grey','gris','grise','grey'],
+            ]
+          },
+          {
+            type: 'table', title: '📏 Common Adjectives for Descriptions',
+            headers: ['French (masc/fem)', 'English', 'Example'],
+            rows: [
+              ['grand / grande','big / tall','un grand homme — a tall man'],
+              ['petit / petite','small / short','une petite fille — a little girl'],
+              ['beau / belle','beautiful','une belle maison — a beautiful house'],
+              ['nouveau / nouvelle','new','un nouveau livre — a new book'],
+              ['vieux / vieille','old','un vieux chien — an old dog'],
+              ['jeune / jeune','young','une jeune femme — a young woman'],
+              ['intelligent / intelligente','intelligent','un élève intelligent — a smart pupil'],
+              ['sympa / sympa','nice / friendly','un professeur sympa — a nice teacher'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 ADJECTIVE RULE: In French, adjectives usually come AFTER the noun (un livre rouge = a red book). BUT some common adjectives come BEFORE: grand, petit, beau, nouveau, vieux, jeune, bon, mauvais. Remember: BAGS adjectives (Beauty, Age, Goodness, Size) come before the noun!'
+          }
+        ]
+      },
+      {
+        id: 'days-months', icon: '📅', title: 'Days, Months & Time (Le Temps)',
+        subtitle: 'How to talk about days, dates, and time in French',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '📅 Days of the Week (Les Jours de la Semaine)',
+            intro: 'Note: In French, days are NOT capitalised! The week starts on Monday.',
+            headers: ['French', 'English', 'Abbreviation'],
+            rows: [
+              ['lundi','Monday','lun.'],
+              ['mardi','Tuesday','mar.'],
+              ['mercredi','Wednesday','mer.'],
+              ['jeudi','Thursday','jeu.'],
+              ['vendredi','Friday','ven.'],
+              ['samedi','Saturday','sam.'],
+              ['dimanche','Sunday','dim.'],
+            ]
+          },
+          {
+            type: 'table', title: '📆 Months of the Year (Les Mois de l\'Année)',
+            intro: 'Months are also NOT capitalised in French:',
+            headers: ['French', 'English', 'French', 'English'],
+            rows: [
+              ['janvier','January','juillet','July'],
+              ['février','February','août','August'],
+              ['mars','March','septembre','September'],
+              ['avril','April','octobre','October'],
+              ['mai','May','novembre','November'],
+              ['juin','June','décembre','December'],
+            ]
+          },
+          {
+            type: 'table', title: '🕐 Telling the Time (L\'Heure)',
+            intro: 'French uses a 12-hour or 24-hour clock. In formal/transport contexts, 24-hour is common:',
+            headers: ['French', 'English', 'Notes'],
+            rows: [
+              ['Il est une heure.','It is one o\'clock.','use "une" for 1'],
+              ['Il est deux heures.','It is two o\'clock.','—'],
+              ['Il est midi.','It is noon (12pm).','special word for noon'],
+              ['Il est minuit.','It is midnight (12am).','special word for midnight'],
+              ['Il est trois heures et demie.','It is half past three.','et demie = and a half'],
+              ['Il est quatre heures et quart.','It is quarter past four.','et quart = and a quarter'],
+              ['Il est cinq heures moins le quart.','It is quarter to five.','moins = minus/less'],
+              ['Quelle heure est-il?','What time is it?','standard question'],
+              ['À quelle heure...?','At what time...?','for scheduling'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 DATE FORMAT: In French, the day comes before the month. Write: "le 22 avril 2026" (not "April 22"). Say: "C\'est le vingt-deux avril." — Also remember: "aujourd\'hui" = today, "hier" = yesterday, "demain" = tomorrow!'
+          }
+        ]
+      },
+      {
+        id: 'food', icon: '🍽️', title: 'Food & Drink (La Nourriture)',
+        subtitle: 'Vocabulary for meals, food, and restaurant situations',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '🍽️ Food Vocabulary (Les Aliments)',
+            headers: ['French', 'English', 'Gender'],
+            rows: [
+              ['le pain','bread','masc'],
+              ['le riz','rice','masc'],
+              ['la viande','meat','fem'],
+              ['le poulet','chicken','masc'],
+              ['le poisson','fish','masc'],
+              ['les légumes','vegetables','masc pl'],
+              ['les fruits','fruits','masc pl'],
+              ['la pomme','apple','fem'],
+              ['la banane','banana','fem'],
+              ['le fromage','cheese','masc'],
+              ['les œufs','eggs','masc pl'],
+              ['le sucre','sugar','masc'],
+              ['le sel','salt','masc'],
+            ]
+          },
+          {
+            type: 'table', title: '🥤 Drinks (Les Boissons)',
+            headers: ['French', 'English'],
+            rows: [
+              ['l\'eau (fem)','water'],
+              ['le jus d\'orange','orange juice'],
+              ['le café','coffee'],
+              ['le thé','tea'],
+              ['le lait','milk'],
+              ['la bière','beer'],
+              ['le vin','wine'],
+            ]
+          },
+          {
+            type: 'table', title: '🍽️ At a Restaurant (Au Restaurant)',
+            headers: ['French', 'English'],
+            rows: [
+              ['Je voudrais...','I would like... (polite)'],
+              ['Je vais prendre...','I will have... (order)'],
+              ['L\'addition, s\'il vous plaît.','The bill, please.'],
+              ['C\'est délicieux!','It\'s delicious!'],
+              ['J\'ai faim.','I am hungry. (lit. I have hunger)'],
+              ['J\'ai soif.','I am thirsty. (lit. I have thirst)'],
+              ['Je suis végétarien(ne).','I am vegetarian.'],
+              ['Je suis allergique à...','I am allergic to...'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 REMEMBER: In French, "I am hungry/thirsty" uses AVOIR (to have), NOT être (to be)! "J\'ai faim" (I have hunger) NOT "Je suis faim". The same goes for: hot (chaud), cold (froid), afraid (peur), right (raison).'
+          }
+        ]
+      },
+      {
+        id: 'emotions', icon: '😊', title: 'Emotions & Opinions (Les Émotions)',
+        subtitle: 'Express feelings and give your opinion in French',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '😊 Emotions (Les Émotions)',
+            intro: 'Use ÊTRE (to be) for most emotions, but some use AVOIR:',
+            headers: ['French', 'English', 'Verb used'],
+            rows: [
+              ['Je suis heureux / heureuse.','I am happy.','être'],
+              ['Je suis triste.','I am sad.','être'],
+              ['Je suis fatigué(e).','I am tired.','être'],
+              ['Je suis en colère.','I am angry.','être'],
+              ['Je suis stressé(e).','I am stressed.','être'],
+              ['Je suis surpris(e).','I am surprised.','être'],
+              ['J\'ai peur.','I am afraid. (lit. I have fear)','avoir'],
+              ['J\'ai honte.','I am ashamed. (lit. I have shame)','avoir'],
+            ]
+          },
+          {
+            type: 'table', title: '💬 Giving Your Opinion (Donner son avis)',
+            headers: ['French', 'English', 'Level'],
+            rows: [
+              ['Je pense que...','I think that...','basic'],
+              ['Je crois que...','I believe that...','basic'],
+              ['À mon avis,...','In my opinion,...','intermediate'],
+              ['Selon moi,...','According to me,...','intermediate'],
+              ['Je trouve que...','I find that... / I think that...','intermediate'],
+              ['Je suis d\'accord.','I agree.','basic'],
+              ['Je ne suis pas d\'accord.','I disagree.','basic'],
+              ['C\'est intéressant.','It\'s interesting.','basic'],
+              ['C\'est formidable!','It\'s great / wonderful!','basic'],
+              ['C\'est nul.','It\'s rubbish / bad.','casual'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 EXAM TIP: For French oral exams, use "À mon avis" and "Je pense que" to give personal opinions — this shows sophistication. Also use "D\'une part... d\'autre part..." (on one hand... on the other hand...) for balanced arguments!'
+          }
+        ]
+      },
+      {
         id: 'family', icon: '👨‍👩‍👧‍👦', title: 'Family & Relationships',
         subtitle: 'Essential vocabulary for the most common exam topic',
         level: 'beginner',
@@ -748,7 +1014,7 @@ const CURRICULUM = {
             headers: ['Pronoun', 'SER (permanent)', 'ESTAR (temporary/location)', 'Example'],
             rows: [
               ['yo','soy','estoy','Soy estudiante. / Estoy cansado.'],
-              ['tú','eres','estás','Eres inteligente. / Estás bien?'],
+              ['tú','eres','estás','Eres inteligente. / ¿Estás bien?'],
               ['él/ella','es','está','Ella es médica. / Está enferma.'],
               ['nosotros','somos','estamos','Somos de Ghana.'],
               ['ellos','son','están','Son amigos. / Están aquí.'],
@@ -809,6 +1075,122 @@ const CURRICULUM = {
           },
           {
             type: 'tip', text: '💡 Spanish numbers are MUCH easier than French! No "four-twenties" nonsense. 70 is "setenta" (not sixty-ten). 80 is "ochenta" (not four-twenties). Great news if you\'re learning both languages!'
+          }
+        ]
+      },
+      {
+        id: 'colors', icon: '🎨', title: 'Colors & Descriptions (Los Colores)',
+        subtitle: 'Colors and adjective agreement in Spanish',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '🎨 Colors (Los Colores)',
+            intro: 'Like French, Spanish adjectives must agree with the noun in gender and number:',
+            headers: ['Color', 'Masculine', 'Feminine', 'English'],
+            rows: [
+              ['Red','rojo','roja','red'],
+              ['Blue','azul','azul','blue (same — ends in consonant)'],
+              ['Green','verde','verde','green (same)'],
+              ['Yellow','amarillo','amarilla','yellow'],
+              ['Black','negro','negra','black'],
+              ['White','blanco','blanca','white'],
+              ['Orange','naranja','naranja','orange (invariable)'],
+              ['Purple','morado','morada','purple'],
+              ['Pink','rosa','rosa','pink (invariable)'],
+              ['Brown','marrón','marrón','brown (invariable)'],
+              ['Grey','gris','gris','grey (same)'],
+            ]
+          },
+          {
+            type: 'table', title: '📝 Common Descriptive Adjectives',
+            headers: ['Spanish (m/f)', 'English', 'Example'],
+            rows: [
+              ['alto / alta','tall','un chico alto — a tall boy'],
+              ['bajo / baja','short','una chica baja — a short girl'],
+              ['grande / grande','big','un coche grande — a big car'],
+              ['pequeño / pequeña','small','una casa pequeña — a small house'],
+              ['nuevo / nueva','new','un libro nuevo — a new book'],
+              ['viejo / vieja','old','una ciudad vieja — an old city'],
+              ['bueno / buena','good','un buen amigo — a good friend'],
+              ['malo / mala','bad','una mala idea — a bad idea'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 ADJECTIVE ORDER: In Spanish, adjectives ALSO usually go AFTER the noun: "un coche rojo" (a red car), "una casa grande" (a big house). However, some go before: bueno/malo/gran can go before for emphasis: "¡Es un gran hombre!" (He\'s a great man!)'
+          }
+        ]
+      },
+      {
+        id: 'days-months', icon: '📅', title: 'Days, Months & Dates',
+        subtitle: 'Talking about time in Spanish',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '📅 Days of the Week (Los Días de la Semana)',
+            intro: 'Days are NOT capitalised in Spanish. The week starts on Monday (lunes):',
+            headers: ['Spanish', 'English', 'Notes'],
+            rows: [
+              ['lunes','Monday','named after the moon (luna)'],
+              ['martes','Tuesday','named after Mars'],
+              ['miércoles','Wednesday','named after Mercury'],
+              ['jueves','Thursday','named after Jupiter'],
+              ['viernes','Friday','named after Venus'],
+              ['sábado','Saturday','from Hebrew Shabbat'],
+              ['domingo','Sunday','from Latin "dies Dominica"'],
+            ]
+          },
+          {
+            type: 'table', title: '📆 Months (Los Meses)',
+            headers: ['Spanish', 'English', 'Spanish', 'English'],
+            rows: [
+              ['enero','January','julio','July'],
+              ['febrero','February','agosto','August'],
+              ['marzo','March','septiembre','September'],
+              ['abril','April','octubre','October'],
+              ['mayo','May','noviembre','November'],
+              ['junio','June','diciembre','December'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 DATE FORMAT: "Hoy es lunes, el 22 de abril de 2026." (Today is Monday, the 22nd of April 2026.) Use "el" before the number. For months, use "de" between the number and month. Only "el primero" (the first) is irregular — all others use cardinal numbers.'
+          }
+        ]
+      },
+      {
+        id: 'food', icon: '🍽️', title: 'Food & Drink (La Comida)',
+        subtitle: 'Essential food vocabulary and restaurant phrases',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '🍽️ Food (La Comida)',
+            headers: ['Spanish', 'English'],
+            rows: [
+              ['el pan','bread'],
+              ['el arroz','rice'],
+              ['la carne','meat'],
+              ['el pollo','chicken'],
+              ['el pescado','fish'],
+              ['las verduras / los vegetales','vegetables'],
+              ['la fruta','fruit'],
+              ['el queso','cheese'],
+              ['los huevos','eggs'],
+              ['la sopa','soup'],
+              ['el desayuno / almuerzo / cena','breakfast / lunch / dinner'],
+            ]
+          },
+          {
+            type: 'table', title: '🍽️ At a Restaurant (En el Restaurante)',
+            headers: ['Spanish', 'English'],
+            rows: [
+              ['Quisiera...','I would like... (polite)'],
+              ['Para mí,...','For me,...'],
+              ['La cuenta, por favor.','The bill, please.'],
+              ['¡Está delicioso!','It\'s delicious!'],
+              ['Tengo hambre.','I am hungry. (I have hunger)'],
+              ['Tengo sed.','I am thirsty. (I have thirst)'],
+              ['Soy vegetariano/a.','I am vegetarian.'],
+              ['¿Tiene algo sin gluten?','Do you have anything gluten-free?'],
+            ]
           }
         ]
       },
@@ -984,6 +1366,34 @@ const CURRICULUM = {
         ]
       },
       {
+        id: 'basic-phrases', icon: '💬', title: 'Essential Daily Phrases',
+        subtitle: 'Must-know phrases for everyday Arabic conversations',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '💬 Everyday Phrases (العبارات اليومية)',
+            headers: ['Arabic', 'Pronunciation', 'English'],
+            rows: [
+              ['نعم','na\'am','Yes'],
+              ['لا','la','No'],
+              ['من فضلك / لو سمحت','min fadlak / law samaht','Please (to male/casual)'],
+              ['شكراً','shukran','Thank you'],
+              ['عفواً','afwan','You\'re welcome / Excuse me'],
+              ['آسف / آسفة','asif / asifa','Sorry (male/female)'],
+              ['لا أفهم','la afham','I don\'t understand'],
+              ['هل تتكلم إنجليزي؟','hal tatakallam injlizi?','Do you speak English?'],
+              ['تكلم ببطء من فضلك','takallam bibut\' min fadlak','Speak slowly please'],
+              ['كم الثمن؟','kam al-thaman?','How much does it cost?'],
+              ['أين...؟','ayna...?','Where is...?'],
+              ['إلى اليمين / اليسار','ila al-yamin / al-yasar','To the right / left'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 KEY PHRASE: "لا أفهم" (la afham — I don\'t understand) is one of the most useful phrases to learn! Also: "هل تتكلم إنجليزي؟" (Do you speak English?) will save you in many situations. Arabic speakers greatly appreciate any effort you make to speak their language!'
+          }
+        ]
+      },
+      {
         id: 'family', icon: '👨‍👩‍👧‍👦', title: 'Family (العائلة)',
         subtitle: 'Core family vocabulary in Arabic',
         level: 'beginner',
@@ -1033,6 +1443,33 @@ const CURRICULUM = {
               ['العلوم','al-ulum','science'],
               ['التاريخ','at-tarikh','history'],
             ]
+          }
+        ]
+      },
+      {
+        id: 'colors-ar', icon: '🎨', title: 'Colors & Adjectives (الألوان)',
+        subtitle: 'Colors and basic descriptions in Arabic',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '🎨 Colors (الألوان)',
+            headers: ['Arabic', 'Pronunciation', 'English'],
+            rows: [
+              ['أحمر / حمراء','ahmar / hamra','red (m/f)'],
+              ['أزرق / زرقاء','azraq / zarqa','blue (m/f)'],
+              ['أخضر / خضراء','akhdar / khadra','green (m/f)'],
+              ['أصفر / صفراء','asfar / safra','yellow (m/f)'],
+              ['أسود / سوداء','aswad / sawda','black (m/f)'],
+              ['أبيض / بيضاء','abyad / bayda','white (m/f)'],
+              ['برتقالي','burtuqali','orange'],
+              ['بنفسجي','banafsaji','purple'],
+              ['وردي','wardi','pink'],
+              ['بني','bunni','brown'],
+              ['رمادي','ramadi','grey'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 Arabic colors have masculine and feminine forms. The masculine form often follows the pattern "أَفْعَل" (af\'al) and the feminine "فَعْلاء" (fa\'la). This pattern is called "elative" and is one of Arabic\'s beautiful regular patterns. Note: colors like "برتقالي" (orange) are borrowed from Persian "burtuqal" (Portugal — where oranges came from in medieval times!)'
           }
         ]
       }
@@ -1155,6 +1592,81 @@ const CURRICULUM = {
         ]
       },
       {
+        id: 'colors-pt', icon: '🎨', title: 'Colors & Adjectives (As Cores)',
+        subtitle: 'Colors and descriptions in Portuguese',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '🎨 Colors (As Cores)',
+            intro: 'Portuguese adjectives agree with the noun in gender and number:',
+            headers: ['Color', 'Masculine', 'Feminine', 'English'],
+            rows: [
+              ['Red','vermelho','vermelha','red'],
+              ['Blue','azul','azul','blue (same — ends in consonant)'],
+              ['Green','verde','verde','green (same)'],
+              ['Yellow','amarelo','amarela','yellow'],
+              ['Black','preto','preta','black'],
+              ['White','branco','branca','white'],
+              ['Orange','laranja','laranja','orange (invariable)'],
+              ['Purple','roxo','roxa','purple'],
+              ['Pink','rosa','rosa','pink (invariable)'],
+              ['Brown','marrom','marrom','brown (Brazil, invariable)'],
+              ['Grey','cinza','cinza','grey (same)'],
+            ]
+          },
+          {
+            type: 'table', title: '📝 Common Adjectives',
+            headers: ['Portuguese (m/f)', 'English', 'Example'],
+            rows: [
+              ['alto / alta','tall','um homem alto — a tall man'],
+              ['baixo / baixa','short','uma mulher baixa — a short woman'],
+              ['grande / grande','big','uma cidade grande — a big city'],
+              ['pequeno / pequena','small','um apartamento pequeno — a small apartment'],
+              ['bonito / bonita','beautiful / handsome','uma menina bonita — a beautiful girl'],
+              ['feio / feia','ugly','—'],
+              ['novo / nova','new / young','um carro novo — a new car'],
+              ['velho / velha','old','um homem velho — an old man'],
+            ]
+          }
+        ]
+      },
+      {
+        id: 'days-months-pt', icon: '📅', title: 'Days, Months & Time',
+        subtitle: 'Talking about time in Portuguese',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '📅 Days of the Week (Os Dias da Semana)',
+            intro: 'Portuguese days of the week are unique — they come from numbers (segunda = second, etc.):',
+            headers: ['Portuguese', 'English', 'Origin'],
+            rows: [
+              ['segunda-feira','Monday','second fair/market day'],
+              ['terça-feira','Tuesday','third fair/market day'],
+              ['quarta-feira','Wednesday','fourth fair/market day'],
+              ['quinta-feira','Thursday','fifth fair/market day'],
+              ['sexta-feira','Friday','sixth fair/market day'],
+              ['sábado','Saturday','from Hebrew Shabbat'],
+              ['domingo','Sunday','from Latin "dies Dominica"'],
+            ]
+          },
+          {
+            type: 'table', title: '📆 Months (Os Meses)',
+            headers: ['Portuguese', 'English', 'Portuguese', 'English'],
+            rows: [
+              ['janeiro','January','julho','July'],
+              ['fevereiro','February','agosto','August'],
+              ['março','March','setembro','September'],
+              ['abril','April','outubro','October'],
+              ['maio','May','novembro','November'],
+              ['junho','June','dezembro','December'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 COOL FACT: Portuguese days of the week literally mean "Second Market Day, Third Market Day..." — this comes from early Christian tradition when Sunday (Domingo = Lord\'s Day) was the first day. In informal speech, Brazilians often shorten them: "segunda" (not "segunda-feira").'
+          }
+        ]
+      },
+      {
         id: 'family', icon: '👨‍👩‍👧‍👦', title: 'Family (A Família)',
         subtitle: 'Core family vocabulary in Portuguese',
         level: 'beginner',
@@ -1176,6 +1688,68 @@ const CURRICULUM = {
               ['o primo / a prima','the cousin'],
               ['o marido / a esposa','the husband / wife'],
               ['os filhos','the children'],
+            ]
+          }
+        ]
+      },
+      {
+        id: 'food-pt', icon: '🍽️', title: 'Food & Drink (A Comida)',
+        subtitle: 'Essential food vocabulary in Portuguese',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '🍽️ Food (A Comida)',
+            headers: ['Portuguese', 'English'],
+            rows: [
+              ['o pão','bread'],
+              ['o arroz','rice'],
+              ['a carne','meat'],
+              ['o frango','chicken'],
+              ['o peixe','fish'],
+              ['os legumes / as verduras','vegetables'],
+              ['a fruta','fruit'],
+              ['o queijo','cheese'],
+              ['os ovos','eggs'],
+              ['o feijão','beans (staple in Brazil!)'],
+              ['a feijoada','Brazilian black bean stew (national dish!)'],
+            ]
+          },
+          {
+            type: 'tip', text: '💡 CULTURE NOTE: "Arroz com feijão" (rice and beans) is the everyday meal of Brazil! If you visit Brazil and want to connect culturally, knowing food vocabulary is essential. "Gostoso/gostosa" (delicious/tasty) will be your most-used adjective at the table!'
+          }
+        ]
+      },
+      {
+        id: 'emotions-pt', icon: '😊', title: 'Emotions & Opinions',
+        subtitle: 'Express feelings in Portuguese',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'table', title: '😊 Emotions (As Emoções)',
+            headers: ['Portuguese', 'English'],
+            rows: [
+              ['Estou feliz.','I am happy.'],
+              ['Estou triste.','I am sad.'],
+              ['Estou cansado/a.','I am tired.'],
+              ['Estou animado/a.','I am excited.'],
+              ['Estou com raiva.','I am angry. (lit. I am with anger)'],
+              ['Estou com medo.','I am scared. (lit. I am with fear)'],
+              ['Estou bem.','I am well/fine.'],
+              ['Estou ótimo/a!','I am great!'],
+            ]
+          },
+          {
+            type: 'table', title: '💬 Giving Opinions',
+            headers: ['Portuguese', 'English'],
+            rows: [
+              ['Eu acho que...','I think that...'],
+              ['Na minha opinião,...','In my opinion,...'],
+              ['Concordo!','I agree!'],
+              ['Não concordo.','I disagree.'],
+              ['É verdade.','That\'s true.'],
+              ['Que ótimo!','How great!'],
+              ['Que pena!','What a shame!'],
+              ['Que interessante!','How interesting!'],
             ]
           }
         ]
@@ -1210,7 +1784,7 @@ const CURRICULUM = {
 };
 
 /* ══════════════════════════════
-   GAME DATA
+   GAME DATA (original + speed/hangman)
    ══════════════════════════════ */
 const GAME_DATA = {
   fr: {
@@ -1237,9 +1811,47 @@ const GAME_DATA = {
     scramble: [
       {scrambled:'RUJNOOB',word:'BONJOUR',hint:'Greeting — means Hello'},
       {scrambled:'RCIME',word:'MERCI',hint:'Means Thank you'},
-      {scrambled:'RICEVO',word:'VOICER',hint:'Au ___ = Goodbye'},
-      {scrambled:'AISMON',word:'MAISON',hint:'Means house (la ___)'},
-      {scrambled:'VERIL',word:'LIVRE',hint:'Means book (le ___)'},
+      {scrambled:'ICRVOE',word:'REVOIR',hint:'Au ___ = Goodbye'},
+      {scrambled:'SNOIMA',word:'MAISON',hint:'Means house (la ___)'},
+      {scrambled:'RVILE',word:'LIVRE',hint:'Means book (le ___)'},
+    ],
+    speed: [
+      {word:'Bonjour',correct:'Hello',wrong:['Goodbye','Thank you','Please']},
+      {word:'Merci',correct:'Thank you',wrong:['Hello','Yes','Goodbye']},
+      {word:'Au revoir',correct:'Goodbye',wrong:['Hello','Please','Thank you']},
+      {word:'Oui',correct:'Yes',wrong:['No','Maybe','Hello']},
+      {word:'Non',correct:'No',wrong:['Yes','Maybe','Goodbye']},
+      {word:'S\'il vous plaît',correct:'Please',wrong:['Thank you','Sorry','Hello']},
+      {word:'La maison',correct:'House',wrong:['School','Car','Book']},
+      {word:'Le livre',correct:'Book',wrong:['House','Car','Dog']},
+      {word:'Le chien',correct:'Dog',wrong:['Cat','House','Car']},
+      {word:'La voiture',correct:'Car',wrong:['Bus','House','Book']},
+      {word:'Je suis',correct:'I am',wrong:['I have','I speak','I go']},
+      {word:'J\'ai',correct:'I have',wrong:['I am','I speak','I eat']},
+      {word:'rouge',correct:'Red',wrong:['Blue','Green','Yellow']},
+      {word:'bleu',correct:'Blue',wrong:['Red','Green','Black']},
+      {word:'grand',correct:'Big / Tall',wrong:['Small','Young','Old']},
+      {word:'petit',correct:'Small',wrong:['Big','Old','New']},
+      {word:'lundi',correct:'Monday',wrong:['Tuesday','Friday','Sunday']},
+      {word:'vendredi',correct:'Friday',wrong:['Monday','Wednesday','Saturday']},
+      {word:'Parler',correct:'To speak',wrong:['To eat','To go','To have']},
+      {word:'Manger',correct:'To eat',wrong:['To speak','To sleep','To drink']},
+    ],
+    hangman: [
+      {word:'BONJOUR',hint:'The most common French greeting',category:'Greetings'},
+      {word:'FAMILLE',hint:'The group of people you are born into',category:'Family'},
+      {word:'MERCI',hint:'What you say when someone helps you',category:'Politeness'},
+      {word:'MAISON',hint:'Where you live (la ___)',category:'Home'},
+      {word:'ÉCOLE',hint:'Where students go to learn',category:'Education'},
+      {word:'LIVRE',hint:'You read this (le ___)',category:'Objects'},
+      {word:'PARLER',hint:'To do this = to communicate with words',category:'Verbs'},
+      {word:'ROUGE',hint:'The color of a fire engine',category:'Colors'},
+      {word:'LUNDI',hint:'The first day of the French working week',category:'Days'},
+      {word:'ÉTUDIANT',hint:'A person who studies (male)',category:'People'},
+      {word:'FROMAGE',hint:'France is famous for this dairy product',category:'Food'},
+      {word:'BAGUETTE',hint:'Long French bread',category:'Food'},
+      {word:'VOITURE',hint:'You drive this (la ___)',category:'Transport'},
+      {word:'JARDIN',hint:'An outdoor space with plants (le ___)',category:'Places'},
     ]
   },
   es: {
@@ -1262,9 +1874,43 @@ const GAME_DATA = {
     ],
     scramble: [
       {scrambled:'ALOH',word:'HOLA',hint:'Universal Spanish greeting'},
-      {scrambled:'IGARACS',word:'GRACIAS',hint:'Means Thank you'},
-      {scrambled:'LAFRIMI',word:'FAMILIA',hint:'Means family (la ___)'},
-      {scrambled:'LHAABR',word:'HABLAR',hint:'Means to speak'},
+      {scrambled:'IAGARCSA',word:'GRACIAS',hint:'Means Thank you'},
+      {scrambled:'LAIMFAI',word:'FAMILIA',hint:'Means family (la ___)'},
+      {scrambled:'LHBARA',word:'HABLAR',hint:'Means to speak'},
+    ],
+    speed: [
+      {word:'Hola',correct:'Hello',wrong:['Goodbye','Please','Thanks']},
+      {word:'Gracias',correct:'Thank you',wrong:['Please','Hello','Sorry']},
+      {word:'Adiós',correct:'Goodbye',wrong:['Hello','Thanks','Please']},
+      {word:'Sí',correct:'Yes',wrong:['No','Maybe','Hello']},
+      {word:'No',correct:'No',wrong:['Yes','Maybe','Please']},
+      {word:'Por favor',correct:'Please',wrong:['Thanks','Sorry','Hello']},
+      {word:'La escuela',correct:'School',wrong:['House','Car','Book']},
+      {word:'El libro',correct:'Book',wrong:['House','Car','Dog']},
+      {word:'Yo soy',correct:'I am',wrong:['I have','I speak','I go']},
+      {word:'Tengo',correct:'I have',wrong:['I am','I speak','I eat']},
+      {word:'rojo',correct:'Red',wrong:['Blue','Green','Yellow']},
+      {word:'azul',correct:'Blue',wrong:['Red','Green','Black']},
+      {word:'grande',correct:'Big',wrong:['Small','Old','New']},
+      {word:'pequeño',correct:'Small',wrong:['Big','Old','New']},
+      {word:'lunes',correct:'Monday',wrong:['Tuesday','Friday','Sunday']},
+      {word:'viernes',correct:'Friday',wrong:['Monday','Wednesday','Saturday']},
+      {word:'hablar',correct:'To speak',wrong:['To eat','To go','To have']},
+      {word:'comer',correct:'To eat',wrong:['To speak','To sleep','To drink']},
+    ],
+    hangman: [
+      {word:'HOLA',hint:'The universal Spanish greeting',category:'Greetings'},
+      {word:'FAMILIA',hint:'The group of people you are born into',category:'Family'},
+      {word:'GRACIAS',hint:'What you say when someone helps you',category:'Politeness'},
+      {word:'ESCUELA',hint:'Where students go to learn',category:'Education'},
+      {word:'LIBRO',hint:'You read this (el ___)',category:'Objects'},
+      {word:'HABLAR',hint:'To communicate with words',category:'Verbs'},
+      {word:'ROJO',hint:'The color of blood',category:'Colors'},
+      {word:'LUNES',hint:'The first day of the working week',category:'Days'},
+      {word:'ESTUDIANTE',hint:'A person who studies',category:'People'},
+      {word:'QUESO',hint:'Spain is famous for this dairy product',category:'Food'},
+      {word:'HERMANO',hint:'Your male sibling (el ___)',category:'Family'},
+      {word:'CIUDAD',hint:'A large urban area (la ___)',category:'Places'},
     ]
   },
   ar: {
@@ -1285,9 +1931,33 @@ const GAME_DATA = {
       {q:'عمري ___ سنة. (I am 20 years old.)',options:['عشرون','عشرة','مئة','ألف'],ans:0,hint:'عشرون = 20. Which number is needed?'},
     ],
     scramble: [
-      {scrambled:'ABLRAHMA',word:'MARHABA',hint:'Arabic for Hello (romanized)'},
-      {scrambled:'NKRAUSH',word:'SHUKRAN',hint:'Arabic for Thank you (romanized)'},
-      {scrambled:'ALBAYTIK',word:'KITABAL',hint:'Romanization of الكتاب (the book)'},
+      {scrambled:'ABHRLAM',word:'MARHABA',hint:'Arabic for Hello (romanized)'},
+      {scrambled:'NKRUSAH',word:'SHUKRAN',hint:'Arabic for Thank you (romanized)'},
+      {scrambled:'LABKITA',word:'KITABAL',hint:'Romanization of الكتاب (the book)'},
+    ],
+    speed: [
+      {word:'مرحبا (Marhaba)',correct:'Hello',wrong:['Goodbye','Thanks','Yes']},
+      {word:'شكراً (Shukran)',correct:'Thank you',wrong:['Hello','Please','No']},
+      {word:'نعم (Na\'am)',correct:'Yes',wrong:['No','Maybe','Hello']},
+      {word:'لا (La)',correct:'No',wrong:['Yes','Please','Thanks']},
+      {word:'الأب (al-ab)',correct:'Father',wrong:['Mother','Brother','Son']},
+      {word:'الأم (al-umm)',correct:'Mother',wrong:['Father','Sister','Daughter']},
+      {word:'المدرسة (al-madrasa)',correct:'School',wrong:['House','Library','Mosque']},
+      {word:'الكتاب (al-kitab)',correct:'Book',wrong:['Pen','Notebook','School']},
+      {word:'واحد (wahid)',correct:'One',wrong:['Two','Three','Ten']},
+      {word:'خمسة (khamsa)',correct:'Five',wrong:['Four','Six','Seven']},
+      {word:'صباح الخير',correct:'Good morning',wrong:['Good evening','Goodbye','Hello']},
+      {word:'مساء الخير',correct:'Good evening',wrong:['Good morning','Goodbye','Hello']},
+    ],
+    hangman: [
+      {word:'MARHABA',hint:'A common Arabic greeting (romanized)',category:'Greetings'},
+      {word:'SHUKRAN',hint:'Means "Thank you" in Arabic (romanized)',category:'Politeness'},
+      {word:'KITAB',hint:'Means "book" in Arabic (al-___ = the book)',category:'Objects'},
+      {word:'BAYT',hint:'Means "house/home" in Arabic',category:'Home'},
+      {word:'MADRASA',hint:'Means "school" in Arabic',category:'Education'},
+      {word:'WAHID',hint:'The number 1 in Arabic (romanized)',category:'Numbers'},
+      {word:'SALAM',hint:'Means "peace" — part of the greeting As-Salamu Alaykum',category:'Greetings'},
+      {word:'TALIB',hint:'Means "student" (male) in Arabic',category:'People'},
     ]
   },
   pt: {
@@ -1309,10 +1979,42 @@ const GAME_DATA = {
       {q:'___ anos você tem? (How old are you?)',options:['Quantos','Como','Onde','Quando'],ans:0,hint:'Which question word means "how many"?'},
     ],
     scramble: [
-      {scrambled:'LÓOA',word:'OLÁ',hint:'Portuguese for Hello'},
-      {scrambled:'CAIRBOGOD',word:'OBRIGADO',hint:'Thank you (male speaker)'},
-      {scrambled:'LIAMÍFA',word:'FAMÍLIA',hint:'Means family (a ___)'},
-      {scrambled:'RLFAA',word:'FALAR',hint:'Means to speak'},
+      {scrambled:'ÁOLOA',word:'OLÁ',hint:'Portuguese for Hello'},
+      {scrambled:'DOAGRIOB',word:'OBRIGADO',hint:'Thank you (male speaker)'},
+      {scrambled:'ALÍAMIF',word:'FAMÍLIA',hint:'Means family (a ___)'},
+      {scrambled:'RLAFA',word:'FALAR',hint:'Means to speak'},
+    ],
+    speed: [
+      {word:'Olá',correct:'Hello',wrong:['Goodbye','Thanks','Please']},
+      {word:'Obrigado',correct:'Thank you',wrong:['Please','Hello','Sorry']},
+      {word:'Adeus',correct:'Goodbye',wrong:['Hello','Thanks','Please']},
+      {word:'Sim',correct:'Yes',wrong:['No','Maybe','Hello']},
+      {word:'Não',correct:'No',wrong:['Yes','Maybe','Please']},
+      {word:'Por favor',correct:'Please',wrong:['Thanks','Sorry','Hello']},
+      {word:'A escola',correct:'School',wrong:['House','Car','Book']},
+      {word:'O livro',correct:'Book',wrong:['House','Car','Dog']},
+      {word:'Eu sou',correct:'I am',wrong:['I have','I speak','I go']},
+      {word:'Tenho',correct:'I have',wrong:['I am','I speak','I eat']},
+      {word:'vermelho',correct:'Red',wrong:['Blue','Green','Yellow']},
+      {word:'azul',correct:'Blue',wrong:['Red','Green','Black']},
+      {word:'grande',correct:'Big',wrong:['Small','Old','New']},
+      {word:'segunda-feira',correct:'Monday',wrong:['Tuesday','Friday','Sunday']},
+      {word:'falar',correct:'To speak',wrong:['To eat','To go','To have']},
+      {word:'comer',correct:'To eat',wrong:['To speak','To sleep','To drink']},
+    ],
+    hangman: [
+      {word:'OLA',hint:'The most common Portuguese greeting',category:'Greetings'},
+      {word:'FAMILIA',hint:'The group of people you are born into',category:'Family'},
+      {word:'OBRIGADO',hint:'What a male says when thanking someone',category:'Politeness'},
+      {word:'ESCOLA',hint:'Where students go to learn',category:'Education'},
+      {word:'LIVRO',hint:'You read this (o ___)',category:'Objects'},
+      {word:'FALAR',hint:'To communicate with words',category:'Verbs'},
+      {word:'VERMELHO',hint:'The color of a strawberry',category:'Colors'},
+      {word:'SEGUNDA',hint:'Short for segunda-feira = Monday',category:'Days'},
+      {word:'ESTUDANTE',hint:'A person who studies',category:'People'},
+      {word:'ARROZ',hint:'A staple food in Brazil eaten with beans',category:'Food'},
+      {word:'IRMAO',hint:'Your male sibling (o ___)',category:'Family'},
+      {word:'BRASIL',hint:'The largest Portuguese-speaking country',category:'Places'},
     ]
   }
 };
@@ -1335,9 +2037,21 @@ let fillScore = 0;
 let fillAnswered = false;
 // Scramble state
 let scrambleIdx = 0;
-let scrambleData = [];
-// Topics completed
-let topicsDone = {};
+// Speed round state
+let speedTimer = null;
+let speedTimeLeft = 60;
+let speedIdx = 0;
+let speedScore = 0;
+let speedStreak = 0;
+let speedBestStreak = 0;
+let speedQuestions = [];
+let speedAnswered = false;
+// Hangman state
+let hmWord = '';
+let hmGuessed = [];
+let hmWrong = 0;
+let hmMaxWrong = 6;
+let hmWordData = null;
 
 /* ══════════════════
    RENDER ENGINE
@@ -1356,7 +2070,7 @@ function buildNav() {
   var pills = document.getElementById('navPills');
   pills.innerHTML = curriculum.topics.map(function(t,i){
     return '<button class="nav-pill'+(i===currentTopic?' active':'')+'" onclick="selectTopic('+i+')">'+t.icon+' '+t.title+'</button>';
-  }).join('') + '<button class="nav-pill" style="border-color:rgba(139,92,246,.4);color:#a78bfa;" onclick="scrollToGame()">🎮 Play Game</button>';
+  }).join('') + '<button class="nav-pill" style="border-color:rgba(139,92,246,.4);color:#a78bfa;" onclick="scrollToGame()">🎮 Play Games</button>';
 }
 
 function selectTopic(idx) {
@@ -1406,7 +2120,7 @@ function buildContent() {
   if(currentTopic < curriculum.topics.length - 1) {
     html += '<button onclick="selectTopic('+(currentTopic+1)+')" style="background:'+color+';color:#000;border:none;border-radius:8px;padding:10px 20px;font-size:13px;font-weight:800;cursor:pointer;">Next Topic: '+curriculum.topics[currentTopic+1].title+' →</button>';
   }
-  html += '<button onclick="scrollToGame()" style="background:rgba(139,92,246,.2);color:#a78bfa;border:1px solid rgba(139,92,246,.4);border-radius:8px;padding:10px 20px;font-size:13px;font-weight:800;cursor:pointer;">🎮 Play Game</button>';
+  html += '<button onclick="scrollToGame()" style="background:rgba(139,92,246,.2);color:#a78bfa;border:1px solid rgba(139,92,246,.4);border-radius:8px;padding:10px 20px;font-size:13px;font-weight:800;cursor:pointer;">🎮 Play Games</button>';
   html += '</div>';
 
   html += '</div>'; // section-card
@@ -1458,14 +2172,16 @@ function renderExamples(lesson, cssClass, color) {
    ══════════════════ */
 function buildGameSection() {
   return '<div class="game-card" id="gameSection">'+
-    '<div class="game-title">🎮 Language Practice Game</div>'+
-    '<div class="game-sub">Test what you\'ve learned! Choose a game mode and practice '+CURRICULUM[currentLang].name+'.</div>'+
-    '<div class="score-bar"><div><div class="score-label">Score</div><div class="score-num" id="gameScore">0</div></div>'+
+    '<div class="game-title">🎮 Language Practice Games</div>'+
+    '<div class="game-sub">5 games to master '+CURRICULUM[currentLang].name+' — from matching to hangman! Pick any mode below.</div>'+
+    '<div class="score-bar"><div><div class="score-label">Session Score</div><div class="score-num" id="gameScore">0</div></div>'+
     '<div style="display:flex;gap:6px;align-items:center;"><span style="font-size:12px;color:var(--muted);" id="gameStreakLabel"></span></div></div>'+
     '<div class="game-modes">'+
       '<button id="modeMatch" class="game-mode-btn active" onclick="initGame(\'match\')">🔗 Word Match</button>'+
       '<button id="modeFill" class="game-mode-btn" onclick="initGame(\'fill\')">✏️ Fill the Gap</button>'+
-      '<button id="modeScramble" class="game-mode-btn" onclick="initGame(\'scramble\')">🔀 Word Scramble</button>'+
+      '<button id="modeScramble" class="game-mode-btn" onclick="initGame(\'scramble\')">🔀 Scramble</button>'+
+      '<button id="modeSpeed" class="game-mode-btn speed-btn" onclick="initGame(\'speed\')">⚡ Speed Round</button>'+
+      '<button id="modeHangman" class="game-mode-btn hangman-btn" onclick="initGame(\'hangman\')">🪢 Hangman</button>'+
     '</div>'+
     '<div id="gameArea"></div>'+
   '</div>';
@@ -1475,17 +2191,21 @@ function buildGameSection() {
    GAME LOGIC
    ══════════════════ */
 function initGame(mode) {
+  // Clear speed timer if running
+  if(speedTimer){clearInterval(speedTimer);speedTimer=null;}
   gameMode = mode;
   gameScore = 0;
   updateScore();
   document.querySelectorAll('.game-mode-btn').forEach(function(b){b.classList.remove('active');});
-  var modeMap = {match:'modeMatch',fill:'modeFill',scramble:'modeScramble'};
+  var modeMap = {match:'modeMatch',fill:'modeFill',scramble:'modeScramble',speed:'modeSpeed',hangman:'modeHangman'};
   var el = document.getElementById(modeMap[mode]);
   if(el) el.classList.add('active');
 
   if(mode === 'match') buildMatchGame();
   else if(mode === 'fill') { fillIdx=0; fillScore=0; buildFillGame(); }
   else if(mode === 'scramble') { scrambleIdx=0; buildScrambleGame(); }
+  else if(mode === 'speed') { buildSpeedStart(); }
+  else if(mode === 'hangman') { buildHangmanGame(); }
 }
 
 function updateScore() {
@@ -1493,7 +2213,9 @@ function updateScore() {
   if(el) el.textContent = gameScore;
 }
 
-/* MATCH GAME */
+/* ═══════════════
+   MATCH GAME
+   ═══════════════ */
 function buildMatchGame() {
   var data = GAME_DATA[currentLang].match;
   var pairs = data.slice().sort(function(){return Math.random()-.5;}).slice(0,6);
@@ -1504,7 +2226,7 @@ function buildMatchGame() {
   var matches  = pairs.map(function(p){return {text:p.match,type:'match'};});
   var allCards = targets.concat(matches).sort(function(){return Math.random()-.5;});
 
-  var html = '<p style="font-size:12px;color:var(--muted);margin-bottom:10px;">Match each word with its English translation. Tap a word, then tap its match!</p>';
+  var html = '<p style="font-size:12px;color:var(--muted);margin-bottom:10px;">Match each word/phrase with its English translation. Tap a word, then tap its match!</p>';
   html += '<div class="match-grid">';
   allCards.forEach(function(card,i){
     html += '<div class="match-item" id="mc'+i+'" data-text="'+esc(card.text)+'" data-type="'+card.type+'" onclick="matchClick('+i+',this)">'+esc(card.text)+'</div>';
@@ -1514,7 +2236,6 @@ function buildMatchGame() {
   html += '<button onclick="initGame(\'match\')" style="background:var(--highlight);color:var(--accent-light);border:1px solid var(--accent);border-radius:8px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;margin-top:12px;width:100%;">🔄 New Game</button>';
 
   document.getElementById('gameArea').innerHTML = html;
-  // Store pairs for checking
   window._matchPairs = pairs;
 }
 
@@ -1522,7 +2243,6 @@ function matchClick(idx, el) {
   if(el.classList.contains('correct') || el.classList.contains('disabled')) return;
 
   if(!matchSelected) {
-    // First selection
     if(el.classList.contains('selected')) { el.classList.remove('selected'); return; }
     document.querySelectorAll('.match-item').forEach(function(i){i.classList.remove('selected');});
     el.classList.add('selected');
@@ -1530,14 +2250,12 @@ function matchClick(idx, el) {
   } else {
     if(matchSelected.idx === idx) { el.classList.remove('selected'); matchSelected=null; return; }
     if(matchSelected.type === el.dataset.type) {
-      // Same type — reselect
       document.querySelectorAll('.match-item').forEach(function(i){i.classList.remove('selected');});
       el.classList.add('selected');
       matchSelected = {idx:idx, el:el, text:el.dataset.text, type:el.dataset.type};
       return;
     }
 
-    // Check if pair matches
     var target = matchSelected.type === 'target' ? matchSelected.text : el.dataset.text;
     var match  = matchSelected.type === 'match'  ? matchSelected.text : el.dataset.text;
     var pair = window._matchPairs.find(function(p){return p.target===target && p.match===match;});
@@ -1573,7 +2291,9 @@ function matchClick(idx, el) {
   }
 }
 
-/* FILL GAME */
+/* ═══════════════
+   FILL GAME
+   ═══════════════ */
 function buildFillGame() {
   var data = GAME_DATA[currentLang].fill;
   if(!data || !data.length){
@@ -1637,14 +2357,12 @@ function nextFill() {
   fillIdx++;
   var data = GAME_DATA[currentLang].fill;
   if(fillIdx >= data.length) {
-    // Show completion
     var pct = Math.round((fillScore/data.length)*100);
     var emoji = pct>=80?'🏆':pct>=60?'🎉':'📚';
     document.getElementById('gameArea').innerHTML =
       '<div style="text-align:center;padding:24px;background:#0f172a;border-radius:12px;border:1px solid var(--border);">'+
       '<div style="font-size:44px;">'+emoji+'</div>'+
-      '<div style="font-size:18px;font-weight:800;color:#fff;margin:8px 0;">'+
-      (pct>=80?'Excellent!':pct>=60?'Well done!':'Keep practicing!')+'</div>'+
+      '<div style="font-size:18px;font-weight:800;color:#fff;margin:8px 0;">'+(pct>=80?'Excellent!':pct>=60?'Well done!':'Keep practicing!')+'</div>'+
       '<div style="font-size:32px;font-weight:900;color:var(--gold);margin:8px 0;">'+fillScore+' / '+data.length+'</div>'+
       '<div style="font-size:13px;color:var(--muted);margin-bottom:16px;">'+pct+'% correct</div>'+
       '<button onclick="initGame(\'fill\')" style="background:linear-gradient(135deg,var(--gold),#f97316);color:#000;border:none;border-radius:8px;padding:11px 24px;font-size:14px;font-weight:800;cursor:pointer;">🔄 Play Again</button>'+
@@ -1654,7 +2372,9 @@ function nextFill() {
   }
 }
 
-/* SCRAMBLE GAME */
+/* ═══════════════
+   SCRAMBLE GAME
+   ═══════════════ */
 function buildScrambleGame() {
   var data = GAME_DATA[currentLang].scramble;
   if(!data||!data.length){
@@ -1716,6 +2436,316 @@ function nextScramble() {
   }
 }
 
+/* ═══════════════════════════════════
+   ⚡ SPEED ROUND GAME
+   ═══════════════════════════════════ */
+function buildSpeedStart() {
+  var html = '<div class="speed-arena"><div class="speed-start-screen">';
+  html += '<div style="font-size:52px;margin-bottom:10px;">⚡</div>';
+  html += '<div style="font-size:20px;font-weight:900;color:#fff;margin-bottom:8px;">Speed Round</div>';
+  html += '<div style="font-size:13px;color:var(--muted);margin-bottom:6px;line-height:1.7;">Choose the correct English translation as fast as you can!<br>You have <strong style="color:var(--gold);">60 seconds</strong> — build combos for bonus points!</div>';
+  html += '<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:16px 0;">';
+  html += '<div style="background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);border-radius:8px;padding:8px 14px;font-size:12px;text-align:center;"><div style="font-size:18px;">🎯</div><div style="color:var(--accent-light);font-weight:700;">+10 pts</div><div style="color:var(--muted);">Correct</div></div>';
+  html += '<div style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:8px 14px;font-size:12px;text-align:center;"><div style="font-size:18px;">🔥</div><div style="color:var(--gold);font-weight:700;">+5 bonus</div><div style="color:var(--muted);">3-streak</div></div>';
+  html += '<div style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:8px 14px;font-size:12px;text-align:center;"><div style="font-size:18px;">💀</div><div style="color:#f87171;font-weight:700;">Streak breaks</div><div style="color:var(--muted);">Wrong answer</div></div>';
+  html += '</div>';
+  html += '<button onclick="startSpeedRound()" style="background:linear-gradient(135deg,var(--gold),#f97316);color:#000;border:none;border-radius:10px;padding:14px 32px;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 4px 20px rgba(245,158,11,.3);">⚡ START!</button>';
+  html += '</div></div>';
+  document.getElementById('gameArea').innerHTML = html;
+}
+
+function startSpeedRound() {
+  var rawData = GAME_DATA[currentLang].speed;
+  // Shuffle
+  speedQuestions = rawData.slice().sort(function(){return Math.random()-.5;});
+  speedIdx = 0;
+  speedScore = 0;
+  speedStreak = 0;
+  speedBestStreak = 0;
+  speedTimeLeft = 60;
+  speedAnswered = false;
+  gameScore = 0;
+  updateScore();
+  renderSpeedQuestion();
+  // Start timer
+  speedTimer = setInterval(function(){
+    speedTimeLeft--;
+    updateSpeedTimer();
+    if(speedTimeLeft <= 0) {
+      clearInterval(speedTimer); speedTimer = null;
+      showSpeedResult();
+    }
+  }, 1000);
+}
+
+function renderSpeedQuestion() {
+  if(speedIdx >= speedQuestions.length) {
+    speedIdx = 0;
+    speedQuestions = speedQuestions.sort(function(){return Math.random()-.5;});
+  }
+  var q = speedQuestions[speedIdx];
+  speedAnswered = false;
+
+  // Build options: correct + 3 wrong shuffled
+  var opts = [q.correct].concat(q.wrong.slice(0,3)).sort(function(){return Math.random()-.5;});
+
+  var circumference = 2 * Math.PI * 22;
+  var dashOffset = circumference * (1 - speedTimeLeft/60);
+
+  var timerColor = speedTimeLeft > 20 ? '#3b82f6' : speedTimeLeft > 10 ? '#f59e0b' : '#ef4444';
+
+  var html = '<div class="speed-arena">';
+  html += '<div class="speed-header">';
+  html += '<div class="speed-timer-wrap">';
+  html += '<div class="speed-timer-ring"><svg width="52" height="52" viewBox="0 0 52 52">';
+  html += '<circle class="ring-bg" cx="26" cy="26" r="22"/>';
+  html += '<circle class="ring-fill" id="speedRingFill" cx="26" cy="26" r="22" stroke="'+timerColor+'" stroke-dasharray="'+circumference+'" stroke-dashoffset="'+dashOffset+'"/>';
+  html += '</svg><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><span class="speed-timer'+(speedTimeLeft<=10?' danger':'')+'" id="speedTimerNum">'+speedTimeLeft+'</span></div></div>';
+  html += '</div>';
+  html += '<div style="text-align:center;">';
+  html += '<div style="font-size:11px;color:var(--muted);">QUESTION</div>';
+  html += '<div style="font-size:18px;font-weight:900;color:#fff;">'+(speedIdx+1)+'</div>';
+  html += '</div>';
+  html += '<div class="speed-streak" id="speedStreakDisp">'+(speedStreak>=3?'🔥':'')+' x'+speedStreak+'</div>';
+  html += '</div>';
+
+  // Progress bar
+  var prog = (speedTimeLeft/60*100);
+  html += '<div class="speed-progress-bar"><div class="speed-progress-fill" id="speedProgBar" style="width:'+prog+'%;background:linear-gradient(90deg,'+timerColor+',var(--green));"></div></div>';
+
+  html += '<div class="speed-word-display" id="speedWordDisp">'+esc(q.word)+'</div>';
+  html += '<div class="speed-options">';
+  opts.forEach(function(opt,i){
+    html += '<div class="speed-opt" id="sopt'+i+'" data-val="'+esc(opt)+'" onclick="answerSpeed(this,\''+esc(opt)+'\',\''+esc(q.correct)+'\')">'+esc(opt)+'</div>';
+  });
+  html += '</div>';
+  html += '<div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);">';
+  html += '<span>Score: <strong style="color:var(--gold);">'+speedScore+'</strong></span>';
+  html += '<span>Best streak: <strong style="color:#f97316;">'+speedBestStreak+'</strong></span>';
+  html += '</div>';
+  html += '</div>';
+
+  document.getElementById('gameArea').innerHTML = html;
+}
+
+function answerSpeed(el, chosen, correct) {
+  if(speedAnswered) return;
+  speedAnswered = true;
+
+  if(chosen === correct) {
+    el.classList.add('flash-correct');
+    speedStreak++;
+    if(speedStreak > speedBestStreak) speedBestStreak = speedStreak;
+    var pts = 10 + (speedStreak >= 3 ? 5 : 0);
+    speedScore += pts;
+    gameScore += pts;
+    updateScore();
+    // Show combo popup
+    if(speedStreak >= 3) {
+      var popup = document.createElement('div');
+      popup.className = 'speed-combo-popup';
+      popup.textContent = speedStreak >= 5 ? '🔥 x'+speedStreak+' COMBO!' : '🔥 Combo x'+speedStreak+'!';
+      var arena = el.closest('.speed-arena');
+      if(arena){ arena.style.position='relative'; arena.appendChild(popup); setTimeout(function(){popup.remove();},700); }
+    }
+    setTimeout(function(){
+      speedIdx++;
+      renderSpeedQuestion();
+    }, 350);
+  } else {
+    el.classList.add('flash-wrong');
+    // Show correct answer briefly
+    var allOpts = document.querySelectorAll('.speed-opt');
+    allOpts.forEach(function(o){ if(o.dataset.val===correct) o.classList.add('flash-correct'); });
+    speedStreak = 0;
+    setTimeout(function(){
+      speedIdx++;
+      renderSpeedQuestion();
+    }, 700);
+  }
+}
+
+function updateSpeedTimer() {
+  var numEl = document.getElementById('speedTimerNum');
+  var ringEl = document.getElementById('speedRingFill');
+  var progEl = document.getElementById('speedProgBar');
+  if(numEl) {
+    numEl.textContent = speedTimeLeft;
+    numEl.className = 'speed-timer' + (speedTimeLeft<=10?' danger':'');
+  }
+  var circumference = 2 * Math.PI * 22;
+  var dashOffset = circumference * (1 - speedTimeLeft/60);
+  var timerColor = speedTimeLeft > 20 ? '#3b82f6' : speedTimeLeft > 10 ? '#f59e0b' : '#ef4444';
+  if(ringEl){ ringEl.setAttribute('stroke-dashoffset', dashOffset); ringEl.setAttribute('stroke', timerColor); }
+  if(progEl){ progEl.style.width = (speedTimeLeft/60*100)+'%'; progEl.style.background = 'linear-gradient(90deg,'+timerColor+',var(--green))'; }
+}
+
+function showSpeedResult() {
+  var pct = Math.min(100, Math.round(speedScore / (speedQuestions.length * 10) * 100));
+  var grade, emoji, msg;
+  if(speedScore >= 150){ grade='S'; emoji='👑'; msg='LEGENDARY! You\'re a speed demon!';}
+  else if(speedScore >= 100){ grade='A'; emoji='🏆'; msg='Outstanding! Super fast!';}
+  else if(speedScore >= 60){ grade='B'; emoji='⭐'; msg='Great job! Keep practicing!';}
+  else if(speedScore >= 30){ grade='C'; emoji='👍'; msg='Good effort! Speed up next time!';}
+  else { grade='D'; emoji='📚'; msg='Keep studying and try again!';}
+
+  var html = '<div class="speed-arena"><div class="speed-result-screen">';
+  html += '<div class="speed-result-grade">'+emoji+'</div>';
+  html += '<div style="font-size:13px;color:var(--muted);margin-bottom:4px;">GRADE</div>';
+  html += '<div style="font-size:52px;font-weight:900;color:var(--gold);line-height:1;">'+grade+'</div>';
+  html += '<div class="speed-result-score" style="margin:12px 0;">'+speedScore+'</div>';
+  html += '<div style="font-size:13px;color:var(--muted);margin-bottom:4px;">points in 60 seconds</div>';
+  html += '<div style="font-size:14px;font-weight:700;color:#fff;margin:12px 0;">'+msg+'</div>';
+  html += '<div style="display:flex;gap:16px;justify-content:center;margin:12px 0;font-size:13px;">';
+  html += '<div style="text-align:center;"><div style="color:var(--green);font-weight:800;font-size:18px;">'+speedScore+'</div><div style="color:var(--muted);">Total pts</div></div>';
+  html += '<div style="text-align:center;"><div style="color:#f97316;font-weight:800;font-size:18px;">'+speedBestStreak+'</div><div style="color:var(--muted);">Best streak</div></div>';
+  html += '<div style="text-align:center;"><div style="color:var(--accent-light);font-weight:800;font-size:18px;">'+speedIdx+'</div><div style="color:var(--muted);">Answered</div></div>';
+  html += '</div>';
+  html += '<button onclick="startSpeedRound()" style="background:linear-gradient(135deg,var(--gold),#f97316);color:#000;border:none;border-radius:10px;padding:13px 28px;font-size:14px;font-weight:900;cursor:pointer;margin-top:8px;">⚡ Play Again</button>';
+  html += '</div></div>';
+  document.getElementById('gameArea').innerHTML = html;
+}
+
+/* ═══════════════════════════════════
+   🪢 HANGMAN GAME
+   ═══════════════════════════════════ */
+function buildHangmanGame() {
+  var data = GAME_DATA[currentLang].hangman;
+  if(!data||!data.length){
+    document.getElementById('gameArea').innerHTML='<p style="color:var(--muted);font-size:13px;">Hangman not available for this language yet.</p>';
+    return;
+  }
+  // Pick random word
+  hmWordData = data[Math.floor(Math.random()*data.length)];
+  hmWord = hmWordData.word.toUpperCase();
+  hmGuessed = [];
+  hmWrong = 0;
+  renderHangman();
+}
+
+function renderHangman() {
+  var isWin = hmWord.split('').every(function(c){ return c===' '||hmGuessed.indexOf(c)>=0; });
+  var isLose = hmWrong >= hmMaxWrong;
+
+  var html = '<div class="hangman-arena">';
+
+  // Header
+  html += '<div class="hangman-header">';
+  html += '<div><div style="font-size:14px;font-weight:800;color:#c4b5fd;">🪢 Hangman</div>';
+  html += '<div style="font-size:11px;color:var(--muted);">Guess the word!</div></div>';
+  html += '<div class="hangman-lives">';
+  for(var h=0;h<hmMaxWrong;h++){
+    html += '<span class="hangman-heart'+(h>=hmMaxWrong-hmWrong?' lost':'')+'">❤️</span>';
+  }
+  html += '</div></div>';
+
+  // Body
+  html += '<div class="hangman-body">';
+
+  // SVG Hangman drawing
+  html += '<div class="hangman-svg-wrap">';
+  html += '<svg class="hangman-svg" width="130" height="150" viewBox="0 0 130 150">';
+  // Gallows
+  html += '<line x1="10" y1="145" x2="120" y2="145" stroke="#475569" stroke-width="3" stroke-linecap="round"/>';
+  html += '<line x1="30" y1="145" x2="30" y2="10" stroke="#475569" stroke-width="3" stroke-linecap="round"/>';
+  html += '<line x1="30" y1="10" x2="75" y2="10" stroke="#475569" stroke-width="3" stroke-linecap="round"/>';
+  html += '<line x1="75" y1="10" x2="75" y2="25" stroke="#475569" stroke-width="2" stroke-linecap="round"/>';
+
+  var bodyColor = isLose ? '#ef4444' : '#8b5cf6';
+  // Head
+  if(hmWrong>=1) html += '<circle cx="75" cy="35" r="12" stroke="'+bodyColor+'" stroke-width="2.5" fill="none"/>';
+  // Body
+  if(hmWrong>=2) html += '<line x1="75" y1="47" x2="75" y2="85" stroke="'+bodyColor+'" stroke-width="2.5" stroke-linecap="round"/>';
+  // Left arm
+  if(hmWrong>=3) html += '<line x1="75" y1="58" x2="50" y2="73" stroke="'+bodyColor+'" stroke-width="2.5" stroke-linecap="round"/>';
+  // Right arm
+  if(hmWrong>=4) html += '<line x1="75" y1="58" x2="100" y2="73" stroke="'+bodyColor+'" stroke-width="2.5" stroke-linecap="round"/>';
+  // Left leg
+  if(hmWrong>=5) html += '<line x1="75" y1="85" x2="50" y2="112" stroke="'+bodyColor+'" stroke-width="2.5" stroke-linecap="round"/>';
+  // Right leg (dead)
+  if(hmWrong>=6) html += '<line x1="75" y1="85" x2="100" y2="112" stroke="'+bodyColor+'" stroke-width="2.5" stroke-linecap="round"/>';
+  // Face when dead
+  if(isLose){
+    html += '<line x1="69" y1="30" x2="72" y2="33" stroke="#ef4444" stroke-width="2"/>';
+    html += '<line x1="72" y1="30" x2="69" y2="33" stroke="#ef4444" stroke-width="2"/>';
+    html += '<line x1="78" y1="30" x2="81" y2="33" stroke="#ef4444" stroke-width="2"/>';
+    html += '<line x1="81" y1="30" x2="78" y2="33" stroke="#ef4444" stroke-width="2"/>';
+    html += '<path d="M69,41 Q75,37 81,41" stroke="#ef4444" stroke-width="2" fill="none"/>';
+  } else if(isWin){
+    html += '<circle cx="70" cy="33" r="2" fill="#10b981"/>';
+    html += '<circle cx="80" cy="33" r="2" fill="#10b981"/>';
+    html += '<path d="M69,38 Q75,43 81,38" stroke="#10b981" stroke-width="2" fill="none"/>';
+  }
+  html += '</svg>';
+  html += '</div>';
+
+  // Right side: category, hint, word
+  html += '<div class="hangman-right">';
+  html += '<div class="hangman-category">📂 '+esc(hmWordData.category)+'</div>';
+  html += '<div class="hangman-hint">💡 '+esc(hmWordData.hint)+'</div>';
+
+  // Word display
+  html += '<div class="hangman-word-display">';
+  hmWord.split('').forEach(function(letter){
+    if(letter === ' '){
+      html += '<div class="hangman-letter-slot space"></div>';
+    } else {
+      var revealed = hmGuessed.indexOf(letter)>=0;
+      html += '<div class="hangman-letter-slot'+(revealed?' revealed':'')+'">'+(revealed?letter:'')+'</div>';
+    }
+  });
+  html += '</div>';
+
+  // Wrong guesses display
+  var wrongLetters = hmGuessed.filter(function(g){return hmWord.indexOf(g)<0;});
+  if(wrongLetters.length > 0) {
+    html += '<div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Wrong: <span style="color:#f87171;font-weight:700;">'+wrongLetters.join(', ')+'</span></div>';
+  }
+  html += '</div>';
+  html += '</div>'; // hangman-body
+
+  // Feedback
+  if(isWin||isLose){
+    html += '<div class="hangman-feedback '+(isWin?'win':'lose')+'">';
+    if(isWin) html += '🎉 Excellent! The word was "'+esc(hmWordData.word)+'"! +50 points!';
+    else html += '💀 The word was "'+esc(hmWordData.word)+'". Better luck next time!';
+    html += '</div>';
+    html += '<div style="display:flex;gap:10px;justify-content:center;margin-top:10px;">';
+    html += '<button onclick="buildHangmanGame()" style="background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;border-radius:8px;padding:11px 22px;font-size:13px;font-weight:800;cursor:pointer;">🎲 New Word</button>';
+    html += '</div>';
+  } else {
+    // Keyboard
+    html += '<div class="hangman-keyboard">';
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(function(letter){
+      var isGuessed = hmGuessed.indexOf(letter)>=0;
+      var isCorrect = isGuessed && hmWord.indexOf(letter)>=0;
+      var isWrong   = isGuessed && hmWord.indexOf(letter)<0;
+      html += '<button class="hm-key'+(isCorrect?' used-correct':isWrong?' used-wrong':'')+'" '+
+        (isGuessed?'disabled':'')+' onclick="guessHangman(\''+letter+'\')">'+ letter +'</button>';
+    });
+    html += '</div>';
+    html += '<div style="text-align:center;font-size:12px;color:var(--muted);">'+
+      (hmMaxWrong-hmWrong)+' lives remaining · Tap a letter to guess</div>';
+  }
+
+  html += '</div>'; // hangman-arena
+  document.getElementById('gameArea').innerHTML = html;
+}
+
+function guessHangman(letter) {
+  if(hmGuessed.indexOf(letter)>=0) return;
+  hmGuessed.push(letter);
+  if(hmWord.indexOf(letter)<0){
+    hmWrong++;
+  }
+  var isWin = hmWord.split('').every(function(c){ return c===' '||hmGuessed.indexOf(c)>=0; });
+  if(isWin){ gameScore+=50; updateScore(); }
+  renderHangman();
+}
+
+/* ═══════════════
+   UTILITIES
+   ═══════════════ */
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 
 /* INIT */
