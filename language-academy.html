@@ -13,6 +13,7 @@
   --text:#e2e8f0;--muted:#64748b;--highlight:#1e3a5f;
   --purple:#8b5cf6;--pink:#ec4899;
 }
+html{scroll-behavior:smooth;scroll-padding-top:130px;}
 body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;}
 
 /* HEADER */
@@ -44,18 +45,18 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .main{padding:16px;max-width:780px;margin:0 auto;}
 
 /* SECTION CARD */
-.section-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;display:none;}
+.section-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;display:none;scroll-margin-top:120px;}
 .section-card.active{display:block;}
 .section-title{font-size:18px;font-weight:800;color:var(--accent-light);margin-bottom:4px;display:flex;align-items:center;gap:10px;}
 .section-subtitle{font-size:12px;color:var(--muted);margin-bottom:18px;}
 
 /* LESSON BLOCKS */
-.lesson-block{background:#0f172a;border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px;border-left:3px solid var(--accent);}
+.lesson-block{background:linear-gradient(180deg,#0f172a,#111c2f);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:18px;border-left:4px solid var(--accent);box-shadow:0 10px 24px rgba(2,8,23,.35);scroll-margin-top:120px;}
 .lesson-block.green{border-left-color:var(--green);}
 .lesson-block.gold{border-left-color:var(--gold);}
 .lesson-block.purple{border-left-color:var(--purple);}
 .lesson-block.pink{border-left-color:var(--pink);}
-.lesson-title{font-size:13px;font-weight:800;color:var(--accent-light);margin-bottom:10px;}
+.lesson-title{font-size:13px;font-weight:800;color:var(--accent-light);margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .lesson-block.green .lesson-title{color:var(--green);}
 .lesson-block.gold .lesson-title{color:var(--gold);}
 .lesson-block.purple .lesson-title{color:#a78bfa;}
@@ -81,6 +82,25 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .example-box .ar-color{font-weight:700;color:#f472b6;direction:rtl;display:block;}
 .example-box .pt-color{color:#fbbf24;}
 
+/* BILINGUAL UNIT LAYOUT */
+.unit-theme{font-size:12px;color:#94a3b8;line-height:1.6;margin:0 0 12px;}
+.unit-section-label{font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin:16px 0 8px;display:block;}
+.unit-pair{background:rgba(30,58,95,.2);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:12px 14px;margin-bottom:12px;box-shadow:inset 0 0 0 1px rgba(59,130,246,.08);}
+.unit-fr{color:#fff;font-size:14px;line-height:1.8;font-weight:700;}
+.unit-en{color:#fbbf24;font-size:13px;line-height:1.7;margin-top:6px;padding-left:14px;border-left:2px solid rgba(251,191,36,.35);}
+.unit-toggle{margin-top:10px;}
+.unit-toggle summary{cursor:pointer;color:#dbeafe;font-size:12px;font-weight:800;list-style:none;background:rgba(59,130,246,.14);border:1px solid rgba(96,165,250,.35);padding:7px 10px;border-radius:999px;display:inline-block;}
+.unit-toggle summary::-webkit-details-marker{display:none;}
+.unit-toggle[open] summary{margin-bottom:8px;color:#fbbf24;background:rgba(245,158,11,.16);border-color:rgba(245,158,11,.45);}
+.unit-badge{display:inline-block;font-size:10px;font-weight:800;padding:3px 9px;border-radius:999px;background:rgba(16,185,129,.18);color:var(--green);border:1px solid rgba(16,185,129,.35);}
+.grammar-rule{font-size:13px;color:#cbd5e1;line-height:1.7;margin:6px 0 10px;}
+.grammar-target{display:inline-block;background:rgba(59,130,246,.18);color:#bfdbfe;border:1px solid rgba(96,165,250,.35);border-radius:6px;padding:0 5px;font-weight:800;}
+.unit-practice-list{margin:0;padding-left:18px;color:#cbd5e1;font-size:13px;line-height:1.8;}
+.unit-practice-list li{margin-bottom:4px;}
+.unit-note{background:rgba(245,158,11,.09);border:1px solid rgba(245,158,11,.25);border-radius:8px;padding:10px 12px;font-size:12px;color:#fcd34d;line-height:1.7;margin:10px 0;}
+.unit-extra-title{font-size:11px;font-weight:800;color:#a78bfa;text-transform:uppercase;letter-spacing:1px;margin:12px 0 8px;}
+.unit-table-wrap{margin:10px 0 14px;}
+
 /* TIP */
 .tip-box{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:10px 14px;margin:10px 0;font-size:12px;color:#fcd34d;line-height:1.6;}
 .tip-box strong{color:var(--gold);}
@@ -89,6 +109,26 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .badge-pill{display:inline-block;font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;margin-left:8px;vertical-align:middle;}
 .badge-beginner{background:rgba(16,185,129,.2);color:var(--green);border:1px solid rgba(16,185,129,.3);}
 .badge-intermediate{background:rgba(245,158,11,.2);color:var(--gold);border:1px solid rgba(245,158,11,.3);}
+.topic-unit-nav{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 16px;position:sticky;top:62px;z-index:40;background:rgba(10,14,26,.97);padding:8px 4px 10px;border-bottom:1px solid rgba(59,130,246,.22);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
+.unit-nav-btn{background:rgba(59,130,246,.1);border:1px solid rgba(96,165,250,.32);border-radius:999px;padding:6px 10px;font-size:11px;font-weight:800;color:#bfdbfe;cursor:pointer;}
+.unit-nav-btn:hover{background:rgba(96,165,250,.2);color:#fff;}
+.unit-mini-option{background:#0f172a;border:1.5px solid var(--border);border-radius:10px;padding:11px 10px;font-size:12px;font-weight:700;color:#e2e8f0;cursor:pointer;transition:all .15s;text-align:center;}
+.unit-mini-option:hover:not(:disabled){border-color:var(--accent);background:var(--highlight);color:var(--accent-light);transform:translateY(-1px);}
+.unit-mini-option.correct{border-color:var(--green)!important;background:rgba(16,185,129,.15)!important;color:var(--green)!important;}
+.unit-mini-option.wrong{border-color:var(--red)!important;background:rgba(239,68,68,.1)!important;color:#f87171!important;}
+.unit-mini-option:disabled{cursor:not-allowed;opacity:.75;}
+.unit-quiz-wrap{background:rgba(15,23,42,.7);border:1px solid rgba(59,130,246,.2);border-radius:14px;padding:16px;margin-top:14px;}
+.unit-quiz-q{font-size:15px;font-weight:800;color:#fff;margin-bottom:12px;text-align:center;padding:10px;background:rgba(59,130,246,.08);border-radius:8px;border:1px solid rgba(59,130,246,.15);}
+.unit-quiz-progress{font-size:11px;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between;}
+.unit-quiz-feedback{font-size:12px;font-weight:700;padding:8px 12px;border-radius:8px;margin-top:10px;display:none;}
+.unit-quiz-feedback.show.correct{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.4);color:var(--green);display:block;}
+.unit-quiz-feedback.show.wrong{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#f87171;display:block;}
+.flip-card-wrap{perspective:600px;cursor:pointer;margin:8px 0;}
+.flip-card{width:100%;min-height:80px;position:relative;transform-style:preserve-3d;transition:transform .45s;border-radius:12px;}
+.flip-card.flipped{transform:rotateY(180deg);}
+.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;display:flex;align-items:center;justify-content:center;padding:14px;font-size:14px;font-weight:800;text-align:center;}
+.flip-front{background:rgba(59,130,246,.12);border:1.5px solid rgba(96,165,250,.35);color:#bfdbfe;}
+.flip-back{background:rgba(245,158,11,.12);border:1.5px solid rgba(245,158,11,.35);color:#fcd34d;transform:rotateY(180deg);}
 
 /* PROGRESS */
 .progress-pill{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:14px;width:fit-content;}
@@ -235,6 +275,17 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 /* Game container tabs highlight */
 .game-mode-btn.speed-btn.active{background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(234,88,12,.2));border-color:var(--gold);color:var(--gold);}
 .game-mode-btn.hangman-btn.active{background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(236,72,153,.2));border-color:#a78bfa;color:#c4b5fd;}
+.game-mode-btn.essay-btn.active{background:linear-gradient(135deg,rgba(16,185,129,.18),rgba(96,165,250,.2));border-color:var(--green);color:var(--green);}
+
+.essay-builder-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0;}
+.essay-token{background:#0f172a;border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:700;cursor:pointer;text-align:center;transition:all .15s;}
+.essay-token:hover{border-color:var(--accent);background:var(--highlight);color:var(--accent-light);}
+.essay-token.selected{border-color:var(--gold);background:rgba(245,158,11,.12);color:var(--gold);}
+.essay-builder-board{background:#07101d;border:1px solid var(--border);border-radius:12px;padding:12px;min-height:92px;display:flex;gap:6px;flex-wrap:wrap;align-items:flex-start;}
+.essay-builder-word{background:rgba(59,130,246,.12);border:1px solid rgba(96,165,250,.32);border-radius:8px;padding:7px 10px;font-size:12px;font-weight:800;color:#bfdbfe;}
+.essay-feedback{font-size:13px;font-weight:700;padding:10px 12px;border-radius:8px;margin-top:10px;display:none;}
+.essay-feedback.show.correct{background:rgba(16,185,129,.14);border:1px solid rgba(16,185,129,.42);color:var(--green);display:block;}
+.essay-feedback.show.wrong{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#f87171;display:block;}
 </style>
 </head>
 <body>
@@ -939,6 +990,568 @@ const CURRICULUM = {
               ['aller chez le médecin','to go to the doctor'],
               ['prendre des médicaments','to take medicine'],
             ]
+          }
+        ]
+      },
+      {
+        id: 'bilingual-business-french', icon: '🧠', title: 'Bilingual French Lesson Modules',
+        subtitle: '15 beginner-friendly units with French + English support in one flow',
+        level: 'beginner',
+        lessons: [
+          {
+            type: 'unit', title: 'Unit 1 — Organizing Your Day (Daily Routine)',
+            theme: 'Interview with Emmanuella Adjei, director of an online travel agency, about balancing work and personal life.',
+            vocabulary: [
+              ['organiser son temps', 'to organize one\'s time'],
+              ['se réveiller', 'to wake up'],
+              ['faire de la gymnastique', 'to do gymnastics / a workout'],
+              ['le petit déjeuner', 'breakfast'],
+              ['accompagner (les enfants)', 'to take / accompany (the children)'],
+              ['un déjeuner d\'affaires', 'a business lunch'],
+              ['consulter sa boîte mail', 'to check one\'s inbox'],
+              ['répondre aux courriels', 'to reply to emails'],
+              ['se coucher', 'to go to bed'],
+              ['une vie équilibrée', 'a balanced life']
+            ],
+            dialogue: [
+              { fr: 'Je me réveille tous les jours à 6 heures et demie. Je fais 30 minutes de gymnastique puis je réveille mes enfants à 7 heures.', en: 'I wake up every day at 6:30. I do 30 minutes of exercise, then I wake my children up at 7.' },
+              { fr: 'Je les accompagne en voiture à l\'école tous les jours. Nous partons de la maison entre 8 heures et 8 heures et demie.', en: 'I drive them to school every day. We leave the house between 8:00 and 8:30.' },
+              { fr: 'Après le dîner, je consulte ma boîte mail et je réponds aux courriels urgents.', en: 'After dinner, I check my inbox and reply to urgent emails.' }
+            ],
+            grammarRule: 'Rule: to describe a routine / habit in French, use the present tense + a time expression.',
+            grammarExamples: [
+              { fr: 'Je me réveille tous les jours à 6 heures et demie.', en: 'I wake up every day at 6:30.' },
+              { fr: 'J\'ai l\'habitude de prendre un petit café.', en: 'I usually have a coffee.' },
+              { fr: 'Une fois par semaine, le jeudi soir, je joue au tennis.', en: 'Once a week, on Thursday evenings, I play tennis.' }
+            ],
+            workplaceVocabulary: [
+              ['un agent', 'an agent'],
+              ['un conseiller (clientèle)', 'a (customer) advisor'],
+              ['un collaborateur / une collaboratrice', 'a co-worker'],
+              ['un partenaire', 'a partner'],
+              ['aller à des salons professionnels', 'to go to trade shows'],
+              ['contacter / rencontrer des clients', 'to contact / meet clients'],
+              ['consulter des dossiers', 'to review files']
+            ],
+            practice: ['Read each French sentence aloud, then reveal the English line to check your understanding.', 'Practice saying your own daily routine with the same time expressions: tous les jours, le matin, le soir.', 'Repeat the key vocabulary from the table and say the English meaning out loud.']
+          },
+          {
+            type: 'unit', title: 'Unit 2 — Reflexive Verbs (les verbes pronominaux)',
+            theme: 'A reflexive verb is one where the subject does the action to itself. In French, the reflexive pronoun comes before the verb.',
+            vocabulary: [
+              ['se réveiller', 'to wake up'],
+              ['s\'habiller', 'to get dressed'],
+              ['se doucher', 'to shower'],
+              ['s\'excuser', 'to apologize'],
+              ['se reposer', 'to rest']
+            ],
+            dialogue: [
+              { fr: 'Je me réveille.', en: 'I wake (myself) up.' },
+              { fr: 'Je réveille les enfants.', en: 'I wake the children up. (not reflexive — no pronoun, because the action is on someone else)' },
+              { fr: 'Il **s\'**habille.', en: 'He gets dressed.' },
+              { fr: 'Je **m\'**excuse.', en: 'I apologize. (before a vowel, me / te / se → m\'/t\'/s\')' }
+            ],
+            grammarRule: 'Rule (plain English): A reflexive verb is one where the subject does the action to itself. In French, it is marked by a reflexive pronoun (me / te / se / nous / vous / se) placed right before the verb.',
+            notes: [
+              'Negative form: put ne before the reflexive pronoun and pas after the verb.',
+              'With the infinitive: the pronoun goes right before the infinitive verb.'
+            ],
+            grammarExamples: [
+              { fr: 'Je me réveille.', en: 'I wake (myself) up.' },
+              { fr: 'Il **s\'**habille.', en: 'He gets dressed.' },
+              { fr: 'Je **m\'**excuse.', en: 'I apologize. (before a vowel, me / te / se → m\'/t\'/s\')' },
+              { fr: 'Je ne me réveille pas tôt le matin.', en: 'I don\'t wake up early in the morning.' },
+              { fr: 'Il ne se repose pas les week-ends.', en: 'He doesn\'t rest on weekends.' },
+              { fr: 'Ils vont se réveiller ce soir.', en: 'They are going to wake up tonight.' },
+              { fr: 'Je peux me promener tout seul dans la ville.', en: 'I can walk around the city by myself.' },
+              { fr: 'Nous voulons nous lever à 19 heures.', en: 'We want to get up at 7 PM.' }
+            ],
+            extraTables: [
+              {
+                title: 'Full conjugation table — se doucher / s\'habiller',
+                rows: [
+                  ['Subject', 'se doucher', 's\'habiller'],
+                  ['Je', 'je me douche', 'je m\'habille'],
+                  ['Tu', 'tu te douches', 'tu t\'habilles'],
+                  ['Il / Elle / On', 'il / elle / on se douche', 'il / elle / on s\'habille'],
+                  ['Nous', 'nous nous douchons', 'nous nous habillons'],
+                  ['Vous', 'vous vous douchez', 'vous vous habillez'],
+                  ['Ils / Elles', 'ils / elles se douchent', 'ils / elles s\'habillent']
+                ]
+              }
+            ],
+            practice: ['Compare the reflexive examples with the non-reflexive example to understand the difference between doing an action to yourself and doing an action to somebody else.', 'Read the full conjugation table aloud and notice where the reflexive pronoun stays before the verb.', 'Say the negative forms slowly: Je ne me réveille pas tôt le matin. Il ne se repose pas les week-ends.']
+          },
+          {
+            type: 'unit', title: 'Unit 3 — Getting Around: aller / partir / venir / arriver + à / de',
+            theme: 'Use à / au / en / aux to say where you are going or arriving, and de / du / de la / des to say where you are coming from.',
+            vocabulary: [
+              ['un aéroport', 'an airport'],
+              ['un atterrissage / atterrir', 'a landing / to land'],
+              ['une carte d\'embarquement', 'a boarding pass'],
+              ['un décollage / décoller', 'a take-off / to take off'],
+              ['une destination', 'a destination'],
+              ['un embarquement', 'boarding'],
+              ['une provenance', 'a place of origin'],
+              ['un siège', 'a seat'],
+              ['un terminal', 'a terminal'],
+              ['un vol', 'a flight']
+            ],
+            dialogue: [
+              { fr: 'Je vais à Accra.', en: 'I\'m going to Accra.' },
+              { fr: 'Ils vont au Sénégal.', en: 'They\'re going to Senegal.' },
+              { fr: 'Nous travaillons en France.', en: 'We work in France.' },
+              { fr: 'Ils arrivent aux États-Unis.', en: 'They arrive in the United States.' },
+              { fr: 'Je viens de Fiapre, dans la région Bono.', en: 'I come from Fiapre, in the Bono region.' }
+            ],
+            grammarRule: 'Rule (plain English): Use à / au / en / aux to say where you are going or arriving, and de / du / de la / des to say where you are coming from.',
+            grammarExamples: [
+              { fr: 'Je vais à Accra.', en: 'I\'m going to Accra.' },
+              { fr: 'Nous venons de la Guinée.', en: 'We come from Guinea.' },
+              { fr: 'Ces produits proviennent **de l\'**Inde.', en: 'These products come from India.' }
+            ],
+            practice: ['Say the destination sentences and then replace the place with your own city or country.', 'Say the origin sentences aloud and notice the difference between à and de.', 'Group the travel words into destination words and origin words.']
+          },
+          {
+            type: 'unit', title: 'Unit 4 — Talking About Food & Lunch Habits',
+            theme: 'Sample descriptions about lunch habits at work and at the canteen.',
+            vocabulary: [
+              ['déjeuner', 'to have lunch'],
+              ['la cantine', 'the canteen'],
+              ['la société', 'the company'],
+              ['des crudités', 'raw vegetables'],
+              ['de la viande', 'meat'],
+              ['des légumes', 'vegetables'],
+              ['du riz', 'rice'],
+              ['un repas d\'affaires', 'a business meal']
+            ],
+            dialogue: [
+              { fr: 'Je déjeune à la cantine de ma société. En général, je choisis d\'abord des crudités, ensuite je mange de la viande avec des légumes ou du riz.', en: 'I have lunch at my company\'s canteen. Generally I start with raw vegetables, then I eat meat with vegetables or rice.' },
+              { fr: 'Je n\'ai pas beaucoup de temps pour déjeuner alors je mange rapidement au bureau.', en: 'I don\'t have much time for lunch so I eat quickly at the office.' },
+              { fr: 'J\'ai beaucoup de repas d\'affaires à l\'extérieur, alors je fais très attention.', en: 'I have a lot of business meals out, so I\'m very careful (about what I eat).' }
+            ],
+            grammarRule: 'No new grammar rule is added here; this unit focuses on everyday business lunch vocabulary and simple present-tense descriptions.',
+            grammarExamples: [
+              { fr: 'Je déjeune à la cantine de ma société.', en: 'I have lunch at my company\'s canteen.' },
+              { fr: 'Je choisis d\'abord des crudités, ensuite je mange de la viande avec des légumes ou du riz.', en: 'I start with raw vegetables, then I eat meat with vegetables or rice.' }
+            ],
+            practice: ['Read the three sample descriptions aloud and underline the meal-related vocabulary.', 'Say which lunch situation is most like your own routine: canteen, office, business meal, or home.', 'Repeat the sentence frames with your own food preferences.']
+          },
+          {
+            type: 'unit', title: 'Unit 5 — Asking Questions (3 Levels of Formality)',
+            theme: 'French can ask a question formally, in standard form, or casually.',
+            vocabulary: [
+              ['où', 'where'],
+              ['quand', 'when'],
+              ['comment', 'how'],
+              ['qui', 'who'],
+              ['pourquoi', 'why'],
+              ['que / qu\'est-ce que', 'what']
+            ],
+            dialogue: [
+              { fr: 'Comment commencez-vous votre journée ?', en: 'How do you start your day?' },
+              { fr: 'Comment est-ce que vous commencez votre journée ?', en: 'How do you start your day?' },
+              { fr: 'Comment vous commencez votre journée ?', en: 'How do you start your day?' },
+              { fr: 'Avez-vous beaucoup de déjeuners professionnels ?', en: 'Do you have a lot of business lunches?' },
+              { fr: 'À quelle heure finissez-vous le soir ?', en: 'What time do you finish in the evening?' }
+            ],
+            grammarRule: 'Rule (plain English): French has three ways to ask a question — formal, standard, and casual. Beginners should learn to recognize all three even if they only use one.',
+            notes: [
+              'Formal (soutenue): verb–subject inversion — Comment commencez-vous votre journée ?',
+              'Standard: Est-ce que + subject + verb — Comment est-ce que vous commencez votre journée ?',
+              'Casual (familière): subject + verb + rising tone — Comment vous commencez votre journée ?'
+            ],
+            grammarExamples: [
+              { fr: 'Comment commencez-vous votre journée ?', en: 'How do you start your day?' },
+              { fr: 'Comment est-ce que vous commencez votre journée ?', en: 'How do you start your day?' },
+              { fr: 'Comment vous commencez votre journée ?', en: 'How do you start your day?' }
+            ],
+            extraTables: [
+              {
+                title: 'Question words',
+                rows: [
+                  ['où', 'where'],
+                  ['quand', 'when'],
+                  ['comment', 'how'],
+                  ['qui', 'who'],
+                  ['pourquoi', 'why'],
+                  ['que / qu\'est-ce que', 'what']
+                ]
+              }
+            ],
+            practice: ['Match each question type with its level of formality: formal, standard, casual.', 'Practice changing one question from formal to casual and notice the word order.', 'Use the question words où, quand, comment, qui, pourquoi, and que in your own questions.']
+          },
+          {
+            type: 'unit', title: 'Unit 6 — Partitive Articles (du / de la / de l\' / des)',
+            theme: 'Use partitive articles to talk about some of something uncountable or a portion of a whole.',
+            vocabulary: [
+              ['du café', 'some coffee'],
+              ['de la confiture', 'some jam'],
+              ['de l\'eau', 'some water'],
+              ['des fruits', 'some fruit']
+            ],
+            dialogue: [
+              { fr: 'Il y a du lait dans le frigo.', en: 'There\'s (some) milk in the fridge.' },
+              { fr: 'Tu veux des bonbons ?', en: 'Do you want (some) candy?' },
+              { fr: 'Je voudrais 2 kilos de tomates, s\'il vous plaît.', en: 'I\'d like 2 kilos of tomatoes, please.' }
+            ],
+            grammarRule: 'Rule (plain English): Use partitive articles to talk about “some” of something uncountable or a portion of a whole — not a specific number of items.',
+            notes: [
+              'In the negative, du / de la / des all become de or d\'.',
+              'When quantity is specified, also use de / d\'.'
+            ],
+            grammarExamples: [
+              { fr: 'Je prends du café au petit-déjeuner.', en: 'I have (some) coffee at breakfast.' },
+              { fr: 'Elle met de la confiture sur ses tartines.', en: 'She puts (some) jam on her toast.' },
+              { fr: 'Il boit toujours **de l\'**eau au réveil.', en: 'He always drinks (some) water when he wakes up.' },
+              { fr: 'Il est conseillé de manger des fruits tous les jours.', en: 'It\'s recommended to eat (some) fruit every day.' },
+              { fr: 'Il y a du lait dans le frigo. → Il n\'y a pas de lait dans le frigo.', en: 'There\'s (some) milk in the fridge. → There isn\'t any milk in the fridge.' },
+              { fr: 'Tu veux des bonbons ? → Non, je ne mange plus de bonbons.', en: 'Do you want (some) candy? → No, I don\'t eat candy anymore.' },
+              { fr: 'Je voudrais 2 kilos de tomates, s\'il vous plaît.', en: 'I\'d like 2 kilos of tomatoes, please.' },
+              { fr: 'Un paquet de café.', en: 'A packet of coffee.' }
+            ],
+            practice: ['Read the negative forms: Il n\'y a pas de lait dans le frigo. Je ne mange plus de bonbons.', 'Notice how du, de la, and des become de in the negative.', 'Replace the food words in the examples with your own food items.']
+          },
+          {
+            type: 'unit', title: 'Unit 7 — At the Restaurant ("Vous avez choisi ?")',
+            theme: 'A full restaurant dialogue with polite reservation and ordering phrases.',
+            vocabulary: [
+              ['une réservation', 'a reservation'],
+              ['deux couverts', 'two place settings'],
+              ['la carte', 'the menu'],
+              ['un menu trio', 'a set menu'],
+              ['une entrée', 'a starter'],
+              ['la garniture', 'the side'],
+              ['l\'addition', 'the bill']
+            ],
+            dialogue: [
+              { fr: 'Vous avez une réservation ?', en: 'Do you have a reservation?' },
+              { fr: 'Oui, nous avons réservé au nom de la société Magix.', en: 'Yes, we reserved under the name Magix company.' },
+              { fr: 'Deux couverts, c\'est bien cela ?', en: 'Two place settings, is that right?' },
+              { fr: 'Vous avez la carte, s\'il vous plaît ?', en: 'Could I have the menu, please?' },
+              { fr: 'Messieurs dames, vous avez choisi ?', en: 'Have you decided (what to order)?' }
+            ],
+            grammarRule: 'No new grammar rule is added here; this unit focuses on useful restaurant phrases and polite requests in context.',
+            notes: [
+              'Useful restaurant phrases: C\'est servi avec quoi ? Combien je vous dois ? Bleue / Saignante / À point / Bien cuite.'
+            ],
+            grammarExamples: [
+              { fr: 'On va prendre deux menus trio avec en entrée des chèvres chauds.', en: 'We\'ll have two set menus with warm goat cheese as a starter.' },
+              { fr: 'Quelle cuisson pour la viande ?', en: 'How would you like your meat cooked?' },
+              { fr: 'On voudrait commander les desserts, s\'il vous plaît.', en: 'We\'d like to order dessert, please.' }
+            ],
+            extraTables: [
+              {
+                title: 'Useful restaurant phrases',
+                rows: [
+                  ['C\'est servi avec quoi ?', 'What does it come with?'],
+                  ['Combien je vous dois ?', 'How much do I owe you?'],
+                  ['Bleue / Saignante / À point / Bien cuite', 'Blue-rare / Rare / Medium / Well-done (meat cooking levels)']
+                ]
+              }
+            ],
+            practice: ['Read the dialogue aloud and focus on the polite phrase structure: Vous avez..., Est-ce que..., s\'il vous plaît.', 'Match each phrase to a real restaurant action: reservation, ordering, asking for the bill.', 'Practice the useful phrases: C\'est servi avec quoi ? Combien je vous dois ?']
+          },
+          {
+            type: 'unit', title: 'Unit 8 — Demonstratives & Comparisons (Shopping)',
+            theme: 'Demonstrative adjectives and demonstrative pronouns with shopping examples.',
+            vocabulary: [
+              ['ce paquet', 'this / that packet'],
+              ['cette vendeuse', 'this / that saleswoman'],
+              ['ces chocolats', 'these / those chocolates'],
+              ['ces chaussures', 'these / those shoes'],
+              ['un assortiment', 'a selection']
+            ],
+            dialogue: [
+              { fr: 'Lesquels vous voulez ?', en: 'Which ones would you like?' },
+              { fr: 'Vous avez les chocolats au lait classiques, et là, des chocolats noirs moins sucrés et plus originaux.', en: 'You have the classic milk chocolates, and here, dark chocolates that are less sweet and more original.' },
+              { fr: 'Je cherche des chaussures de marche.', en: 'I\'m looking for walking shoes.' },
+              { fr: 'Quelle est votre pointure ?', en: 'What\'s your shoe size?' },
+              { fr: 'Regarde ces sacs, lequel tu préfères ?', en: 'Look at these bags, which one do you prefer?' }
+            ],
+            grammarRule: 'Rule (plain English): Demonstrative adjectives go with a noun: ce paquet, cette vendeuse, ces chaussures. Demonstrative pronouns replace the noun: celui-ci, celle-là, ceux-ci, celles-ci.',
+            notes: [
+              'Note: before a vowel / mute h, ce becomes cet (for example, cet assortiment).'
+            ],
+            grammarExamples: [
+              { fr: 'Je préfère celui-ci. Il est plus élégant.', en: 'I prefer this one. It\'s more elegant.' },
+              { fr: 'Ce sera tout, merci.', en: 'That\'ll be all, thanks.' },
+              { fr: 'Et avec ceci ?', en: 'Anything else?' }
+            ],
+            extraTables: [
+              {
+                title: 'Demonstratives',
+                rows: [
+                  ['masculine singular', 'ce paquet', 'celui-ci / celui-là'],
+                  ['feminine singular', 'cette vendeuse', 'celle-ci / celle-là'],
+                  ['masculine plural', 'ces chocolats', 'ceux-ci / ceux-là'],
+                  ['feminine plural', 'ces chaussures', 'celles-ci / celles-là']
+                ]
+              }
+            ],
+            practice: ['Read the adjective and pronoun pairs side by side and notice the difference between ce paquet and celui-ci.', 'Use the “which one” questions in a real shopping situation.', 'Repeat the shopping dialogue lines to build confidence with the vocabulary.']
+          },
+          {
+            type: 'unit', title: 'Unit 9 — Comparatives & Superlatives',
+            theme: 'Use plus...que, moins...que, aussi...que, and the superlative to compare people or things.',
+            vocabulary: [
+              ['plus ... que', 'more ... than'],
+              ['moins ... que', 'less ... than'],
+              ['aussi ... que', 'as ... as'],
+              ['le / la / les plus', 'the most'],
+              ['le / la / les moins', 'the least / the cheapest']
+            ],
+            dialogue: [
+              { fr: 'Kofi est plus intelligent que Duku.', en: 'Kofi is more intelligent than Duku.' },
+              { fr: 'Danny est moins fort que moi.', en: 'Danny is less strong than me.' },
+              { fr: 'L\'Industrie est aussi importante que l\'Agriculture.', en: 'Industry is as important as Agriculture.' },
+              { fr: 'Je connais la plus belle église de ce quartier.', en: 'I know the most beautiful church in this neighborhood.' }
+            ],
+            grammarRule: 'Rule (plain English): Compare two things with plus...que, moins...que, or aussi...que. The superlative is le / la / les + plus / moins.',
+            notes: [
+              'Negative comparison uses ne...pas si...que.',
+              'Superlative = le / la / les + plus / moins.'
+            ],
+            grammarExamples: [
+              { fr: 'Kofi est plus intelligent que Duku.', en: 'Kofi is more intelligent than Duku.' },
+              { fr: 'Danny est moins fort que moi.', en: 'Danny is less strong than me.' },
+              { fr: 'L\'Industrie est aussi importante que l\'Agriculture.', en: 'Industry is as important as Agriculture.' },
+              { fr: 'Monsieur Mac **n\'**est pas si gentil que Monsieur Luc.', en: 'Mr. Mac isn\'t as kind as Mr. Luc.' },
+              { fr: 'Je connais la plus belle église de ce quartier.', en: 'I know the most beautiful church in this neighborhood.' },
+              { fr: 'Voici le moins cher supermarché de mon village.', en: 'Here\'s the cheapest supermarket in my village.' },
+              { fr: 'Capi et Joli Cœur sont les plus intelligents animaux du monde.', en: 'Capi and Joli Cœur are the most intelligent animals in the world.' }
+            ],
+            practice: ['Build your own comparisons with people, places, and objects you know.', 'Practice the superlative sentence pattern and replace the nouns with your own examples.', 'Say the negative comparison sentence out loud and notice the ne...pas si ... que form.']
+          },
+          {
+            type: 'unit', title: 'Unit 10 — Renting an Apartment',
+            theme: 'A short dialogue for viewing or renting an apartment.',
+            vocabulary: [
+              ['un studio', 'a studio apartment'],
+              ['un deux pièces (T2)', 'a 2-room apartment'],
+              ['meublé / non meublé', 'furnished / unfurnished'],
+              ['une entrée', 'an entrance hall'],
+              ['un séjour', 'a living room'],
+              ['une chambre', 'a bedroom'],
+              ['la cuisine équipée', 'a fitted kitchen'],
+              ['le parquet / la moquette', 'wood flooring / carpet'],
+              ['le chauffage électrique / au gaz', 'electric / gas heating'],
+              ['charges comprises / hors charges', 'utilities included / excluded']
+            ],
+            dialogue: [
+              { fr: 'Je cherche un appartement à louer.', en: 'I\'m looking for an apartment to rent.' },
+              { fr: 'Vous recherchez combien de pièces ?', en: 'How many rooms are you looking for?' },
+              { fr: 'Je voudrais 2 chambres et un séjour.', en: 'I\'d like 2 bedrooms and a living room.' },
+              { fr: 'C\'est à proximité du métro ?', en: 'Is it close to the metro?' },
+              { fr: 'Quel est le loyer ?', en: 'What\'s the rent?' }
+            ],
+            grammarRule: 'No new grammar rule is added here; this unit focuses on apartment vocabulary and a practical asking-and-answering dialogue.',
+            grammarExamples: [
+              { fr: '850 euros par mois hors charges.', en: '€850 per month, utilities not included.' },
+              { fr: 'Je peux le visiter ?', en: 'Can I view it?' }
+            ],
+            practice: ['Read the apartment dialogue aloud and notice the key words for rooms, rent, and location.', 'Say the same dialogue using your own preferences: number of rooms, furniture, and distance to the metro.', 'Match the vocabulary words with the correct English meanings.']
+          },
+          {
+            type: 'unit', title: 'Unit 11 — Direct Object Pronouns (COD: le / la / les)',
+            theme: 'Use le, la, and les to avoid repeating a noun you already mentioned.',
+            vocabulary: [
+              ['le', 'it — masculine singular'],
+              ['la', 'it — feminine singular'],
+              ['les', 'them — plural'],
+              ['l\'', 'it — before a vowel or mute h']
+            ],
+            dialogue: [
+              { fr: 'Vous avez la carte ? Oui, je **l\'**apporte tout de suite.', en: 'Do you have the menu? Yes, I\'ll bring it right away.' },
+              { fr: 'Le saumon grillé, vous le voulez avec quelle garniture ?', en: 'The grilled salmon, what side would you like with it?' },
+              { fr: 'Je lave le sac. → Je le lave.', en: 'I wash the bag. → I wash it.' }
+            ],
+            grammarRule: 'Rule (plain English): COD stands for “complément d\'objet direct” (direct object). Use le / la / les to avoid repeating a noun you already mentioned.',
+            notes: [
+              'COD = direct object pronoun, replaces le / la / les.',
+              'Word order note: the pronoun goes before the verb (or before the infinitive): Je vais l\'apporter. In the negative: Je ne l\'apporte pas.'
+            ],
+            grammarExamples: [
+              { fr: 'Je lave le sac. → Je **le** lave.', en: 'I wash the bag. → I wash it.' },
+              { fr: 'Nous commandons les plats. → Nous **les** commandons.', en: 'We order the dishes. → We order them.' },
+              { fr: 'Je vais **l\'**apporter.', en: 'I\'m going to bring it.' },
+              { fr: 'Le saumon grillé, vous le voulez avec quelle garniture ?', en: 'The grilled salmon, what side would you like with it?' }
+            ],
+            practice: ['Repeat the sentence pairs and notice where the direct object pronoun comes: before the verb or before the infinitive.', 'Replace the nouns in the examples with objects you know in your own daily life.', 'Practice the negative word order: Je ne l\'apporte pas.']
+          },
+          {
+            type: 'unit', title: 'Unit 12 — "C\'est" vs "Il/Elle est" and Tonic Pronouns',
+            theme: 'Use c\'est or ce sont to identify or introduce a person or thing, and use tonic pronouns after a preposition or for emphasis.',
+            vocabulary: [
+              ['c\'est', 'it is / that is'],
+              ['ce sont', 'they are / those are'],
+              ['moi', 'me / I'],
+              ['toi', 'you'],
+              ['lui', 'him'],
+              ['elle', 'her']
+            ],
+            dialogue: [
+              { fr: 'C\'est Lil Wayne, un acteur célèbre du Ghana !', en: 'That\'s Lil Wayne, a famous Ghanaian actor!' },
+              { fr: 'Ce sont des touristes.', en: 'They are tourists.' },
+              { fr: 'Moi, je joue au tennis.', en: 'Me, I play tennis.' },
+              { fr: 'Le programme est pour eux.', en: 'The program is for them.' }
+            ],
+            grammarRule: 'Rule (plain English): Use c\'est (singular) / ce sont (plural) to identify or introduce a person or thing. Tonic pronouns are used after a preposition, alone, or for emphasis.',
+            notes: [
+              'Tonic (stressed) pronouns: moi, toi, lui, elle, nous, vous, eux, elles.'
+            ],
+            grammarExamples: [
+              { fr: 'C\'est facile. / Il est facile.', en: 'It\'s easy.' },
+              { fr: 'C\'est l\'heure.', en: 'It\'s time.' },
+              { fr: 'Qui sait nager ? Lui.', en: 'Who knows how to swim? Him.' },
+              { fr: 'C\'est Lil Wayne, un acteur célèbre du Ghana !', en: 'That\'s Lil Wayne, a famous Ghanaian actor!' },
+              { fr: 'Ce sont des touristes.', en: 'They are tourists.' },
+              { fr: 'Moi, je joue au tennis.', en: 'Me, I play tennis.' }
+            ],
+            extraTables: [
+              {
+                title: 'Tonic pronouns',
+                rows: [
+                  ['je', 'moi'],
+                  ['tu', 'toi'],
+                  ['il', 'lui'],
+                  ['elle', 'elle'],
+                  ['nous', 'nous'],
+                  ['vous', 'vous'],
+                  ['ils', 'eux'],
+                  ['elles', 'elles']
+                ]
+              }
+            ],
+            practice: ['Practice the difference between c\'est and il / elle est with one short example at a time.', 'Repeat the tonic pronoun examples and notice where the pronoun is used for emphasis or after a preposition.', 'Say the sentence pairs aloud to reinforce the subject-verb structure.']
+          },
+          {
+            type: 'unit', title: 'Unit 13 — Le Passé Composé (Talking About the Past)',
+            theme: 'Use the passé composé to talk about completed past events.',
+            vocabulary: [
+              ['avoir', 'to have'],
+              ['être', 'to be'],
+              ['le participe passé', 'the past participle'],
+              ['aller', 'to go'],
+              ['arriver', 'to arrive']
+            ],
+            dialogue: [
+              { fr: 'J\'ai lu des avis positifs.', en: 'I read some positive reviews.' },
+              { fr: 'Ils ont proposé un échange.', en: 'They offered an exchange.' },
+              { fr: 'Hier, je suis allé(e) sur le site.', en: 'Yesterday, I went on the website.' },
+              { fr: 'La commande est arrivée dans les délais.', en: 'The order arrived on time.' }
+            ],
+            grammarRule: 'Rule (plain English): The passé composé is used to talk about completed past events. It is formed with a helper verb (avoir or être) in the present tense + the past participle of the main verb.',
+            notes: [
+              'With être, the past participle agrees with the subject: allé (masculine) / allée (feminine) / allés (masculine plural) / allées (feminine plural).',
+              'Verbs that use être: aller, arriver, partir, venir, entrer, sortir, monter, descendre, naître, mourir, rester, retourner, tomber, devenir, revenir, rentrer, passer + all reflexive verbs.'
+            ],
+            grammarExamples: [
+              { fr: 'J\'ai lu des avis positifs.', en: 'I read some positive reviews.' },
+              { fr: 'Ils ont proposé un échange.', en: 'They offered an exchange.' },
+              { fr: 'Hier, je suis allé(e) sur le site.', en: 'Yesterday, I went on the website.' },
+              { fr: 'La commande est arrivée dans les délais.', en: 'The order arrived on time.' }
+            ],
+            extraTables: [
+              {
+                title: 'Common irregular past participles',
+                rows: [
+                  ['boire', 'bu'],
+                  ['choisir', 'choisi'],
+                  ['faire', 'fait'],
+                  ['mettre', 'mis'],
+                  ['prendre', 'pris'],
+                  ['vouloir', 'voulu'],
+                  ['perdre', 'perdu'],
+                  ['finir', 'fini']
+                ]
+              }
+            ],
+            practice: ['Notice which verbs use avoir and which ones use être in the examples.', 'Say the sample conjugation tables aloud and focus on the helper verb choice.', 'Repeat the phrase “Hier, je suis allé(e)…” with your own destination.']
+          },
+          {
+            type: 'unit', title: 'Unit 14 — Le Passé Récent ("venir de" + infinitive)',
+            theme: 'To say something just happened, use the present tense of venir + de + the infinitive of the action.',
+            vocabulary: [
+              ['venir de', 'to have just'],
+              ['écrire', 'to write'],
+              ['organiser', 'to organize'],
+              ['sortir', 'to leave / go out'],
+              ['manger', 'to eat']
+            ],
+            dialogue: [
+              { fr: 'Je viens de écrire la lettre.', en: 'I just wrote the letter.' },
+              { fr: 'Vous **venez d\'**organiser la fête.', en: 'You just organized the party.' },
+              { fr: 'Les étudiants sont sortis ? Oui, ils viennent de sortir.', en: 'Did the students leave? Yes, they just left.' },
+              { fr: 'Est-ce que vous avez mangé ? Oui, nous venons de manger.', en: 'Have you eaten? Yes, we just ate.' }
+            ],
+            grammarRule: 'Rule (plain English): To say something just happened, use the present tense of venir + de + the infinitive of the action.',
+            notes: [
+              'This is the recent past structure in French.'
+            ],
+            grammarExamples: [
+              { fr: 'Je viens de écrire la lettre.', en: 'I just wrote the letter.' },
+              { fr: 'Vous **venez d\'**organiser la fête.', en: 'You just organized the party.' },
+              { fr: 'Oui, nous venons de manger.', en: 'Yes, we just ate.' }
+            ],
+            extraTables: [
+              {
+                title: 'Conjugation of venir',
+                rows: [
+                  ['Je', 'viens'],
+                  ['Tu', 'viens'],
+                  ['Il / Elle', 'vient'],
+                  ['Nous', 'venons'],
+                  ['Vous', 'venez'],
+                  ['Ils / Elles', 'viennent']
+                ]
+              }
+            ],
+            practice: ['Read the recent-past examples and notice the fixed pattern venir de + infinitive.', 'Say the conjugation of venir aloud before moving to the example sentences.', 'Create one sentence with “je viens de …” and one with “nous venons de …”.']
+          },
+          {
+            type: 'unit', title: 'Unit 15 — Le Futur Proche (Near Future)',
+            theme: 'Use the present tense of aller + the infinitive to talk about something you are about to do soon.',
+            vocabulary: [
+              ['demain', 'tomorrow'],
+              ['ce week-end', 'this weekend'],
+              ['aujourd\'hui', 'today'],
+              ['maintenant', 'now'],
+              ['tout de suite', 'right now'],
+              ['bientôt', 'very soon']
+            ],
+            dialogue: [
+              { fr: 'Je vais partir à Accra.', en: 'I\'m going to leave for Accra.' },
+              { fr: 'Il va voir le docteur tout de suite.', en: 'He\'s going to see the doctor right away.' },
+              { fr: 'Ama va voyager en France bientôt.', en: 'Ama is going to travel to France soon.' },
+              { fr: 'Nous allons commencer le programme ce soir.', en: 'We\'re going to start the program tonight.' },
+              { fr: 'Vous allez comprendre ce que je dis.', en: 'You\'re going to understand what I\'m saying.' }
+            ],
+            grammarRule: 'Rule (plain English): To talk about something you are about to do or planning to do soon, use the present tense of aller + the infinitive of the action verb.',
+            notes: [
+              'Useful time expressions: demain, ce week-end, aujourd\'hui, maintenant, tout de suite, bientôt, ce soir, dans une heure, la semaine prochaine, le mois prochain, l\'année prochaine, un jour, lundi prochain, dans deux jours.'
+            ],
+            grammarExamples: [
+              { fr: 'Je vais partir à Accra.', en: 'I\'m going to leave for Accra.' },
+              { fr: 'Ama va voyager en France bientôt.', en: 'Ama is going to travel to France soon.' },
+              { fr: 'Nous allons commencer le programme ce soir.', en: 'We\'re going to start the program tonight.' }
+            ],
+            extraTables: [
+              {
+                title: 'Useful time expressions',
+                rows: [
+                  ['Demain', 'Tomorrow'],
+                  ['Ce week-end', 'This weekend'],
+                  ['Aujourd\'hui', 'Today'],
+                  ['Maintenant', 'Now'],
+                  ['Tout de suite', 'Right now'],
+                  ['Bientôt', 'Very soon'],
+                  ['Ce soir', 'This evening'],
+                  ['Dans une heure', 'In an hour']
+                ]
+              }
+            ],
+            practice: ['Practice switching a sentence from the present to the near future by adding aller + infinitive.', 'Say the time expressions and match them with their English meaning.', 'Repeat the French prompt “Je vais …” and complete it with an action from your own routine.']
           }
         ]
       }
@@ -1852,6 +2465,29 @@ const GAME_DATA = {
       {word:'BAGUETTE',hint:'Long French bread',category:'Food'},
       {word:'VOITURE',hint:'You drive this (la ___)',category:'Transport'},
       {word:'JARDIN',hint:'An outdoor space with plants (le ___)',category:'Places'},
+    ],
+    essayBuilder: [
+      {
+        title: 'Daily Routine Essay',
+        tokens: [
+          {fr:'Je',en:'I'},
+          {fr:'me',en:'myself'},
+          {fr:'lève',en:'wake up'},
+          {fr:'à',en:'at'},
+          {fr:'sept',en:'seven'},
+          {fr:'heures',en:'o\'clock'},
+          {fr:'et',en:'and'},
+          {fr:'je',en:'I'},
+          {fr:'prends',en:'take'},
+          {fr:'le',en:'the'},
+          {fr:'petit',en:'small'},
+          {fr:'déjeuner',en:'breakfast'},
+          {fr:'dans',en:'in'},
+          {fr:'la',en:'the'},
+          {fr:'cuisine',en:'kitchen'},
+        ],
+        expected: ['Je','me','lève','à','sept','heures','et','je','prends','le','petit','déjeuner','dans','la','cuisine']
+      }
     ]
   },
   es: {
@@ -2077,7 +2713,8 @@ function selectTopic(idx) {
   currentTopic = idx;
   document.querySelectorAll('.nav-pill').forEach(function(p,i){p.classList.toggle('active',i===idx);});
   buildContent();
-  document.getElementById('mainContent').scrollIntoView({behavior:'smooth',block:'start'});
+  // Scroll to just below the sticky header so the topic card is fully visible
+  window.scrollTo({top: document.getElementById('mainContent').offsetTop - 10, behavior: 'smooth'});
 }
 
 function scrollToGame() {
@@ -2098,14 +2735,25 @@ function buildContent() {
   html += '<div class="section-title" style="color:'+color+'">'+topic.icon+' '+topic.title+'</div>';
   html += '<div class="section-subtitle">'+topic.subtitle+'</div>';
   html += '<span class="badge-pill badge-'+topic.level+'">'+topic.level.charAt(0).toUpperCase()+topic.level.slice(1)+'</span>';
+  if(topic.lessons && topic.lessons.length) {
+    var navItems = topic.lessons.map(function(lesson, idx){
+      var label = lesson.type === 'unit'
+        ? (lesson.title.match(/Unit\s*\d+/i) ? lesson.title.match(/Unit\s*\d+/i)[0] : 'Unit '+(idx+1))
+        : (lesson.title ? lesson.title.replace(/^[^a-zA-Z0-9À-ÿ]+/, '').substring(0,28) : 'Section '+(idx+1));
+      return '<button class="unit-nav-btn" onclick="jumpToUnit('+idx+')">'+esc(label)+'</button>';
+    });
+    html += '<div class="topic-unit-nav">'+navItems.join('')+'</div>';
+  }
   html += '<div style="height:14px;"></div>';
 
   // Lessons
-  topic.lessons.forEach(function(lesson) {
+  topic.lessons.forEach(function(lesson, lessonIdx) {
     if(lesson.type === 'table') {
       html += renderTable(lesson, curriculum.cssClass, color);
     } else if(lesson.type === 'examples') {
       html += renderExamples(lesson, curriculum.cssClass, color);
+    } else if(lesson.type === 'unit') {
+      html += renderUnit(lesson, color, lessonIdx);
     } else if(lesson.type === 'tip') {
       html += '<div class="tip-box">'+lesson.text+'</div>';
     } else if(lesson.type === 'lesson-text') {
@@ -2167,13 +2815,219 @@ function renderExamples(lesson, cssClass, color) {
   return html;
 }
 
+function renderUnit(lesson, color, lessonIdx) {
+  var html = '<div class="lesson-block" id="unit-'+lessonIdx+'" style="border-left-color:'+color+'">';
+  html += '<div class="lesson-title" style="color:'+color+'">'+lesson.title+' <span class="unit-badge">Beginner</span></div>';
+  if(lesson.theme) html += '<div class="unit-theme">'+lesson.theme+'</div>';
+
+  html += '<span class="unit-section-label">Vocabulary</span>';
+  html += '<div style="overflow-x:auto;"><table class="learn-table"><thead><tr><th>French</th><th>English</th></tr></thead><tbody>';
+  lesson.vocabulary.forEach(function(v){
+    html += '<tr><td class="fr">'+v[0]+'</td><td class="en">'+v[1]+'</td></tr>';
+  });
+  html += '</tbody></table></div>';
+
+  if(lesson.workplaceVocabulary) {
+    html += '<div class="unit-table-wrap">';
+    html += '<div class="unit-extra-title">Workplace vocabulary</div>';
+    html += '<div style="overflow-x:auto;"><table class="learn-table"><thead><tr><th>French</th><th>English</th></tr></thead><tbody>';
+    lesson.workplaceVocabulary.forEach(function(v){
+      html += '<tr><td class="fr">'+v[0]+'</td><td class="en">'+v[1]+'</td></tr>';
+    });
+    html += '</tbody></table></div>';
+    html += '</div>';
+  }
+
+  html += '<span class="unit-section-label">Dialogue / Example Text</span>';
+  lesson.dialogue.forEach(function(line){
+    html += '<div class="unit-pair">';
+    html += '<div class="unit-fr">'+highlightGrammarText(line.fr)+'</div>';
+    html += '<details class="unit-toggle"><summary>Show English</summary><div class="unit-en">'+line.en+'</div></details>';
+    html += '</div>';
+  });
+
+  html += '<span class="unit-section-label">Grammar Point</span>';
+  html += '<div class="grammar-rule">'+lesson.grammarRule+'</div>';
+  if(lesson.notes && lesson.notes.length) {
+    lesson.notes.forEach(function(note){
+      html += '<div class="unit-note">'+note+'</div>';
+    });
+  }
+  lesson.grammarExamples.forEach(function(example){
+    html += '<div class="unit-pair">';
+    html += '<div class="unit-fr">'+highlightGrammarText(example.fr)+'</div>';
+    html += '<div class="unit-en">'+example.en+'</div>';
+    html += '</div>';
+  });
+  if(lesson.extraTables && lesson.extraTables.length) {
+    lesson.extraTables.forEach(function(table){
+      html += renderUnitTable(table.title, table.rows);
+    });
+  }
+
+  html += '<span class="unit-section-label">Practice</span>';
+  html += '<ul class="unit-practice-list">';
+  lesson.practice.forEach(function(item){
+    html += '<li>'+item+'</li>';
+  });
+  html += '</ul>';
+
+  // ── Per-unit quiz (cycles through all vocab pairs) ──
+  html += '<div class="unit-quiz-wrap" id="unitQuiz-'+lessonIdx+'">';
+  html += '<div class="unit-extra-title">🎯 Unit Practice Quiz</div>';
+  html += '<div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Answer all '+lesson.vocabulary.length+' questions to complete this unit!</div>';
+  html += buildUnitQuizHTML(lesson.vocabulary, lessonIdx, 0, 0);
+  html += '</div>';
+  // ── Flip-card vocabulary review ──
+  html += '<div style="margin-top:14px;">';
+  html += '<div class="unit-extra-title">🔄 Flip Cards — Tap to reveal English</div>';
+  html += '<div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Tap each card to flip it and check the meaning.</div>';
+  lesson.vocabulary.slice(0, 6).forEach(function(v, vi){
+    html += '<div class="flip-card-wrap" onclick="flipCard(this)">';
+    html += '<div class="flip-card">';
+    html += '<div class="flip-front">'+esc(v[0])+'</div>';
+    html += '<div class="flip-back">'+esc(v[1])+'</div>';
+    html += '</div></div>';
+  });
+  html += '</div>';
+
+  html += '</div>';
+  return html;
+}
+
+/* ── Unit quiz state: keyed by lessonIdx ── */
+var _uqState = {};
+
+function _uqGetVocab(lessonIdx) {
+  var topic = CURRICULUM[currentLang].topics[currentTopic];
+  return topic.lessons[lessonIdx].vocabulary;
+}
+
+function buildUnitQuizHTML(vocab, lessonIdx, qIdx, score) {
+  var total = vocab.length;
+  if(qIdx >= total) {
+    var pct = Math.round(score / total * 100);
+    var emoji = pct >= 80 ? '🏆' : pct >= 50 ? '🎉' : '📚';
+    var msg   = pct >= 80 ? 'Excellent!' : pct >= 50 ? 'Good job!' : 'Keep practicing!';
+    return '<div style="text-align:center;padding:16px;">'+
+      '<div style="font-size:36px;">'+emoji+'</div>'+
+      '<div style="font-size:16px;font-weight:800;color:#fff;margin:8px 0;">'+msg+'</div>'+
+      '<div style="font-size:24px;font-weight:900;color:var(--gold);">'+score+' / '+total+'</div>'+
+      '<div style="font-size:12px;color:var(--muted);margin:6px 0 14px;">'+pct+'% correct</div>'+
+      '<button onclick="restartUnitQuiz('+lessonIdx+')" style="background:linear-gradient(135deg,var(--accent),#2563eb);color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:13px;font-weight:800;cursor:pointer;">🔄 Retry Quiz</button>'+
+      '</div>';
+  }
+  var correctIdx = qIdx;
+  // Build wrong pool — all indices except correct, shuffled
+  var wrongPool = [];
+  for(var i=0;i<vocab.length;i++){ if(i!==correctIdx) wrongPool.push(i); }
+  wrongPool.sort(function(){return Math.random()-.5;});
+  // If vocab has fewer than 4 items, pad by cycling through available wrong options
+  if(wrongPool.length === 0) wrongPool = [correctIdx]; // edge case: only 1 vocab item
+  var padLen = wrongPool.length;
+  while(wrongPool.length < 3) wrongPool.push(wrongPool[wrongPool.length % padLen]);
+  var optionIndices = [correctIdx].concat(wrongPool.slice(0,3)).sort(function(){return Math.random()-.5;});
+  _uqState[lessonIdx] = {qIdx:qIdx, score:score, correctIdx:correctIdx, optionIndices:optionIndices, answered:false};
+
+  var pctBar = Math.round(qIdx/total*100);
+  var html = '<div class="unit-quiz-progress"><span>Question '+(qIdx+1)+' of '+total+'</span><span style="color:var(--gold);font-weight:800;">Score: '+score+'</span></div>';
+  html += '<div style="height:4px;background:var(--border);border-radius:4px;margin-bottom:12px;"><div style="height:100%;width:'+pctBar+'%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:4px;transition:width .3s;"></div></div>';
+  html += '<div class="unit-quiz-q">'+esc(vocab[qIdx][0])+'</div>';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">';
+  optionIndices.forEach(function(optIdx, btnPos){
+    html += '<button class="unit-mini-option" id="uqBtn-'+lessonIdx+'-'+btnPos+'" onclick="answerUnitQuiz('+lessonIdx+','+btnPos+')">'+esc(vocab[optIdx][1])+'</button>';
+  });
+  html += '</div>';
+  html += '<div class="unit-quiz-feedback" id="uqFb-'+lessonIdx+'"></div>';
+  return html;
+}
+
+function answerUnitQuiz(lessonIdx, btnPos) {
+  var state = _uqState[lessonIdx];
+  if(!state || state.answered) return;
+  state.answered = true;
+  var vocab = _uqGetVocab(lessonIdx);
+  var chosenVocabIdx = state.optionIndices[btnPos];
+  var isRight = chosenVocabIdx === state.correctIdx;
+  var correctAnswer = vocab[state.correctIdx][1];
+  // Highlight all buttons
+  state.optionIndices.forEach(function(vocabIdx, pos){
+    var btn = document.getElementById('uqBtn-'+lessonIdx+'-'+pos);
+    if(!btn) return;
+    btn.disabled = true;
+    if(vocabIdx === state.correctIdx) btn.classList.add('correct');
+    else if(pos === btnPos && !isRight) btn.classList.add('wrong');
+  });
+  var fb = document.getElementById('uqFb-'+lessonIdx);
+  if(fb){
+    fb.className = 'unit-quiz-feedback show '+(isRight?'correct':'wrong');
+    fb.textContent = isRight ? '✅ Correct! +1 point' : '❌ Wrong — the answer was: '+correctAnswer;
+  }
+  var newScore = state.score + (isRight ? 1 : 0);
+  if(isRight){ gameScore += 10; updateScore(); }
+  var total = vocab.length;
+  setTimeout(function(){
+    var wrap = document.getElementById('unitQuiz-'+lessonIdx);
+    if(!wrap) return;
+    var titleHTML = '<div class="unit-extra-title">🎯 Unit Practice Quiz</div>'+
+      '<div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Answer all '+total+' questions to complete this unit!</div>';
+    wrap.innerHTML = titleHTML + buildUnitQuizHTML(vocab, lessonIdx, state.qIdx+1, newScore);
+  }, 1000);
+}
+
+function restartUnitQuiz(lessonIdx) {
+  var wrap = document.getElementById('unitQuiz-'+lessonIdx);
+  if(!wrap) return;
+  var vocab = _uqGetVocab(lessonIdx);
+  var total = vocab.length;
+  wrap.innerHTML = '<div class="unit-extra-title">🎯 Unit Practice Quiz</div>'+
+    '<div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Answer all '+total+' questions to complete this unit!</div>'+
+    buildUnitQuizHTML(vocab, lessonIdx, 0, 0);
+}
+
+function flipCard(wrap) {
+  var card = wrap.querySelector('.flip-card');
+  if(card) card.classList.toggle('flipped');
+}
+
+function renderUnitTable(title, rows) {
+  var html = '<div class="unit-table-wrap">';
+  html += '<div class="unit-extra-title">'+title+'</div>';
+  html += '<div style="overflow-x:auto;"><table class="learn-table"><tbody>';
+  rows.forEach(function(row){
+    html += '<tr>';
+    row.forEach(function(cell, idx){
+      html += '<td class="'+(idx === 0 ? 'fr' : 'en')+'">'+cell+'</td>';
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table></div>';
+  html += '</div>';
+  return html;
+}
+
+function highlightGrammarText(text) {
+  return String(text).replace(/\*\*(.+?)\*\*/g, '<span class="grammar-target">$1</span>');
+}
+
+function jumpToUnit(idx) {
+  var target = document.getElementById('unit-' + idx);
+  if(!target) return;
+  // header (~63px) + unit-nav-bar (~46px) + 8px breathing room = 117px
+  var offset = 117;
+  var y = target.getBoundingClientRect().top + window.scrollY - offset;
+  window.scrollTo({top: y, behavior: 'smooth'});
+}
+
+
+
 /* ══════════════════
    GAME SECTION HTML
    ══════════════════ */
 function buildGameSection() {
   return '<div class="game-card" id="gameSection">'+
     '<div class="game-title">🎮 Language Practice Games</div>'+
-    '<div class="game-sub">5 games to master '+CURRICULUM[currentLang].name+' — from matching to hangman! Pick any mode below.</div>'+
+    '<div class="game-sub">6 games to master '+CURRICULUM[currentLang].name+' — from matching to essay building! Pick any mode below.</div>'+
     '<div class="score-bar"><div><div class="score-label">Session Score</div><div class="score-num" id="gameScore">0</div></div>'+
     '<div style="display:flex;gap:6px;align-items:center;"><span style="font-size:12px;color:var(--muted);" id="gameStreakLabel"></span></div></div>'+
     '<div class="game-modes">'+
@@ -2182,6 +3036,7 @@ function buildGameSection() {
       '<button id="modeScramble" class="game-mode-btn" onclick="initGame(\'scramble\')">🔀 Scramble</button>'+
       '<button id="modeSpeed" class="game-mode-btn speed-btn" onclick="initGame(\'speed\')">⚡ Speed Round</button>'+
       '<button id="modeHangman" class="game-mode-btn hangman-btn" onclick="initGame(\'hangman\')">🪢 Hangman</button>'+
+      '<button id="modeEssay" class="game-mode-btn essay-btn" onclick="initGame(\'essay\')">📝 Essay Builder</button>'+
     '</div>'+
     '<div id="gameArea"></div>'+
   '</div>';
@@ -2197,7 +3052,7 @@ function initGame(mode) {
   gameScore = 0;
   updateScore();
   document.querySelectorAll('.game-mode-btn').forEach(function(b){b.classList.remove('active');});
-  var modeMap = {match:'modeMatch',fill:'modeFill',scramble:'modeScramble',speed:'modeSpeed',hangman:'modeHangman'};
+  var modeMap = {match:'modeMatch',fill:'modeFill',scramble:'modeScramble',speed:'modeSpeed',hangman:'modeHangman',essay:'modeEssay'};
   var el = document.getElementById(modeMap[mode]);
   if(el) el.classList.add('active');
 
@@ -2206,6 +3061,7 @@ function initGame(mode) {
   else if(mode === 'scramble') { scrambleIdx=0; buildScrambleGame(); }
   else if(mode === 'speed') { buildSpeedStart(); }
   else if(mode === 'hangman') { buildHangmanGame(); }
+  else if(mode === 'essay') { buildEssayBuilderGame(); }
 }
 
 function updateScore() {
@@ -2741,6 +3597,91 @@ function guessHangman(letter) {
   var isWin = hmWord.split('').every(function(c){ return c===' '||hmGuessed.indexOf(c)>=0; });
   if(isWin){ gameScore+=50; updateScore(); }
   renderHangman();
+}
+
+/* ═══════════════════════
+   📝 ESSAY BUILDER GAME
+   ═══════════════════════ */
+let essayBuilderState = {selected:[], current:0};
+
+function buildEssayBuilderGame() {
+  var data = GAME_DATA[currentLang].essayBuilder;
+  if(!data || !data.length){
+    document.getElementById('gameArea').innerHTML = '<p style="color:var(--muted);font-size:13px;">Essay Builder is available for the French daily routine unit.</p>';
+    return;
+  }
+
+  essayBuilderState = {selected:[], current:0};
+  var item = data[essayBuilderState.current];
+  var html = '<div class="fill-question">';
+  html += '<div class="fill-q-num">Daily Routine Essay Builder</div>';
+  html += '<div class="fill-q-text">Build a sensible French sentence using the words in the bank.</div>';
+  html += '<div class="fill-hint">💡 Click words in order to form a natural daily routine sentence. Wrong order will show a red “wrong” message.</div>';
+  html += '</div>';
+  html += '<div class="essay-builder-grid">';
+  html += '<div><div style="font-size:12px;color:var(--muted);font-weight:700;margin-bottom:8px;">Word bank</div><div class="essay-builder-board">';
+  item.tokens.forEach(function(token, i){
+    html += '<button class="essay-token" onclick="addEssayToken('+i+', this)">'+esc(token.fr)+' · '+esc(token.en)+'</button>';
+  });
+  html += '</div></div>';
+  html += '<div><div style="font-size:12px;color:var(--muted);font-weight:700;margin-bottom:8px;">Your sentence</div><div class="essay-builder-board" id="essayBoard"></div></div>';
+  html += '</div>';
+  html += '<div style="display:flex;gap:8px;flex-wrap:wrap;">';
+  html += '<button class="next-btn" onclick="submitEssayBuilder()">Check Essay</button>';
+  html += '<button class="next-btn" onclick="clearEssayBuilder()">Clear</button>';
+  html += '</div>';
+  html += '<div class="essay-feedback" id="essayFeedback"></div>';
+  html += '<div style="font-size:12px;color:var(--muted);margin-top:10px;">Goal: make a sentence that makes sense in a French daily routine.</div>';
+
+  document.getElementById('gameArea').innerHTML = html;
+  renderEssayBoard();
+}
+
+function addEssayToken(index, el) {
+  var data = GAME_DATA[currentLang].essayBuilder;
+  var item = data[essayBuilderState.current];
+  if(!item || !item.tokens[index]) return;
+  essayBuilderState.selected.push(item.tokens[index]);
+  renderEssayBoard();
+  if(el) el.classList.add('selected');
+  setTimeout(function(){ if(el) el.classList.remove('selected'); }, 220);
+}
+
+function renderEssayBoard() {
+  var board = document.getElementById('essayBoard');
+  if(!board) return;
+  board.innerHTML = '';
+  essayBuilderState.selected.forEach(function(token){
+    board.innerHTML += '<span class="essay-builder-word">'+esc(token.fr)+'</span>';
+  });
+}
+
+function clearEssayBuilder() {
+  essayBuilderState.selected = [];
+  renderEssayBoard();
+  var fb = document.getElementById('essayFeedback');
+  if(fb){ fb.className='essay-feedback'; fb.textContent=''; }
+}
+
+function submitEssayBuilder() {
+  var data = GAME_DATA[currentLang].essayBuilder;
+  var item = data[essayBuilderState.current];
+  var fb = document.getElementById('essayFeedback');
+  if(!item || !fb) return;
+
+  var built = essayBuilderState.selected.map(function(token){ return token.fr; }).join(' ');
+  var expected = item.expected.join(' ');
+  var valid = built === expected;
+
+  if(valid) {
+    gameScore += 25;
+    updateScore();
+    fb.className = 'essay-feedback show correct';
+    fb.textContent = '✅ Correct! “' + expected + '” makes sense and matches a real daily routine sentence.';
+  } else {
+    fb.className = 'essay-feedback show wrong';
+    fb.textContent = '❌ Wrong order or a sentence that does not make sense. Try a different word sequence.';
+  }
 }
 
 /* ═══════════════
